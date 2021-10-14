@@ -333,7 +333,7 @@ async function starts() {
             ├
             ╰─ *FIN LISTA DE MENUS*
             `
-                            nexus.sendMessage(from, assistant, image, {
+                            nexus.sendMessage(from, assistant, text, {
                                 quoted:
                                 {
                                     key: {
