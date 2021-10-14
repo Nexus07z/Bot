@@ -379,52 +379,58 @@ async function starts() {
                     nexus.updatePresence(from, Presence.recording)
                     Menu9 = `
 ╭───「 *Text Pro Me* 」
-├
+│
 ├「 *Crea imágenes con texto* 」
-├
+│
 ├ *${prefix}blackpink* [texto]
-├ *${prefix}neon* [texto]
-├ *${prefix}greenneon* [texto]
-├ *${prefix}advanceglow* [texto]
-├ *${prefix}futureneon* [texto]
-├ *${prefix}sandwriting* [texto]
-├ *${prefix}sandsummer* [texto]
-├ *${prefix}sandengraved* [texto]
-├ *${prefix}metaldark* [texto]
-├ *${prefix}neonlight* [texto]
-├ *${prefix}holographic* [texto]
-├ *${prefix}text1917* [texto]
-├ *${prefix}minion* [texto]
-├ *${prefix}deluxesilver* [texto]
-├ *${prefix}newyearcard* [texto]
 ├ *${prefix}bloodfrosted* [texto]
-├ *${prefix}halloween* [texto]
-├ *${prefix}jokerlogo* [texto]
-├ *${prefix}fireworksparkle* [texto]
-├ *${prefix}natureleaves* [texto]
 ├ *${prefix}bokeh* [texto]
-├ *${prefix}toxic* [texto]
-├ *${prefix}strawberry* [texto]
 ├ *${prefix}box3d* [texto]
-├ *${prefix}roadwarning* [texto]
 ├ *${prefix}breakwall* [texto]
-├ *${prefix}icecold* [texto]
-├ *${prefix}luxury* [texto]
 ├ *${prefix}cloud* [texto]
-├ *${prefix}summersand* [texto]
+├ *${prefix}deluxesilver* [texto]
+├ *${prefix}fireworksparkle* [texto]
+├ *${prefix}futureneon* [texto]
+├ *${prefix}greenneon* [texto]
+├ *${prefix}halloween* [texto]
+├ *${prefix}harrypotter* [texto]
+├ *${prefix}holographic* [texto]
 ├ *${prefix}horrorblood* [texto]
+├ *${prefix}icecold* [texto]
+├ *${prefix}impressiveglitch* [texto]
+├ *${prefix}jokerlogo* [texto]
+├ *${prefix}luxury* [texto]
+├ *${prefix}magma* [texto]
+├ *${prefix}metaldark* [texto]
+├ *${prefix}minion* [texto]
+├ *${prefix}natureleaves* [texto]
+├ *${prefix}neon* [texto]
+├ *${prefix}neonlight* [texto]
+├ *${prefix}newyearcard* [texto]
+├ *${prefix}roadwarning* [texto]
+├ *${prefix}sandengraved* [texto]
+├ *${prefix}sandsummer* [texto]
+├ *${prefix}sandwriting* [texto]
+├ *${prefix}strawberry* [texto]
+├ *${prefix}summersand* [texto]
+├ *${prefix}text1917* [texto]
 ├ *${prefix}thunder* [texto]
-├ *${prefix}pornhub* [texto1] [texto2]
-├ *${prefix}glitch* [texto1] [texto2]
+├ *${prefix}toxic* [texto]
+├ *${prefix}watercolor* [texto]
+├ *${prefix}wonderfulgraffiti* [texto]
+│
 ├ *${prefix}avenger* [texto1] [texto2]
-├ *${prefix}space* [texto1] [texto2]
-├ *${prefix}ninjalogo* [texto1] [texto2]
-├ *${prefix}marvelstudio* [texto1] [texto2]
+├ *${prefix}coolgravity* [texto1] [texto2]
+├ *${prefix}glitch* [texto1] [texto2]
 ├ *${prefix}lionlogo* [texto1] [texto2]
-├ *${prefix}wolflogo* [texto1] [texto2]
+├ *${prefix}marvelstudio* [texto1] [texto2]
+├ *${prefix}ninjalogo* [texto1] [texto2]
+├ *${prefix}pornhub* [texto1] [texto2]
+├ *${prefix}space* [texto1] [texto2]
 ├ *${prefix}steel3d* [texto1] [texto2]
 ├ *${prefix}wallgravity* [texto1] [texto2]
-├
+├ *${prefix}wolflogo* [texto1] [texto2]
+│
 ╰───
 `
                     nexus.sendMessage(from, Menu9, text, {
@@ -2490,11 +2496,10 @@ async function starts() {
                     })
                     break
 
-                    // Textprome //
+                // Textprome //
                 case 'blackpink':
                 case 'neon':
                 case 'greenneon':
-                case 'advanceglow':
                 case 'futureneon':
                 case 'sandwriting':
                 case 'sandsummer':
@@ -2523,12 +2528,20 @@ async function starts() {
                 case 'summersand':
                 case 'horrorblood':
                 case 'thunder':
+                case 'magma':
+                case 'impressiveglitch':
+                case 'harrypotter':
+                case 'watercolor':
+                case 'wonderfulgraffiti':
+    
                     if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
                     ini_txt = args.join(" ")
                     getBuffer(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`).then((gambar) => {
                         nexus.sendMessage(from, gambar, image, { quoted: nex })
                     })
-                    break
+
+                break
+
                 case 'pornhub':
                 case 'glitch':
                 case 'avenger':
@@ -2539,13 +2552,25 @@ async function starts() {
                 case 'wolflogo':
                 case 'steel3d':
                 case 'wallgravity':
+                case 'coolgravity':
+
                     if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
                     txt1 = args[0]
                     txt2 = args[1]
                     getBuffer(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`).then((gambar) => {
                         nexus.sendMessage(from, gambar, image, { quoted: nex })
                     })
-                    break
+                
+                break
+
+                case 'end':
+    
+                    ini_txt = args.join(" ")
+                    getBuffer(``).then((gambar) => {
+                        nexus.sendMessage(from, gambar, image, { quoted: nex })
+                    })
+
+                break
 
                     // Photo Oxy //
                 case 'shadow':
