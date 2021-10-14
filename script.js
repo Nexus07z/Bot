@@ -378,9 +378,9 @@ async function starts() {
                     whatsapp = '0@s.whatsapp.net'
                     nexus.updatePresence(from, Presence.recording)
                     Menu9 = `
-╭───「 Text Pro Me 」
+╭───「 *Text Pro Me* 」
 ├
-├──「 Crea imágenes con texto 」
+├「 *Crea imágenes con texto* 」
 ├
 ├ *${prefix}blackpink* [texto]
 ├ *${prefix}neon* [texto]
