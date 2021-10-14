@@ -2559,7 +2559,7 @@ async function starts() {
                     case 'xdf':
                 
       
-                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo: ${prefix + command} Nexus|Bot*`)
+                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus|Bot*`)
                     a = args.join(' ')
                     txt1 = a.substring(0, a.indexOf('|') - 0)
                     txt2 = a.substring(a.lastIndexOf('|') + 1)
