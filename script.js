@@ -315,7 +315,7 @@ async function starts() {
                                 year: 'numeric'
                             })
                             var num = nexus.participant
-                        
+                            assistant = fs.readFileSync('./src/assistant.jpg')
                             nexus.updatePresence(from, Presence.recording)
                             uptime = process.uptime()
                                   Menu = `
@@ -343,7 +343,7 @@ async function starts() {
                                     message: {
                                         "documentMessage": { "title": "Sam | Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
                                     }
-                                }
+                                },thumbnail: assistant
                             })
                 break
                 
