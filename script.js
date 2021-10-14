@@ -2533,9 +2533,7 @@ async function starts() {
                 case 'harrypotter':
                 case 'watercolor':
                 case 'wonderfulgraffiti':
-                case 'etpm1':
-                    
-    
+
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\nPor ejemplo: ${prefix + command} Nexus`)
                     ini_txt = args.join(" ")
                     try {
@@ -2558,20 +2556,20 @@ async function starts() {
                 case 'steel3d':
                 case 'wallgravity':
                 case 'coolgravity':
-                case 'etpm2':
+                    case 'xdf':
                 
-
-                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\nPor ejemplo: ${prefix + command} Nexus Bot`)
+      
+                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo: ${prefix + command} Nexus|Bot*`)
                     a = args.join(' ')
                     txt1 = a.substring(0, a.indexOf('|') - 0)
                     txt2 = a.substring(a.lastIndexOf('|') + 1)
-                    if (!txt1) return reply(`Error de uso...\n*Ejemplo: ${prefix + command} Samu|330*`)
-                    if (!txt2) return reply(`Error de uso...\n*Ejemplo: ${prefix + command} Samu|330*`)
+                    if (!txt1) return reply(`*Falta el primer texto.*\n\n*Ejemplo: ${prefix + command} Nexus|Bot*`)
+                    if (!txt2) return reply(`*Falta el segundo texto.*\n\n*Ejemplo: ${prefix + command} Nexus|Bot*`)
                     try {
                         get_textprome2 = await getBuffer2(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
                         nexus.sendMessage(from, get_textprome2, image, { quoted: nex })
                    
-                    } catch (e) {
+                    } catch {
                         reply(`*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*`)
                     }
                 break
