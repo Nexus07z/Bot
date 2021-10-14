@@ -39,7 +39,7 @@ async function starts() {
         const time_connecting = moment.tz('Asia/Jakarta').format('HH:mm:ss')
         console.log(color(time_connecting, "white"), color("[  STATS  ]", "aqua"), "Scan QR Code with WhatsApp")
     })
-    fs.existsSync('./nexus.json') && lolhuman.loadAuthInfo('./nexus.json')
+    fs.existsSync('./nexus.json') && nexus.loadAuthInfo('./nexus.json')
     if (apikey == "") {
         ini_time = moment.tz('Asia/Jakarta').format('HH:mm:ss')
         console.log(color(ini_time, "white"), color("[  ERROR  ]", "aqua"), color("Apikey is empty, please check at config.json", 'red'))
