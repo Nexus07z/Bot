@@ -299,6 +299,46 @@ async function starts() {
                     }
                     await nexus.sendMessage(from, help(prefix), text, ini_csreply)
                     break
+                case 'nexus':
+
+                    const moment = require('moment-timezone')
+                    const horalima = moment.tz('America/Lima').format('HH:mm:ss')
+                    whatsapp = '0@s.whatsapp.net'
+                    let d = new Date
+                    let locale = 'es'
+                    let gmt = new Date(0).getTime() - new Date('1 Januari 2021').getTime()
+                    let weton = ['domingo', 'lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'][Math.floor(((d * 1) + gmt) / 84600000) % 7]
+                    let week = d.toLocaleDateString(locale, { weekday: 'long' })
+                    let calender = d.toLocaleDateString(locale, {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    })
+                    var num = nexus.participant
+                    assistant = fs.readFileSync('./src/assistant.jpg')
+                    nexus.updatePresence(from, Presence.recording)
+                    uptime = process.uptime()
+                            menunexus = `
+        ╭─ *INICIO LISTA DE MENUS*
+        ├
+        ├ *${prefix}menu1* (Comandos Multimedia)
+        ├ *${prefix}menu2* (Comandos de Sticker)
+        ├ *${prefix}menu3* (Comandos de Descargas)
+        ├ *${prefix}menu4* (Comandos Convertidor)
+        ├ *${prefix}menu5* (Comandos Creaciones)
+        ├ *${prefix}menu6* (Comandos Entretenimiento)
+        ├ *${prefix}menu7* (Comandos Información)
+        ├ *${prefix}menu8* (Comandos Audios)
+        ├ *${prefix}menu9* (Comandos Otros)
+        ├
+        ╰─ *FIN LISTA DE MENUS*
+        `
+                                    nexus.sendMessage(from, assistant, image, {
+                                        quoted: nex,
+                                        caption: menunexus, 
+                                        thumbnail: assistant
+                                    })
+                        break
                 case 'menu':
                 case 'comandos':
                             const moment = require('moment-timezone')
@@ -315,7 +355,6 @@ async function starts() {
                                 year: 'numeric'
                             })
                             var num = nexus.participant
-                            assistant = fs.readFileSync('./src/assistant.jpg')
                             nexus.updatePresence(from, Presence.recording)
                             uptime = process.uptime()
                                   Menu = `
@@ -333,10 +372,17 @@ async function starts() {
 ├
 ╰─ *FIN LISTA DE MENUS*
 `
-                            nexus.sendMessage(from, assistant, image, {
-                                quoted: nex,
-                                caption: Menu, 
-                                thumbnail: assistant
+                            nexus.sendMessage(from, assistant, text, {
+                                quoted:
+                                {
+                                    key: {
+                                        fromMe: false,
+                                        participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                                    },
+                                    message: {
+                                        "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                                    }
+                                }
                             })
                 break
                 
