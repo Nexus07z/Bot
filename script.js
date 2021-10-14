@@ -12,7 +12,7 @@ const request = require('request')
 const moment = require('moment-timezone')
 const ffmpeg = require('fluent-ffmpeg')
 
-const { apikey, prefix, owner } = JSON.parse(fs.readFileSync('./config.json'))
+const { apikey, apikeyvh, apiimgbb, prefix, owner } = JSON.parse(fs.readFileSync('./config.json'))
 
 const { fetchJson, getBuffer } = require('./lib/fetcher')
 const { color } = require('./lib/color')
@@ -307,10 +307,10 @@ async function starts() {
                         const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
                         const media = await nexus.downloadAndSaveMediaMessage(encmedia)
                         //reply(mess.wait)
-                        nobg = await imgbb('20a14861e4f7591f3dc52649cb07ae02', media);
+                        nobg = await imgbb(apiimgbb, media);
                         link = `${nobg.display_url}`;
                 
-                        const attp1 = await getBuffer(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${api}&img=https://nexus-store.site/api/removebg.php?remove=${link}`)
+                        const attp1 = await getBuffer(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=https://nexus-store.site/api/removebg.php?remove=${link}`)
                         nexus.sendMessage(from, attp1, sticker, { quoted: nex })
                         
                         } else {
