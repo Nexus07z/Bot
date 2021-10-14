@@ -56,6 +56,22 @@ async function starts() {
     await nexus.connect({ timeoutMs: 30 * 1000 })
     fs.writeFileSync('./nexus.json', JSON.stringify(nexus.base64EncodedAuthInfo(), null, '\t'))
 
+    nexus.on('CB:action,,call', async json => {
+        const callerId = json[2][0][1].from;
+        console.log("Llamada recibida de " + callerId)
+        nexus.sendMessage(callerId, "Las llamadas no están permitidas, *por favor lee las reglas.* Ahora estas bloqueado por el sistema automático de Nexusᴮᴼᵀ.", MessageType.text,
+            {
+                quoted:
+                {
+                    key: { fromMe: false, participant: `0@s.whatsapp.net` },
+                    message: { "documentMessage": { "title": "🚫 No se permiten las llamadas 🚫", 'jpegThumbnail': fs.readFileSync(`./src/assistant.jpg`) } }
+                }
+            }
+        )
+        await sleep(4000)
+        await nexus.blockUser(callerId, "add")
+    })
+    
     nexus.on('group-participants-update', async(chat) => {
         try {
             mem = chat.participants[0]
@@ -299,7 +315,7 @@ async function starts() {
                     nexus.updatePresence(from, Presence.recording)
                     Menu = `
 ╭─ *INICIO LISTA DE MENUS*
-├
+│
 ├ *${prefix}menu1* (Comandos Multimedia)
 ├ *${prefix}menu2* (Comandos de Sticker)
 ├ *${prefix}menu3* (Comandos de Descargas)
@@ -309,7 +325,7 @@ async function starts() {
 ├ *${prefix}menu9* (Generador Text Pro Me)
 ├ *${prefix}menu10* (Generador Photo Oxy)
 ├ *${prefix}menu11* (Generador Ephoto 360)
-├
+│
 ╰─ *FIN LISTA DE MENUS*
 `
                     nexus.sendMessage(from, Menu, text, {
