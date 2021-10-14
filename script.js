@@ -2542,7 +2542,7 @@ async function starts() {
                         getBuffer(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`).then((gambar) => {
                             nexus.sendMessage(from, gambar, image, { quoted: nex })
                         })
-                    } catch (e) {
+                    } catch {
                         reply(`*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*`)
                     }
                 break
