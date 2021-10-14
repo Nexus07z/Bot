@@ -341,8 +341,7 @@ async function starts() {
                         break
                 case 'menu':
                 case 'comandos':
-                            const moment = require('moment-timezone')
-                            const horalima = moment.tz('America/Lima').format('HH:mm:ss')
+                            
                             whatsapp = '0@s.whatsapp.net'
                             let d = new Date
                             let locale = 'es'
