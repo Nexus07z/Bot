@@ -279,6 +279,23 @@ async function starts() {
                 })
             }
 
+            mess = {
+                wait: '*Espera un momento por favor...*',
+                success: '✔️ HECHO ✔️',
+                nsfw: `𝗟𝗼 𝘀𝗶𝗲𝗻𝘁𝗼 𝗽𝗲𝗿𝗼 𝗻𝗼 𝗽𝘂𝗲𝗱𝗼 𝗲𝗷𝗲𝗰𝘂𝘁𝗮𝗿 𝗲𝘀𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼, 𝗲𝘀𝘁𝗲 𝗴𝗿𝘂𝗽𝗼 𝗻𝗼 𝗽𝗲𝗿𝗺𝗶𝘁𝗲 𝗰𝗼𝗻𝘁𝗲𝗻𝗶𝗱𝗼 +𝟭𝟴\n*PARA ACTIVAR LOS COMANDOS +18, USA:* ${prefix}+18 1`,
+                error: '*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*',
+                only: {
+                    group: '[❗] ¡Este comando solo se puede usar en grupos! ❌',
+                    benned: '⚠ *USTED ES UN USUARIO BANEADO, ESO QUIERE DECIR QUE NO PUEDE USAR EL BOT* ⚠',
+                    ownerG: '[❗] ¡Este comando solo puede ser utilizado por el creador del grupo! ❌',
+                    ownerB: '[❗] ¡Este comando solo puede ser utilizado por el creador del bot! ❌',
+                    admin: '[❗] ¡Este comando solo puede ser utilizado por administradores del grupo! ❌',
+                    Badmin: '[❗] ¡Este comando solo se puede usar cuando el Bot es administrador! ❌',
+                    usrReg: `😊 Hola, ${timeFt}.\n*Yo soy Sam*, Asistente de *Nexus*.\n\nAl parecer no estas registrado en _*Nexusᴮᴼᵀ*_, Para registrarte usa el comando: *${prefix}reg*`
+                    
+                }
+            }
+
             switch (command) {
                 case 'help':
                     var punya_wa = "0@s.whatsapp.net"
@@ -2533,15 +2550,16 @@ async function starts() {
                 case 'harrypotter':
                 case 'watercolor':
                 case 'wonderfulgraffiti':
+                case 'xd':
 
-                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\nPor ejemplo: ${prefix + command} Nexus`)
+                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
                     try {
                         get_textprome = await getBuffer2(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`)
                         await nexus.sendMessage(from, get_textprome, image, { quoted: nex })
                         
                     } catch (e) {
-                        reply(`*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*`)
+                        reply(mess.error)
                     }
                 break
 
@@ -2556,21 +2574,19 @@ async function starts() {
                 case 'steel3d':
                 case 'wallgravity':
                 case 'coolgravity':
-                    case 'xdf':
-                
-      
+
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus|Bot*`)
                     a = args.join(' ')
                     txt1 = a.substring(0, a.indexOf('|') - 0)
                     txt2 = a.substring(a.lastIndexOf('|') + 1)
-                    if (!txt1) return reply(`*Falta el primer texto.*\n\n*Ejemplo: ${prefix + command} Nexus|Bot*`)
-                    if (!txt2) return reply(`*Falta el segundo texto.*\n\n*Ejemplo: ${prefix + command} Nexus|Bot*`)
+                    if (!txt1) return reply(`*Falta el primer texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
+                    if (!txt2) return reply(`*Falta el segundo texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
                     try {
                         get_textprome2 = await getBuffer2(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
                         nexus.sendMessage(from, get_textprome2, image, { quoted: nex })
                    
-                    } catch {
-                        reply(`*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*`)
+                    } catch (e) {
+                        reply(mess.error)
                     }
                 break
 
