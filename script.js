@@ -2539,7 +2539,7 @@ async function starts() {
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\nPor ejemplo: ${prefix + command} Nexus`)
                     ini_txt = args.join(" ")
                     try {
-                        getBuffer(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`).then((gambar) => {
+                        getBuffer2(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`).then((gambar) => {
                             nexus.sendMessage(from, gambar, image, { quoted: nex })
                         })
                     } catch {
