@@ -373,6 +373,73 @@ async function starts() {
                         }
                     })
                 break
+
+                case 'menu9':
+                    whatsapp = '0@s.whatsapp.net'
+                    nexus.updatePresence(from, Presence.recording)
+                    Menu9 = `
+╭───「 Text Pro Me 」
+├
+├──「 Crea imágenes con texto 」
+├
+├ • ${prefix}blackpink text
+├ • ${prefix}neon text
+├ • ${prefix}greenneon text
+├ • ${prefix}advanceglow text
+├ • ${prefix}futureneon text
+├ • ${prefix}sandwriting text
+├ • ${prefix}sandsummer text
+├ • ${prefix}sandengraved text
+├ • ${prefix}metaldark text
+├ • ${prefix}neonlight text
+├ • ${prefix}holographic text
+├ • ${prefix}text1917 text
+├ • ${prefix}minion text
+├ • ${prefix}deluxesilver text
+├ • ${prefix}newyearcard text
+├ • ${prefix}bloodfrosted text
+├ • ${prefix}halloween text
+├ • ${prefix}jokerlogo text
+├ • ${prefix}fireworksparkle text
+├ • ${prefix}natureleaves text
+├ • ${prefix}bokeh text
+├ • ${prefix}toxic text
+├ • ${prefix}strawberry text
+├ • ${prefix}box3d text
+├ • ${prefix}roadwarning text
+├ • ${prefix}breakwall text
+├ • ${prefix}icecold text
+├ • ${prefix}luxury text
+├ • ${prefix}cloud text
+├ • ${prefix}summersand text
+├ • ${prefix}horrorblood text
+├ • ${prefix}thunder text
+├ • ${prefix}pornhub text1 text2
+├ • ${prefix}glitch text1 text2
+├ • ${prefix}avenger text1 text2
+├ • ${prefix}space text1 text2
+├ • ${prefix}ninjalogo text1 text2
+├ • ${prefix}marvelstudio text1 text2
+├ • ${prefix}lionlogo text1 text2
+├ • ${prefix}wolflogo text1 text2
+├ • ${prefix}steel3d text1 text2
+├ • ${prefix}wallgravity text1 text2
+├
+╰───
+`
+                    nexus.sendMessage(from, Menu9, text, {
+                        quoted:
+                        {
+                            key: {
+                                fromMe: false,
+                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                            },
+                            message: {
+                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                            }
+                        }
+                    })
+                break
                 
                 case 'stickersinfondo':
                         
