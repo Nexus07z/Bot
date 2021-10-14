@@ -319,20 +319,20 @@ async function starts() {
                             nexus.updatePresence(from, Presence.recording)
                             uptime = process.uptime()
                                   Menu = `
-            ╭─ *INICIO LISTA DE MENUS*
-            ├
-            ├ *${prefix}menu1* (Comandos Multimedia)
-            ├ *${prefix}menu2* (Comandos de Sticker)
-            ├ *${prefix}menu3* (Comandos de Descargas)
-            ├ *${prefix}menu4* (Comandos Convertidor)
-            ├ *${prefix}menu5* (Comandos Creaciones)
-            ├ *${prefix}menu6* (Comandos Entretenimiento)
-            ├ *${prefix}menu7* (Comandos Información)
-            ├ *${prefix}menu8* (Comandos Audios)
-            ├ *${prefix}menu9* (Comandos Otros)
-            ├
-            ╰─ *FIN LISTA DE MENUS*
-            `
+╭─ *INICIO LISTA DE MENUS*
+├
+├ *${prefix}menu1* (Comandos Multimedia)
+├ *${prefix}menu2* (Comandos de Sticker)
+├ *${prefix}menu3* (Comandos de Descargas)
+├ *${prefix}menu4* (Comandos Convertidor)
+├ *${prefix}menu5* (Comandos Creaciones)
+├ *${prefix}menu6* (Comandos Entretenimiento)
+├ *${prefix}menu7* (Comandos Información)
+├ *${prefix}menu8* (Comandos Audios)
+├ *${prefix}menu9* (Comandos Otros)
+├
+╰─ *FIN LISTA DE MENUS*
+`
                             nexus.sendMessage(from, assistant, image, {
                                 quoted: nex,
                                 caption: Menu, 
