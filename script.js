@@ -2533,6 +2533,8 @@ async function starts() {
                 case 'harrypotter':
                 case 'watercolor':
                 case 'wonderfulgraffiti':
+                case 'xd':
+                    
     
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n Por ejemplo: ${prefix + command} Nexus`)
                     ini_txt = args.join(" ")
