@@ -2821,8 +2821,7 @@ async function starts() {
 
                 default:
                     if (isCmd) {
-                        reply(`Lo siento, el comando *${prefix}${command}* no se encuentra en la programación.\n\n
-                        Utiliza el comando *${prefix}menu* para ver la lista de comandos.`)
+                        reply(`Lo siento, el comando *${prefix}${command}* no se encuentra en la programación.\n\nUtiliza el comando *${prefix}menu* para ver la lista de comandos.`)
                     }
                     if (!isGroup && !isCmd && !kuis) {
                         await nexus.updatePresence(from, Presence.composing)
