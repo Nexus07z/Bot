@@ -342,8 +342,8 @@ async function starts() {
                                     },
                                     message: {
                                         "documentMessage": { "title": "Sam | Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
-                                    }
-                                },thumbnail: assistant
+                                    },thumbnail: assistant
+                                }
                             })
                 break
                 
