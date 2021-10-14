@@ -72,22 +72,38 @@ async function starts() {
             if (chat.action == 'add') {
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
-                ini_img = await getBuffer(`https://api.lolhuman.xyz/api/base/welcome?apikey=${apikey}&img1=${pp_user}&img2=${pp_group}&background=https://i.ibb.co/8B6Q84n/LTqHsfYS.jpg&username=${ini_user.notify}&member=${group_info.participants.length}&groupname= ${group_info.subject}`)
-                welkam = `${ini_user.notify}, Welkam to ${group_info.subject}`
+                ini_img = await getBuffer(`./src/assistant.jpg`)
+                welkam = `${ini_user.notify}, bienvenido al grupo ${group_info.subject}.\n\nPara ver todos los comandos de Nexusᴮᴼᵀ escribe el siguiente comando: *${prefix}menu*`
                 await nexus.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welkam })
             }
-            if (chat.action == 'remove') {
-                ini_user = nexus.contacts[mem]
-                group_info = await nexus.groupMetadata(chat.jid)
-                ini_img = await getBuffer(`https://api.lolhuman.xyz/api/base/leave?apikey=${apikey}&img1=${pp_user}&img2=${pp_group}&background=https://i.ibb.co/8B6Q84n/LTqHsfYS.jpg&username=${ini_user.notify}&member=${group_info.participants.length}&groupname= ${group_info.subject}`)
-                ini_out = `${ini_user.notify}, Sayonara 👋`
-                await nexus.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welkam })
-            }
+            
         } catch (e) {
             console.log('Error :', e)
         }
     })
-
+    assistant = fs.readFileSync('./src/assistant.jpg')
+    nexus.updatePresence(from, Presence.recording)
+    uptime = process.uptime()
+            menunexus = `
+╭─ *INICIO LISTA DE MENUS*
+├
+├ *${prefix}menu1* (Comandos Multimedia)
+├ *${prefix}menu2* (Comandos de Sticker)
+├ *${prefix}menu3* (Comandos de Descargas)
+├ *${prefix}menu4* (Comandos Convertidor)
+├ *${prefix}menu5* (Comandos Creaciones)
+├ *${prefix}menu6* (Comandos Entretenimiento)
+├ *${prefix}menu7* (Comandos Información)
+├ *${prefix}menu8* (Comandos Audios)
+├ *${prefix}menu9* (Comandos Otros)
+├
+╰─ *FIN LISTA DE MENUS*
+`
+                    nexus.sendMessage(from, assistant, image, {
+                        quoted: nex,
+                        caption: menunexus, 
+                        thumbnail: assistant
+                    })
     nexus.on('chat-update', async(nex) => {
         try {
             const time = moment.tz('Asia/Jakarta').format('HH:mm:ss')
@@ -297,66 +313,7 @@ async function starts() {
             }
 
             switch (command) {
-                case 'help':
-                    var punya_wa = "0@s.whatsapp.net"
-                    var ini_text = "api.lolhuman.xyz"
-                    var ini_buffer = await getBuffer("https://i.ibb.co/JdfQ73m/photo-2021-02-05-10-13-39.jpg")
-                    const ini_csreply = {
-                        contextInfo: {
-                            stanzaId: 'B826873620DD5947E683E3ABE663F263',
-                            participant: punya_wa,
-                            remoteJid: 'status@broadcast',
-                            quotedMessage: {
-                                imageMessage: {
-                                    caption: ini_text,
-                                    jpegThumbnail: ini_buffer
-                                }
-                            }
-                        }
-                    }
-                    await nexus.sendMessage(from, help(prefix), text, ini_csreply)
-                    break
-                case 'nexus':
-
-                    const moment = require('moment-timezone')
-                    const horalima = moment.tz('America/Lima').format('HH:mm:ss')
-                    whatsapp = '0@s.whatsapp.net'
-                    let d = new Date
-                    let locale = 'es'
-                    let gmt = new Date(0).getTime() - new Date('1 Januari 2021').getTime()
-                    let weton = ['domingo', 'lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'][Math.floor(((d * 1) + gmt) / 84600000) % 7]
-                    let week = d.toLocaleDateString(locale, { weekday: 'long' })
-                    let calender = d.toLocaleDateString(locale, {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                    })
-                    var num = nexus.participant
-                    assistant = fs.readFileSync('./src/assistant.jpg')
-                    nexus.updatePresence(from, Presence.recording)
-                    uptime = process.uptime()
-                            menunexus = `
-        ╭─ *INICIO LISTA DE MENUS*
-        ├
-        ├ *${prefix}menu1* (Comandos Multimedia)
-        ├ *${prefix}menu2* (Comandos de Sticker)
-        ├ *${prefix}menu3* (Comandos de Descargas)
-        ├ *${prefix}menu4* (Comandos Convertidor)
-        ├ *${prefix}menu5* (Comandos Creaciones)
-        ├ *${prefix}menu6* (Comandos Entretenimiento)
-        ├ *${prefix}menu7* (Comandos Información)
-        ├ *${prefix}menu8* (Comandos Audios)
-        ├ *${prefix}menu9* (Comandos Otros)
-        ├
-        ╰─ *FIN LISTA DE MENUS*
-        `
-                                    nexus.sendMessage(from, assistant, image, {
-                                        quoted: nex,
-                                        caption: menunexus, 
-                                        thumbnail: assistant
-                                    })
-                        break
-
+               
                 case 'menu':
                 case 'ayuda':
                 case 'comandos':
@@ -468,7 +425,7 @@ async function starts() {
                     whatsapp = '0@s.whatsapp.net'
                     nexus.updatePresence(from, Presence.recording)
                     Menu10 = `
-╭───「 Photo Oxy 」
+╭───「 *Photo Oxy* 」
 │
 ├「 *Crea imágenes con texto* 」
 │
@@ -520,7 +477,7 @@ async function starts() {
                     whatsapp = '0@s.whatsapp.net'
                     nexus.updatePresence(from, Presence.recording)
                     Menu11 = `
-╭───「 Ephoto 360 」
+╭───「 *Ephoto 360* 」
 │
 ├「 *Crea imágenes con texto* 」
 │
