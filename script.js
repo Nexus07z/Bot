@@ -333,16 +333,10 @@ async function starts() {
             ├
             ╰─ *FIN LISTA DE MENUS*
             `
-                            nexus.sendMessage(from, assistant, text, {
+                            nexus.sendMessage(from, assistant, image, {
                                 quoted:
                                 {
-                                    key: {
-                                        fromMe: false,
-                                        participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
-                                    },
-                                    message: {
-                                        "documentMessage": { "title": "Sam | Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
-                                    }
+                                    nex
                                 },
                                 caption: Menu, 
                                 thumbnail: assistant
