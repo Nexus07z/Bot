@@ -339,15 +339,13 @@ async function starts() {
                                         thumbnail: assistant
                                     })
                         break
+
                 case 'menu':
+                case 'ayuda':
                 case 'comandos':
-                            
-                            whatsapp = '0@s.whatsapp.net'
-                            
-                            var num = nexus.participant
-                            nexus.updatePresence(from, Presence.recording)
-                            uptime = process.uptime()
-                                  Menu = `
+                    whatsapp = '0@s.whatsapp.net'
+                    nexus.updatePresence(from, Presence.recording)
+                    Menu = `
 ╭─ *INICIO LISTA DE MENUS*
 ├
 ├ *${prefix}menu1* (Comandos Multimedia)
@@ -362,18 +360,18 @@ async function starts() {
 ├
 ╰─ *FIN LISTA DE MENUS*
 `
-                            nexus.sendMessage(from, Menu, text, {
-                                quoted:
-                                {
-                                    key: {
-                                        fromMe: false,
-                                        participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
-                                    },
-                                    message: {
-                                        "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
-                                    }
-                                }
-                            })
+                    nexus.sendMessage(from, Menu, text, {
+                        quoted:
+                        {
+                            key: {
+                                fromMe: false,
+                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                            },
+                            message: {
+                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                            }
+                        }
+                    })
                 break
                 
                 case 'stickersinfondo':
