@@ -14,7 +14,7 @@ const ffmpeg = require('fluent-ffmpeg')
 
 const { apikey, apikeyvh, apiimgbb, prefix, owner } = JSON.parse(fs.readFileSync('./config.json'))
 
-const { fetchJson, getBuffer } = require('./lib/fetcher')
+const { fetchJson, getBuffer, getBuffer2 } = require('./lib/fetcher')
 const { color } = require('./lib/color')
 const { exec } = require("child_process")
 const { getRandom } = require('./lib/function')
