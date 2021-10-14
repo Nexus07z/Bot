@@ -2550,7 +2550,6 @@ async function starts() {
                 case 'harrypotter':
                 case 'watercolor':
                 case 'wonderfulgraffiti':
-                case 'xd':
 
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
@@ -2681,7 +2680,8 @@ async function starts() {
                     break
                 default:
                     if (isCmd) {
-                        reply(`Sorry bro, command *${prefix}${command}* gk ada di list *${prefix}help*`)
+                        reply(`Lo siento, el comando *${prefix}${command}* no se encuentra en la programación.\n\n
+                        Utiliza el comando *${prefix}menu* para ver la lista de comandos.`)
                     }
                     if (!isGroup && !isCmd && !kuis) {
                         await nexus.updatePresence(from, Presence.composing)
