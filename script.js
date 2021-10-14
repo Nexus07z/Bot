@@ -2536,12 +2536,15 @@ async function starts() {
                 case 'xd':
                     
     
-                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n Por ejemplo: ${prefix + command} Nexus`)
+                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\nPor ejemplo: ${prefix + command} Nexus`)
                     ini_txt = args.join(" ")
-                    getBuffer(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`).then((gambar) => {
-                        nexus.sendMessage(from, gambar, image, { quoted: nex })
-                    })
-
+                    try {
+                        getBuffer(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`).then((gambar) => {
+                            nexus.sendMessage(from, gambar, image, { quoted: nex })
+                        })
+                    } catch {
+                        reply(`*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*`)
+                    }
                 break
 
                 case 'pornhub':
@@ -2556,7 +2559,7 @@ async function starts() {
                 case 'wallgravity':
                 case 'coolgravity':
 
-                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n Por ejemplo: ${prefix + command} Nexus Bot`)
+                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\nPor ejemplo: ${prefix + command} Nexus Bot`)
                     txt1 = args[0]
                     txt2 = args[1]
                     getBuffer(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`).then((gambar) => {
