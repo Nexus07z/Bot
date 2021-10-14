@@ -2533,7 +2533,7 @@ async function starts() {
                 case 'harrypotter':
                 case 'watercolor':
                 case 'wonderfulgraffiti':
-                case 'xd':
+                case 'etpm1':
                     
     
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\nPor ejemplo: ${prefix + command} Nexus`)
@@ -2558,14 +2558,19 @@ async function starts() {
                 case 'steel3d':
                 case 'wallgravity':
                 case 'coolgravity':
+                case 'etpm2':
+                
 
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\nPor ejemplo: ${prefix + command} Nexus Bot`)
                     txt1 = args[0]
                     txt2 = args[1]
-                    getBuffer(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`).then((gambar) => {
-                        nexus.sendMessage(from, gambar, image, { quoted: nex })
-                    })
-                
+                    try {
+                        get_textprome2 = await getBuffer2(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
+                        nexus.sendMessage(from, get_textprome2, image, { quoted: nex })
+                   
+                    } catch (e) {
+                        reply(`*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*`)
+                    }
                 break
 
                 case 'end':
