@@ -36,21 +36,21 @@ async function starts() {
     const nexus = new WAConnection()
     nexus.logger.level = 'warn'
     nexus.on('qr', () => {
-        const time_connecting = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+        const time_connecting = moment.tz('America/Lima').format('HH:mm:ss')
         console.log(color(time_connecting, "white"), color("[  STATS  ]", "aqua"), "Scan QR Code with WhatsApp")
     })
     fs.existsSync('./nexus.json') && nexus.loadAuthInfo('./nexus.json')
     if (apikey == "") {
-        ini_time = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+        ini_time = moment.tz('America/Lima').format('HH:mm:ss')
         console.log(color(ini_time, "white"), color("[  ERROR  ]", "aqua"), color("Apikey is empty, please check at config.json", 'red'))
         exit()
     }
     nexus.on('connecting', () => {
-        const time_connecting = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+        const time_connecting = moment.tz('America/Lima').format('HH:mm:ss')
         console.log(color(time_connecting, "white"), color("[  STATS  ]", "aqua"), "Connecting...")
     })
     nexus.on('open', () => {
-        const time_connect = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+        const time_connect = moment.tz('America/Lima').format('HH:mm:ss')
         console.log(color(time_connect, "white"), color("[  STATS  ]", "aqua"), "Connected")
     })
     await nexus.connect({ timeoutMs: 30 * 1000 })
@@ -100,7 +100,7 @@ async function starts() {
     
     nexus.on('chat-update', async(nex) => {
         try {
-            const time = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+            const time = moment.tz('America/Lima').format('HH:mm:ss')
             if (!nex.hasNewMessage) return
             nex = JSON.parse(JSON.stringify(nex)).messages[0]
             if (!nex.message) return
@@ -2783,7 +2783,7 @@ async function starts() {
         } catch (e) {
             e = String(e)
             if (!e.includes("this.isZero")) {
-                const time_error = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+                const time_error = moment.tz('America/Lima').format('HH:mm:ss')
                 console.log(color(time_error, "white"), color("[  ERROR  ]", "aqua"), color(e, 'red'))
             }
         }
