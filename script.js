@@ -463,6 +463,123 @@ async function starts() {
                         }
                     })
                 break
+
+                case 'menu10':
+                    whatsapp = '0@s.whatsapp.net'
+                    nexus.updatePresence(from, Presence.recording)
+                    Menu10 = `
+╭───「 Photo Oxy 」
+│
+├「 *Crea imágenes con texto* 」
+│
+├ *${prefix}burnpaper* [texto]
+├ *${prefix}carvedwood* [texto]
+├ *${prefix}coffe* [texto]
+├ *${prefix}cup* [texto]
+├ *${prefix}cup1* [texto]
+├ *${prefix}fallleaves* [texto]
+├ *${prefix}flamming* [texto]
+├ *${prefix}golderrose* [texto]
+├ *${prefix}harrypotter* [texto]
+├ *${prefix}love* [texto]
+├ *${prefix}lovemessage* [texto]
+├ *${prefix}nature3d* [texto]
+├ *${prefix}romance* [texto]
+├ *${prefix}shadow* [texto]
+├ *${prefix}smoke* [texto]
+├ *${prefix}summer3d* [texto]
+├ *${prefix}summernature* [texto]
+├ *${prefix}undergrass* [texto]
+├ *${prefix}underwater* [texto]
+├ *${prefix}woodenboard* [texto]
+├ *${prefix}woodheart* [texto]
+├ *${prefix}wolfmetal* [texto]
+│
+├ *${prefix}arcade8bit* [Texto1|Texto2]
+├ *${prefix}battlefield4* [Texto1|Texto2]
+├ *${prefix}pubg* [Texto1|Texto2]
+├ *${prefix}tiktok* [Texto1|Texto2]
+│
+╰───
+`
+                    nexus.sendMessage(from, Menu10, text, {
+                        quoted:
+                        {
+                            key: {
+                                fromMe: false,
+                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                            },
+                            message: {
+                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                            }
+                        }
+                    })
+                break
+
+                case 'menu11':
+                    whatsapp = '0@s.whatsapp.net'
+                    nexus.updatePresence(from, Presence.recording)
+                    Menu11 = `
+╭───「 Ephoto 360 」
+│
+├「 *Crea imágenes con texto* 」
+│
+├ *${prefix}anonymhacker* [texto]
+├ *${prefix}aovwall* [texto]
+├ *${prefix}avatardota* [texto]
+├ *${prefix}avatarlolnew* [texto]
+├ *${prefix}beautifulflower* [texto]
+├ *${prefix}birthdaycake* [texto]
+├ *${prefix}birthdayday* [texto]
+├ *${prefix}cartoongravity* [texto]
+├ *${prefix}fpslogo* [texto]
+├ *${prefix}freefire* [texto]
+├ *${prefix}galaxybat* [texto]
+├ *${prefix}galaxystyle* [texto]
+├ *${prefix}galaxywallpaper* [texto]
+├ *${prefix}glittergold* [texto]
+├ *${prefix}glossychrome* [texto]
+├ *${prefix}goldplaybutton* [texto]
+├ *${prefix}greenbush* [texto]
+├ *${prefix}greenneon* [texto]
+├ *${prefix}heartshaped* [texto]
+├ *${prefix}hologram3d* [texto]
+├ *${prefix}lighttext* [texto]
+├ *${prefix}logogaming* [texto]
+├ *${prefix}lolbanner* [texto]
+├ *${prefix}luxurygold* [texto]
+├ *${prefix}metallogo* [texto]
+├ *${prefix}mlwall* [texto]
+├ *${prefix}multicolor3d* [texto]
+├ *${prefix}noeltext* [texto]
+├ *${prefix}pubgmaskot* [texto]
+├ *${prefix}puppycute* [texto]
+├ *${prefix}royaltext* [texto]
+├ *${prefix}silverplaybutton* [texto]
+├ *${prefix}snow3d* [texto]
+├ *${prefix}starsnight* [texto]
+├ *${prefix}textbyname* [texto]
+├ *${prefix}textcake* [texto]
+├ *${prefix}watercolor* [texto]
+├ *${prefix}wetglass* [texto]
+├ *${prefix}wooden3d* [texto]
+├ *${prefix}writegalacy* [texto]
+│
+╰───
+`
+                    nexus.sendMessage(from, Menu11, text, {
+                        quoted:
+                        {
+                            key: {
+                                fromMe: false,
+                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                            },
+                            message: {
+                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                            }
+                        }
+                    })
+                break
                 
                 case 'stickersinfondo':
                         
@@ -2560,6 +2677,7 @@ async function starts() {
                     } catch (e) {
                         reply(mess.error)
                     }
+
                 break
 
                 case 'pornhub':
@@ -2587,18 +2705,10 @@ async function starts() {
                     } catch (e) {
                         reply(mess.error)
                     }
-                break
-
-                case 'end':
-    
-                    ini_txt = args.join(" ")
-                    getBuffer(``).then((gambar) => {
-                        nexus.sendMessage(from, gambar, image, { quoted: nex })
-                    })
 
                 break
 
-                    // Photo Oxy //
+                // Photo Oxy //
                 case 'shadow':
                 case 'cup':
                 case 'cup1':
@@ -2617,31 +2727,45 @@ async function starts() {
                 case 'underwater':
                 case 'golderrose':
                 case 'summernature':
-                case 'letterleaves':
-                case 'glowingneon':
                 case 'fallleaves':
-                case 'flamming':
+                case 'flamming': 
                 case 'harrypotter':
                 case 'carvedwood':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
+                    
+                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
-                    getBuffer(`https://api.lolhuman.xyz/api/photooxy1/${command}?apikey=${apikey}&text=${ini_txt}`).then((gambar) => {
-                        nexus.sendMessage(from, gambar, image, { quoted: nex })
-                    })
-                    break
+                    try {
+                        get_photooxy = await getBuffer2(`https://api.lolhuman.xyz/api/photooxy1/${command}?apikey=${apikey}&text=${ini_txt}`)
+                        await nexus.sendMessage(from, get_photooxy, image, { quoted: nex })
+                        
+                    } catch (e) {
+                        reply(mess.error)
+                    }
+ 
+                break
+
                 case 'tiktok':
                 case 'arcade8bit':
                 case 'battlefield4':
                 case 'pubg':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
-                    txt1 = args[0]
-                    txt2 = args[1]
-                    getBuffer(`https://api.lolhuman.xyz/api/photooxy2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`).then((gambar) => {
-                        nexus.sendMessage(from, gambar, image, { quoted: nex })
-                    })
-                    break
 
-                    // Ephoto 360 //
+                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus|Bot*`)
+                    a = args.join(' ')
+                    txt1 = a.substring(0, a.indexOf('|') - 0)
+                    txt2 = a.substring(a.lastIndexOf('|') + 1)
+                    if (!txt1) return reply(`*Falta el primer texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
+                    if (!txt2) return reply(`*Falta el segundo texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
+                    try {
+                        get_photooxy2 = await getBuffer2(`https://api.lolhuman.xyz/api/photooxy2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
+                        nexus.sendMessage(from, get_photooxy2, image, { quoted: nex })
+                   
+                    } catch (e) {
+                        reply(mess.error)
+                    }
+
+                break
+
+                // Ephoto 360 //
                 case 'wetglass':
                 case 'multicolor3d':
                 case 'watercolor':
@@ -2672,12 +2796,29 @@ async function starts() {
                 case 'goldplaybutton':
                 case 'silverplaybutton':
                 case 'freefire':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
+                case 'cartoongravity':
+                case 'anonymhacker':
+                case 'mlwall':
+                case 'pubgmaskot':
+                case 'aovwall':
+                case 'logogaming':
+                case 'fpslogo':
+                case 'avatarlolnew':
+                case 'lolbanner':
+                case 'avatardota':
+
+                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
-                    getBuffer(`https://api.lolhuman.xyz/api/ephoto1/${command}?apikey=${apikey}&text=${ini_txt}`).then((gambar) => {
-                        nexus.sendMessage(from, gambar, image, { quoted: nex })
-                    })
-                    break
+                    try {
+                        get_ephoto360 = await getBuffer2(`https://api.lolhuman.xyz/api/ephoto1/${command}?apikey=${apikey}&text=${ini_txt}`)
+                        await nexus.sendMessage(from, get_ephoto360, image, { quoted: nex })
+                        
+                    } catch (e) {
+                        reply(mess.error)
+                    }
+                    
+                break
+
                 default:
                     if (isCmd) {
                         reply(`Lo siento, el comando *${prefix}${command}* no se encuentra en la programación.\n\n
