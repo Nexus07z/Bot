@@ -33,115 +33,115 @@ async function sleep(ms) {
 }
 
 async function starts() {
-    const lolhuman = new WAConnection()
-    lolhuman.logger.level = 'warn'
-    lolhuman.on('qr', () => {
+    const nexus = new WAConnection()
+    nexus.logger.level = 'warn'
+    nexus.on('qr', () => {
         const time_connecting = moment.tz('Asia/Jakarta').format('HH:mm:ss')
         console.log(color(time_connecting, "white"), color("[  STATS  ]", "aqua"), "Scan QR Code with WhatsApp")
     })
-    fs.existsSync('./lolhuman.json') && lolhuman.loadAuthInfo('./lolhuman.json')
+    fs.existsSync('./nexus.json') && lolhuman.loadAuthInfo('./nexus.json')
     if (apikey == "") {
         ini_time = moment.tz('Asia/Jakarta').format('HH:mm:ss')
         console.log(color(ini_time, "white"), color("[  ERROR  ]", "aqua"), color("Apikey is empty, please check at config.json", 'red'))
         exit()
     }
-    lolhuman.on('connecting', () => {
+    nexus.on('connecting', () => {
         const time_connecting = moment.tz('Asia/Jakarta').format('HH:mm:ss')
         console.log(color(time_connecting, "white"), color("[  STATS  ]", "aqua"), "Connecting...")
     })
-    lolhuman.on('open', () => {
+    nexus.on('open', () => {
         const time_connect = moment.tz('Asia/Jakarta').format('HH:mm:ss')
         console.log(color(time_connect, "white"), color("[  STATS  ]", "aqua"), "Connected")
     })
-    await lolhuman.connect({ timeoutMs: 30 * 1000 })
-    fs.writeFileSync('./lolhuman.json', JSON.stringify(lolhuman.base64EncodedAuthInfo(), null, '\t'))
+    await nexus.connect({ timeoutMs: 30 * 1000 })
+    fs.writeFileSync('./nexus.json', JSON.stringify(nexus.base64EncodedAuthInfo(), null, '\t'))
 
-    lolhuman.on('group-participants-update', async(chat) => {
+    nexus.on('group-participants-update', async(chat) => {
         try {
             mem = chat.participants[0]
             try {
-                var pp_user = await lolhuman.getProfilePicture(mem)
+                var pp_user = await nexus.getProfilePicture(mem)
             } catch (e) {
                 var pp_user = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
             }
             try {
-                var pp_group = await lolhuman.getProfilePicture(chat.jid)
+                var pp_group = await nexus.getProfilePicture(chat.jid)
             } catch (e) {
                 var pp_group = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
             }
             if (chat.action == 'add') {
-                ini_user = lolhuman.contacts[mem]
-                group_info = await lolhuman.groupMetadata(chat.jid)
+                ini_user = nexus.contacts[mem]
+                group_info = await nexus.groupMetadata(chat.jid)
                 ini_img = await getBuffer(`https://api.lolhuman.xyz/api/base/welcome?apikey=${apikey}&img1=${pp_user}&img2=${pp_group}&background=https://i.ibb.co/8B6Q84n/LTqHsfYS.jpg&username=${ini_user.notify}&member=${group_info.participants.length}&groupname= ${group_info.subject}`)
                 welkam = `${ini_user.notify}, Welkam to ${group_info.subject}`
-                await lolhuman.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welkam })
+                await nexus.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welkam })
             }
             if (chat.action == 'remove') {
-                ini_user = lolhuman.contacts[mem]
-                group_info = await lolhuman.groupMetadata(chat.jid)
+                ini_user = nexus.contacts[mem]
+                group_info = await nexus.groupMetadata(chat.jid)
                 ini_img = await getBuffer(`https://api.lolhuman.xyz/api/base/leave?apikey=${apikey}&img1=${pp_user}&img2=${pp_group}&background=https://i.ibb.co/8B6Q84n/LTqHsfYS.jpg&username=${ini_user.notify}&member=${group_info.participants.length}&groupname= ${group_info.subject}`)
                 ini_out = `${ini_user.notify}, Sayonara 👋`
-                await lolhuman.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welkam })
+                await nexus.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welkam })
             }
         } catch (e) {
             console.log('Error :', e)
         }
     })
 
-    lolhuman.on('chat-update', async(lol) => {
+    nexus.on('chat-update', async(nex) => {
         try {
             const time = moment.tz('Asia/Jakarta').format('HH:mm:ss')
-            if (!lol.hasNewMessage) return
-            lol = JSON.parse(JSON.stringify(lol)).messages[0]
-            if (!lol.message) return
-            if (lol.key && lol.key.remoteJid == 'status@broadcast') return
-            if (lol.key.fromMe) return
+            if (!nex.hasNewMessage) return
+            nex = JSON.parse(JSON.stringify(nex)).messages[0]
+            if (!nex.message) return
+            if (nex.key && nex.key.remoteJid == 'status@broadcast') return
+            if (nex.key.fromMe) return
             global.prefix
-            const content = JSON.stringify(lol.message)
-            const from = lol.key.remoteJid
-            const type = Object.keys(lol.message)[0]
+            const content = JSON.stringify(nex.message)
+            const from = nex.key.remoteJid
+            const type = Object.keys(nex.message)[0]
             const insom = from.endsWith('@g.us')
-            const nameReq = insom ? lol.participant : lol.key.remoteJid
-            pushname2 = lolhuman.contacts[nameReq] != undefined ? lolhuman.contacts[nameReq].vname || lolhuman.contacts[nameReq].notify : undefined
+            const nameReq = insom ? nex.participant : nex.key.remoteJid
+            pushname2 = nexus.contacts[nameReq] != undefined ? nexus.contacts[nameReq].vname || nexus.contacts[nameReq].notify : undefined
 
             const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 
-            body = (type === 'conversation' && lol.message.conversation.startsWith(prefix)) ? lol.message.conversation : (type == 'imageMessage') && lol.message.imageMessage.caption.startsWith(prefix) ? lol.message.imageMessage.caption : (type == 'videoMessage') && lol.message.videoMessage.caption.startsWith(prefix) ? lol.message.videoMessage.caption : (type == 'extendedTextMessage') && lol.message.extendedTextMessage.text.startsWith(prefix) ? lol.message.extendedTextMessage.text : ''
-            budy = (type === 'conversation') ? lol.message.conversation : (type === 'extendedTextMessage') ? lol.message.extendedTextMessage.text : ''
-            var Link = (type === 'conversation' && lol.message.conversation) ? lol.message.conversation : (type == 'imageMessage') && lol.message.imageMessage.caption ? lol.message.imageMessage.caption : (type == 'videoMessage') && lol.message.videoMessage.caption ? lol.message.videoMessage.caption : (type == 'extendedTextMessage') && lol.message.extendedTextMessage.text ? lol.message.extendedTextMessage.text : ''
+            body = (type === 'conversation' && nex.message.conversation.startsWith(prefix)) ? nex.message.conversation : (type == 'imageMessage') && nex.message.imageMessage.caption.startsWith(prefix) ? nex.message.imageMessage.caption : (type == 'videoMessage') && nex.message.videoMessage.caption.startsWith(prefix) ? nex.message.videoMessage.caption : (type == 'extendedTextMessage') && nex.message.extendedTextMessage.text.startsWith(prefix) ? nex.message.extendedTextMessage.text : ''
+            budy = (type === 'conversation') ? nex.message.conversation : (type === 'extendedTextMessage') ? nex.message.extendedTextMessage.text : ''
+            var Link = (type === 'conversation' && nex.message.conversation) ? nex.message.conversation : (type == 'imageMessage') && nex.message.imageMessage.caption ? nex.message.imageMessage.caption : (type == 'videoMessage') && nex.message.videoMessage.caption ? nex.message.videoMessage.caption : (type == 'extendedTextMessage') && nex.message.extendedTextMessage.text ? nex.message.extendedTextMessage.text : ''
             const messagesLink = Link.slice(0).trim().split(/ +/).shift().toLowerCase()
             const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
             const args = body.trim().split(/ +/).slice(1)
             const isCmd = body.startsWith(prefix)
-            lolhuman.chatRead(from)
+            nexus.chatRead(from)
 
-            const mentionByTag = type == "extendedTextMessage" && lol.message.extendedTextMessage.contextInfo != null ? lol.message.extendedTextMessage.contextInfo.mentionedJid : []
-            const mentionByReply = type == "extendedTextMessage" && lol.message.extendedTextMessage.contextInfo != null ? lol.message.extendedTextMessage.contextInfo.participant || "" : ""
+            const mentionByTag = type == "extendedTextMessage" && nex.message.extendedTextMessage.contextInfo != null ? nex.message.extendedTextMessage.contextInfo.mentionedJid : []
+            const mentionByReply = type == "extendedTextMessage" && nex.message.extendedTextMessage.contextInfo != null ? nex.message.extendedTextMessage.contextInfo.participant || "" : ""
             const mention = typeof(mentionByTag) == 'string' ? [mentionByTag] : mentionByTag
             mention != undefined ? mention.push(mentionByReply) : []
             const mentionUser = mention != undefined ? mention.filter(n => n) : []
 
-            const botNumber = lolhuman.user.jid
+            const botNumber = nexus.user.jid
             const isGroup = from.endsWith('@g.us')
-            const sender = isGroup ? lol.participant : lol.key.remoteJid
-            const groupMetadata = isGroup ? await lolhuman.groupMetadata(from) : ''
+            const sender = isGroup ? nex.participant : nex.key.remoteJid
+            const groupMetadata = isGroup ? await nexus.groupMetadata(from) : ''
             const groupName = isGroup ? groupMetadata.subject : ''
-            const totalchat = lolhuman.chats.all()
+            const totalchat = nexus.chats.all()
 
             const isUrl = (ini_url) => {
                 return ini_url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/, 'gi'))
             }
             const reply = (teks) => {
-                lolhuman.sendMessage(from, teks, text, { quoted: lol })
+                nexus.sendMessage(from, teks, text, { quoted: nex })
             }
             const sendMess = (hehe, teks) => {
-                lolhuman.sendMessage(hehe, teks, text)
+                nexus.sendMessage(hehe, teks, text)
             }
             const costum = (pesan, tipe, target, target2) => {
-                lolhuman.sendMessage(from, pesan, tipe, { quoted: { key: { fromMe: false, participant: `${target}`, ...(from ? { remoteJid: from } : {}) }, message: { conversation: `${target2}` } } })
+                nexus.sendMessage(from, pesan, tipe, { quoted: { key: { fromMe: false, participant: `${target}`, ...(from ? { remoteJid: from } : {}) }, message: { conversation: `${target2}` } } })
             }
             const mentions = (teks, memberr, id) => {
-                (id == null || id == undefined || id == false) ? lolhuman.sendMessage(from, teks.trim(), extendedText, { contextInfo: { "mentionedJid": memberr } }): lolhuman.sendMessage(from, teks.trim(), extendedText, { quoted: lol, contextInfo: { "mentionedJid": memberr } })
+                (id == null || id == undefined || id == false) ? nexus.sendMessage(from, teks.trim(), extendedText, { contextInfo: { "mentionedJid": memberr } }): nexus.sendMessage(from, teks.trim(), extendedText, { quoted: nex, contextInfo: { "mentionedJid": memberr } })
             }
             async function faketoko(teks, url_image, title, code, price) {
                 var punya_wa = "0@s.whatsapp.net"
@@ -166,7 +166,7 @@ async function starts() {
                         }
                     }
                 }
-                await lolhuman.sendMessage(from, teks, text, ini_cstoko)
+                await nexus.sendMessage(from, teks, text, ini_cstoko)
             }
 
             colors = ['red', 'white', 'black', 'blue', 'yellow', 'green', 'aqua']
@@ -218,7 +218,7 @@ async function starts() {
                 userAnswer = budy.toLowerCase()
                 if (userAnswer.startsWith(jawaban[jawaban.length - 1])) {
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/sambungkata?apikey=${apikey}&text=${userAnswer}`)
-                    await lolhuman.sendMessage(from, get_result.result, text, { quoted: lol }).then(() => {
+                    await nexus.sendMessage(from, get_result.result, text, { quoted: nex }).then(() => {
                         sambungkata[sender.split('@')[0]] = get_result.result.toLowerCase()
                         fs.writeFileSync("./database/sambungkata.json", JSON.stringify(sambungkata))
                     })
@@ -243,7 +243,7 @@ async function starts() {
                     var ini_image = await getBuffer(ini_image)
                     ini_txt = `${ini_name} - ${description}\n\n`
                     ini_txt += "Sekian dan terima kasih"
-                    await lolhuman.sendMessage(from, ini_image, image, { quoted: lol, caption: ini_txt }).then(() => {
+                    await nexus.sendMessage(from, ini_image, image, { quoted: nex, caption: ini_txt }).then(() => {
                         delete akinator[sender.split('@')[0]]
                         fs.writeFileSync("./database/akinator.json", JSON.stringify(akinator))
                     })
@@ -270,7 +270,7 @@ async function starts() {
                     ini_txt += "4 - Mungkin Tidak"
                     ini_txt += "5 - Kembali ke Pertanyaan Sebelumnya"
                 }
-                await lolhuman.sendMessage(from, ini_txt, text, { quoted: lol }).then(() => {
+                await nexus.sendMessage(from, ini_txt, text, { quoted: nex }).then(() => {
                     const data_ = akinator[sender.split('@')[0]]
                     data_["question"] = question
                     data_["step"] = step
@@ -297,23 +297,23 @@ async function starts() {
                             }
                         }
                     }
-                    await lolhuman.sendMessage(from, help(prefix), text, ini_csreply)
+                    await nexus.sendMessage(from, help(prefix), text, ini_csreply)
                     break
                 case 'donate':
                     reply(donate(pushname2))
                     break
                 case 'clearall':
                     if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
-                    list_chat = await lolhuman.chats.all()
+                    list_chat = await nexus.chats.all()
                     for (let chat of list_chat) {
-                        lolhuman.modifyChat(chat.jid, "delete")
+                        nexus.modifyChat(chat.jid, "delete")
                     }
                     reply("success clear all chat")
                     break
                 case 'hidetag':
                     if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
                     var value = args.join(" ")
-                    var group = await lolhuman.groupMetadata(from)
+                    var group = await nexus.groupMetadata(from)
                     var member = group['participants']
                     var mem = []
                     member.map(async adm => {
@@ -322,17 +322,17 @@ async function starts() {
                     var options = {
                         text: value,
                         contextInfo: { mentionedJid: mem },
-                        quoted: lol
+                        quoted: nex
                     }
-                    await lolhuman.sendMessage(from, options, text)
+                    await nexus.sendMessage(from, options, text)
                     break
                 case 'tagstick':
                     if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
-                    if ((isMedia && !lol.message.videoMessage || isQuotedSticker) && args.length == 0) {
-                        const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia, filename = getRandom())
+                    if ((isMedia && !nex.message.videoMessage || isQuotedSticker) && args.length == 0) {
+                        const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom())
                         var value = args.join(" ")
-                        var group = await lolhuman.groupMetadata(from)
+                        var group = await nexus.groupMetadata(from)
                         var member = group['participants']
                         var mem = []
                         member.map(async adm => {
@@ -340,10 +340,10 @@ async function starts() {
                         })
                         var options = {
                             contextInfo: { mentionedJid: mem },
-                            quoted: lol
+                            quoted: nex
                         }
                         ini_buffer = fs.readFileSync(filePath)
-                        await lolhuman.sendMessage(from, ini_buffer, sticker, options)
+                        await nexus.sendMessage(from, ini_buffer, sticker, options)
                         fs.unlinkSync(filePath)
                     } else {
                         reply(`Tag sticker yang sudah dikirim`)
@@ -351,7 +351,7 @@ async function starts() {
                     break
                 case 'broadcast':
                     if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
-                    list_chat = await lolhuman.chats.all()
+                    list_chat = await nexus.chats.all()
                     ini_text = args.join(" ")
                     for (let chat of list_chat) {
                         sendMess(chat.jid, ini_text)
@@ -401,7 +401,7 @@ async function starts() {
                     if (args.length == 0) return reply(`Example: ${prefix + command} 18 or ${prefix + command} 18/10`)
                     surah = args[0]
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/quran/audio/${surah}?apikey=${apikey}`)
-                    await lolhuman.sendMessage(from, ini_buffer, audio, { quoted: lol, mimetype: Mimetype.mp4Audio })
+                    await nexus.sendMessage(from, ini_buffer, audio, { quoted: nex, mimetype: Mimetype.mp4Audio })
                     break
                 case 'asmaulhusna':
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/asmaulhusna?apikey=${apikey}`)
@@ -455,9 +455,9 @@ async function starts() {
                                     caption = `❖ Title    : *${result.title}*\n`
                                     caption += `❖ Size     : *${result.size}*`
                                     ini_buffer = await getBuffer(result.thumbnail)
-                                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol, caption: caption })
+                                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: caption })
                                     get_audio = await getBuffer(result.link)
-                                    await lolhuman.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${result.title}.mp3`, quoted: lol })
+                                    await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${result.title}.mp3`, quoted: nex })
                                 })
                         })
                     break
@@ -484,9 +484,9 @@ async function starts() {
                     caption = `❖ Title    : *${result.title}*\n`
                     caption += `❖ Size     : *${result.size}*`
                     ini_buffer = await getBuffer(get_result.thumbnail)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
                     get_audio = await getBuffer(get_result.link)
-                    await lolhuman.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.title}.mp3`, quoted: lol })
+                    await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.title}.mp3`, quoted: nex })
                     break
                 case 'ytmp4':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://www.youtube.com/watch?v=qZIQAk-BUEc`)
@@ -495,9 +495,9 @@ async function starts() {
                     get_result = get_result.result
                     ini_txt = `${get_result.title} - ${get_result.size}`
                     ini_buffer = await getBuffer(get_result.thumbnail)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
                     get_audio = await getBuffer(get_result.link)
-                    await lolhuman.sendMessage(from, get_audio, video, { mimetype: 'video/mp4', filename: `${get_result.title}.mp4`, quoted: lol })
+                    await nexus.sendMessage(from, get_audio, video, { mimetype: 'video/mp4', filename: `${get_result.title}.mp4`, quoted: nex })
                     break
                 case 'telesticker':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://t.me/addstickers/LINE_Menhera_chan_ENG`)
@@ -506,7 +506,7 @@ async function starts() {
                     ini_sticker = ini_url.result.sticker
                     for (sticker_ in ini_sticker) {
                         ini_buffer = await getBuffer(ini_sticker[sticker_])
-                        await lolhuman.sendMessage(from, ini_buffer, sticker)
+                        await nexus.sendMessage(from, ini_buffer, sticker)
                     }
                     break
                 case 'tiktoknowm':
@@ -515,13 +515,13 @@ async function starts() {
                     ini_url = `https://api.lolhuman.xyz/api/tiktok?apikey=${apikey}&url=${ini_url}`
                     get_result = await fetchJson(ini_url)
                     ini_buffer = await getBuffer(get_result.result.link)
-                    await lolhuman.sendMessage(from, ini_buffer, video, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, video, { quoted: nex })
                     break
                 case 'tiktokmusic':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://vt.tiktok.com/ZSwWCk5o/`)
                     ini_link = args[0]
                     get_audio = await getBuffer(`https://api.lolhuman.xyz/api/tiktokmusic?apikey=${apikey}&url=${ini_link}`)
-                    await lolhuman.sendMessage(from, get_audio, audio, { mimetype: Mimetype.mp4Audio, quoted: lol })
+                    await nexus.sendMessage(from, get_audio, audio, { mimetype: Mimetype.mp4Audio, quoted: nex })
                     break
                 case 'spotify':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://open.spotify.com/track/0ZEYRVISCaqz5yamWZWzaA`)
@@ -534,9 +534,9 @@ async function starts() {
                     ini_txt += `Popularity : ${get_result.popularity}\n`
                     ini_txt += `Preview : ${get_result.preview_url}\n`
                     thumbnail = await getBuffer(get_result.thumbnail)
-                    await lolhuman.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
                     get_audio = await getBuffer(get_result.link)
-                    await lolhuman.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.title}.mp3`, quoted: lol })
+                    await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.title}.mp3`, quoted: nex })
                     break
                 case 'spotifysearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
@@ -565,9 +565,9 @@ async function starts() {
                     ini_txt += `Uploaded : ${get_result.info.date}\n`
                     ini_txt += `Lirik :\n ${get_result.lirik}\n`
                     thumbnail = await getBuffer(get_result.image)
-                    await lolhuman.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
                     get_audio = await getBuffer(get_result.audio[0].link)
-                    await lolhuman.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.info.song}.mp3`, quoted: lol })
+                    await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.info.song}.mp3`, quoted: nex })
                     break
                 case 'igdl':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://www.instagram.com/p/CJ8XKFmJ4al/?igshid=1acpcqo44kgkn`)
@@ -577,7 +577,7 @@ async function starts() {
                     ini_type = image
                     if (ini_url.includes(".mp4")) ini_type = video
                     ini_buffer = await getBuffer(ini_url)
-                    await lolhuman.sendMessage(from, ini_buffer, ini_type, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, ini_type, { quoted: nex })
                     break
                 case 'igdl2':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://www.instagram.com/p/CJ8XKFmJ4al/?igshid=1acpcqo44kgkn`)
@@ -588,7 +588,7 @@ async function starts() {
                         ini_type = image
                         if (x.includes(".mp4")) ini_type = video
                         ini_buffer = await getBuffer(x)
-                        await lolhuman.sendMessage(from, ini_buffer, ini_type, { quoted: lol })
+                        await nexus.sendMessage(from, ini_buffer, ini_type, { quoted: nex })
                     }
                     break
                 case 'twtdl':
@@ -598,7 +598,7 @@ async function starts() {
                     ini_url = ini_url.result
                     ini_url = ini_url[ini_url.length - 1].link
                     ini_buffer = await getBuffer(ini_url)
-                    await lolhuman.sendMessage(from, ini_buffer, video, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, video, { quoted: nex })
                     break
                 case 'fbdl':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://id-id.facebook.com/SamsungGulf/videos/video-bokeh/561108457758458/`)
@@ -606,7 +606,7 @@ async function starts() {
                     ini_url = await fetchJson(`https://api.lolhuman.xyz/api/facebook?apikey=${apikey}&url=${ini_url}`)
                     ini_url = ini_url.result[0].link
                     ini_buffer = await getBuffer(ini_url)
-                    await lolhuman.sendMessage(from, ini_buffer, video, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, video, { quoted: nex })
                     break
                 case 'zippyshare':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://www51.zippyshare.com/v/5W0TOBz1/file.html`)
@@ -625,7 +625,7 @@ async function starts() {
                     ini_url = await fetchJson(`https://api.lolhuman.xyz/api/pinterest?apikey=${apikey}&query=${query}`)
                     ini_url = ini_url.result
                     ini_buffer = await getBuffer(ini_url)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'pinterest2':
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
@@ -634,7 +634,7 @@ async function starts() {
                     get_result = get_result.result
                     for (var x = 0; x <= 5; x++) {
                         var ini_buffer = await getBuffer(get_result[x])
-                        await lolhuman.sendMessage(from, ini_buffer, image)
+                        await nexus.sendMessage(from, ini_buffer, image)
                     }
                     break
                 case 'pinterestdl':
@@ -643,19 +643,19 @@ async function starts() {
                     ini_url = await fetchJson(`https://api.lolhuman.xyz/api/pinterestdl?apikey=${apikey}&url=${ini_url}`)
                     ini_url = ini_url.result[0]
                     ini_buffer = await getBuffer(ini_url)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'pixiv':
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
                     query = args.join(" ")
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/pixiv?apikey=${apikey}&query=${query}`)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'pixivdl':
                     if (args.length == 0) return reply(`Example: ${prefix + command} 63456028`)
                     query = args[0]
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/pixivdl/${pixivid}?apikey=${apikey}`)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'xhamstersearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Japanese`)
@@ -691,7 +691,7 @@ async function starts() {
                         ini_txt += `${x.type} - ${x.link}\n\n`
                     }
                     thumbnail = await getBuffer(get_result.thumbnail)
-                    await lolhuman.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
                     break
                 case 'xnxxsearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Japanese`)
@@ -729,7 +729,7 @@ async function starts() {
                         ini_txt += `${x.type} - ${x.link}\n\n`
                     }
                     thumbnail = await getBuffer(get_result.thumbnail)
-                    await lolhuman.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
                     break
 
                     // AniManga //
@@ -749,7 +749,7 @@ async function starts() {
                     }
                     ini_txt += `\nDescription : \n${get_result.description.replace(/__/g, "_")}`
                     thumbnail = await getBuffer(get_result.image.large)
-                    await lolhuman.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
                     break
                 case 'manga':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Gotoubun No Hanayome`)
@@ -778,7 +778,7 @@ async function starts() {
                     }
                     ini_txt += `\nDescription : ${get_result.description}`
                     thumbnail = await getBuffer(get_result.coverImage.large)
-                    await lolhuman.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
                     break
                 case 'anime':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Gotoubun No Hanayome`)
@@ -809,12 +809,12 @@ async function starts() {
                     }
                     ini_txt += `\nDescription : ${get_result.description}`
                     thumbnail = await getBuffer(get_result.coverImage.large)
-                    await lolhuman.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
                     break
                 case 'wait':
-                    if ((isMedia && !lol.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        const filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        const filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         const form = new FormData();
                         const stats = fs.statSync(filePath);
                         const fileSizeInBytes = stats.size;
@@ -837,7 +837,7 @@ async function starts() {
                         ini_txt += `at : ${get_result.at}\n`
                         ini_txt += `Episode : ${get_result.episode}\n`
                         ini_txt += `Similarity : ${get_result.similarity}`
-                        await lolhuman.sendMessage(from, ini_video, video, { quoted: lol, caption: ini_txt })
+                        await nexus.sendMessage(from, ini_video, video, { quoted: nex, caption: ini_txt })
                     } else {
                         reply(`Kirim gambar dengan caption ${prefix + command} atau tag gambar yang sudah dikirim`)
                     }
@@ -867,7 +867,7 @@ async function starts() {
                         }
                     }
                     ini_buffer = await getBuffer(get_result.thumbnail)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
                     break
                 case 'kusonimesearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Gotoubun No Hanayome`)
@@ -894,7 +894,7 @@ async function starts() {
                         }
                     }
                     ini_buffer = await getBuffer(get_result.thumbnail)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
                     break
                 case 'otakudesu':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://otakudesu.tv/lengkap/pslcns-sub-indo/`)
@@ -988,7 +988,7 @@ async function starts() {
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/nhentaipdf/${henid}?apikey=${apikey}`)
                     get_result = get_result.result
                     ini_buffer = await getBuffer(get_result)
-                    await lolhuman.sendMessage(from, ini_buffer, document, { quoted: lol, mimetype: Mimetype.pdf, filename: `${henid}.pdf` })
+                    await nexus.sendMessage(from, ini_buffer, document, { quoted: nex, mimetype: Mimetype.pdf, filename: `${henid}.pdf` })
                     break
                 case 'nhentaisearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Gotoubun No Hanayome`)
@@ -1026,7 +1026,7 @@ async function starts() {
                         }
                     }
                     ini_buffer = await getBuffer(get_result.thumb)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
                     break
                 case 'nekopoisearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Isekai Harem`)
@@ -1146,7 +1146,7 @@ async function starts() {
                     ini_txt += `Mana : ${get_result.attr.mana}\n`
                     ini_txt += `Mana regen : ${get_result.attr.mana_regen}\n`
                     ini_icon = await getBuffer(get_result.icon)
-                    await lolhuman.sendMessage(from, ini_icon, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, ini_icon, image, { quoted: nex, caption: ini_txt })
                     break
                 case 'mlstalk':
                     if (args.length == 0) return reply(`Example: ${prefix + command} 84830127/2169`)
@@ -1163,14 +1163,14 @@ async function starts() {
                     ini_txt += `Intro : ${get_result.intro}\n`
                     ini_txt += `Icon : ${get_result.icon}\n`
                     ini_icon = await getBuffer(get_result.cover1)
-                    await lolhuman.sendMessage(from, ini_icon, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, ini_icon, image, { quoted: nex, caption: ini_txt })
                     ini_voice = await getBuffer(get_result.cv[0].audio[0])
-                    await lolhuman.sendMessage(from, ini_voice, audio, { quoted: lol, mimetype: Mimetype.mp4Audio })
+                    await nexus.sendMessage(from, ini_voice, audio, { quoted: nex, mimetype: Mimetype.mp4Audio })
                     break
                 case 'qrreader':
-                    if ((isMedia && !lol.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        const filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        const filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         const form = new FormData();
                         const stats = fs.statSync(filePath);
                         const fileSizeInBytes = stats.size;
@@ -1301,7 +1301,7 @@ async function starts() {
                     ini_txt += `Kedalaman : ${get_result.kedalaman}\n`
                     ini_txt += `Koordinat : ${get_result.koordinat}`
                     get_buffer = await getBuffer(get_result.map)
-                    await lolhuman.sendMessage(from, get_buffer, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, get_buffer, image, { quoted: nex, caption: ini_txt })
                     break
                 case 'lirik':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
@@ -1322,7 +1322,7 @@ async function starts() {
                     ini_txt += `Suhu : ${get_result.suhu}\n`
                     ini_txt += `Udara : ${get_result.udara}\n`
                     ini_txt += `Permukaan laut : ${get_result.permukaan_laut}\n`
-                    await lolhuman.sendMessage(from, { degreesLatitude: get_result.latitude, degreesLongitude: get_result.longitude }, location, { quoted: lol })
+                    await nexus.sendMessage(from, { degreesLatitude: get_result.latitude, degreesLongitude: get_result.longitude }, location, { quoted: nex })
                     reply(ini_txt)
                     break
                 case 'covidindo':
@@ -1391,9 +1391,9 @@ async function starts() {
                     reply(ini_txt)
                     break
                 case 'nsfwcheck':
-                    if ((isMedia && !lol.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        var filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                        var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        var filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         var form = new FormData();
                         var stats = fs.statSync(filePath);
                         var fileSizeInBytes = stats.size;
@@ -1415,9 +1415,9 @@ async function starts() {
                     }
                     break
                 case 'ocr':
-                    if ((isMedia && !lol.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        var filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                        var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        var filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         var form = new FormData();
                         var stats = fs.statSync(filePath);
                         var fileSizeInBytes = stats.size;
@@ -1457,7 +1457,7 @@ async function starts() {
                     ini_txt += `Language : ${get_result.language}\n`
                     ini_txt += `Link Download : ${get_result.link_dl}`
                     thumbnail = await getBuffer(get_result.thumbnail)
-                    await lolhuman.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
                     break
                 case 'drakorongoing':
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/drakorongoing?apikey=${apikey}`)
@@ -1490,7 +1490,7 @@ async function starts() {
                     ini_txt += `Description : ${get_result.desc}\n\n`
                     ini_txt += `Story : \n${get_result.story}`
                     thumbnail = await getBuffer(get_result.photo)
-                    await lolhuman.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
                     break
                 case 'wattpadsearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Tere Liye`)
@@ -1523,7 +1523,7 @@ async function starts() {
                     ini_txt += `Desc : ${get_result.desc}\n`
                     ini_txt += `Story :\n${get_result.story}\n`
                     thumbnail = await getBuffer(get_result.thumbnail)
-                    await lolhuman.sendMessage(from, thumbnail, image, { quoted: lol, caption: ini_txt })
+                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
                     break
 
                     // Random Text //
@@ -1549,7 +1549,7 @@ async function starts() {
                     break
                 case 'quotesimage':
                     get_result = await getBuffer(`https://api.lolhuman.xyz/api/random/${command}?apikey=${apikey}`)
-                    await lolhuman.sendMessage(from, get_result, image, { quotes: lol })
+                    await nexus.sendMessage(from, get_result, image, { quotes: nex })
                     break
                 case 'faktaunik':
                 case 'katabijak':
@@ -1568,7 +1568,7 @@ async function starts() {
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
                     query = args.join(" ")
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/gimage?apikey=${apikey}&query=${query}`)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'gimage2':
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
@@ -1577,28 +1577,28 @@ async function starts() {
                     get_result = get_result.result
                     for (var x = 0; x <= 5; x++) {
                         var ini_buffer = await getBuffer(get_result[x])
-                        await lolhuman.sendMessage(from, ini_buffer, image)
+                        await nexus.sendMessage(from, ini_buffer, image)
                     }
                     break
                 case 'konachan':
                     if (args.length == 0) return reply(`Example: ${prefix + command} azur_lane`)
                     query = args.join(" ")
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/konachan?apikey=${apikey}&query=${query}`)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'wallpapersearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
                     query = args.join(" ")
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/wallpaper?apikey=${apikey}&query=${query}`)
                     ini_buffer = await getBuffer(get_result.result)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'wallpapersearch2':
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
                     query = args.join(" ")
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/wallpaper2?apikey=${apikey}&query=${query}`)
                     ini_buffer = await getBuffer(get_result.result)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'playstore':
                     if (args.length == 0) return reply(`Example: ${prefix + command} telegram`)
@@ -1651,7 +1651,7 @@ async function starts() {
                     get_result = get_result.result[0].stickers
                     for (var x of get_result) {
                         ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=${x}`)
-                        await lolhuman.sendMessage(from, ini_buffer, sticker)
+                        await nexus.sendMessage(from, ini_buffer, sticker)
                     }
                     break
 
@@ -1713,11 +1713,11 @@ async function starts() {
                 case 'asupan':
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/asupan?apikey=${apikey}`)
                     ini_buffer = await getBuffer(get_result.result)
-                    await lolhuman.sendMessage(from, ini_buffer, video, { quoted: lol, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
+                    await nexus.sendMessage(from, ini_buffer, video, { quoted: nex, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
                     break
                 case 'wancak':
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/onecak?apikey=${apikey}`)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'sambungkata':
                     if (sambungkata.hasOwnProperty(sender.split('@')[0])) return reply("Selesein yg sebelumnya dulu atuh")
@@ -1725,7 +1725,7 @@ async function starts() {
                     ini_txt = args.join(" ")
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/sambungkata?apikey=${apikey}&text=${ini_txt}`)
                     get_result = get_result.result
-                    await lolhuman.sendMessage(from, get_result, text, { quoted: lol }).then(() => {
+                    await nexus.sendMessage(from, get_result, text, { quoted: nex }).then(() => {
                         sambungkata[sender.split('@')[0]] = get_result.toLowerCase()
                         fs.writeFileSync("./database/sambungkata.json", JSON.stringify(sambungkata))
                     })
@@ -1743,7 +1743,7 @@ async function starts() {
                     ini_image = get_result.image
                     jawaban = get_result.answer
                     ini_buffer = await getBuffer(ini_image)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol, caption: "Jawab gk? Jawab lahhh, masa enggak. 30 detik cukup kan? gk cukup pulang aja" }).then(() => {
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: "Jawab gk? Jawab lahhh, masa enggak. 30 detik cukup kan? gk cukup pulang aja" }).then(() => {
                         tebakgambar[sender.split('@')[0]] = jawaban.toLowerCase()
                         fs.writeFileSync("./database/tebakgambar.json", JSON.stringify(tebakgambar))
                     })
@@ -1778,7 +1778,7 @@ async function starts() {
                     ini_txt += "2 - Saya Tidak Tau\n"
                     ini_txt += "3 - Mungkin\n"
                     ini_txt += "4 - Mungkin Tidak"
-                    await lolhuman.sendMessage(from, ini_txt, text, { quoted: lol }).then(() => {
+                    await nexus.sendMessage(from, ini_txt, text, { quoted: nex }).then(() => {
                         akinator[sender.split('@')[0]] = data
                         fs.writeFileSync("./database/akinator.json", JSON.stringify(akinator))
                     })
@@ -1793,10 +1793,10 @@ async function starts() {
 
                     // Creator
                 case 'quotemaker3':
-                    if ((isMedia && !lol.message.videoMessage || isQuotedImage)) {
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage)) {
                         if (args.length == 0) return reply(`Example: ${prefix + command} LoL|Human`)
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         file_name = getRandom(".webp")
                         ini_txt = args.join(" ")
                         request({
@@ -1811,7 +1811,7 @@ async function starts() {
                             fs.unlinkSync(filePath)
                             fs.writeFileSync(file_name, body, "binary")
                             ini_buff = fs.readFileSync(file_name)
-                            lolhuman.sendMessage(from, ini_buff, image, { quoted: lol }).then(() => {
+                            nexus.sendMessage(from, ini_buff, image, { quoted: nex }).then(() => {
                                 fs.unlinkSync(file_name)
                             })
                         });
@@ -1821,14 +1821,14 @@ async function starts() {
                     break
                 case 'stickerwm':
                     if ((isQuotedImage)) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        var image_buffer = await lolhuman.downloadMediaMessage(encmedia);
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        var image_buffer = await nexus.downloadMediaMessage(encmedia);
                         var formdata = new FormData()
                         formdata.append('package', 'LoL')
                         formdata.append('author', 'Human')
                         formdata.append('img', image_buffer, { filename: 'tahu.jpg' })
                         axios.post(`https://api.lolhuman.xyz/api/convert/towebpauthor?apikey=${apikey}`, formdata.getBuffer(), { headers: { "content-type": `multipart/form-data; boundary=${formdata._boundary}` }, responseType: 'arraybuffer' }).then((res) => {
-                            lolhuman.sendMessage(from, res.data, sticker)
+                            nexus.sendMessage(from, res.data, sticker)
                         })
                     } else {
                         reply(`Kirim gambar dengan caption ${prefix + command} atau tag gambar yang sudah dikirim`)
@@ -1836,8 +1836,8 @@ async function starts() {
                     break
                 case 'sticker':
                     if ((isQuotedVideo || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage || isQuotedVideo ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        var filepath = await lolhuman.downloadAndSaveMediaMessage(encmedia, getRandom())
+                        const encmedia = isQuotedImage || isQuotedVideo ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        var filepath = await nexus.downloadAndSaveMediaMessage(encmedia, getRandom())
                         var randomName = getRandom('.webp')
                         ffmpeg(`./${filepath}`)
                             .input(filepath)
@@ -1846,7 +1846,7 @@ async function starts() {
                                 reply('Terjadi kesalahan saat mengconvert sticker.')
                             })
                             .on('end', () => {
-                                lolhuman.sendMessage(from, fs.readFileSync(randomName), sticker, { quoted: lol })
+                                nexus.sendMessage(from, fs.readFileSync(randomName), sticker, { quoted: nex })
                                 fs.unlinkSync(filepath)
                                 fs.unlinkSync(randomName)
                             })
@@ -1858,9 +1858,9 @@ async function starts() {
                     }
                     break
                 case 'roundsticker':
-                    if ((isMedia && !lol.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia)
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia)
                         file_name = getRandom('.webp')
                         request({
                             url: `https://api.lolhuman.xyz/api/convert/towebpwround?apikey=${apikey}`,
@@ -1873,7 +1873,7 @@ async function starts() {
                             fs.unlinkSync(filePath)
                             fs.writeFileSync(file_name, body, "binary")
                             ini_buff = fs.readFileSync(file_name)
-                            lolhuman.sendMessage(from, ini_buff, sticker, { quoted: lol }).then(() => {
+                            nexus.sendMessage(from, ini_buff, sticker, { quoted: nex }).then(() => {
                                 fs.unlinkSync(file_name)
                             })
                         });
@@ -1882,9 +1882,9 @@ async function starts() {
                     }
                     break
                 case 'stickernobg':
-                    if ((isMedia && !lol.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia)
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia)
                         file_name = getRandom('.png')
                         file_name2 = getRandom('.webp')
                         request({
@@ -1904,7 +1904,7 @@ async function starts() {
                                     fs.unlinkSync(file_name)
                                 })
                                 .on('end', function() {
-                                    lolhuman.sendMessage(from, fs.readFileSync(file_name2), sticker, { quoted: lol })
+                                    nexus.sendMessage(from, fs.readFileSync(file_name2), sticker, { quoted: nex })
                                     fs.unlinkSync(file_name2)
                                 })
                                 .addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
@@ -1916,10 +1916,10 @@ async function starts() {
                     }
                     break
                 case 'takestick':
-                    if ((isMedia && !lol.message.videoMessage || isQuotedSticker)) {
+                    if ((isMedia && !nex.message.videoMessage || isQuotedSticker)) {
                         if (args.length == 0) return reply(`Example: ${prefix + command} LoL|Human`)
-                        const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
+                        const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         file_name = getRandom(".webp")
                         ini_txt = args.join(" ").split("|")
                         request({
@@ -1935,7 +1935,7 @@ async function starts() {
                             fs.unlinkSync(filePath)
                             fs.writeFileSync(file_name, body, "binary")
                             ini_buff = fs.readFileSync(file_name)
-                            lolhuman.sendMessage(from, ini_buff, sticker, { quoted: lol }).then(() => {
+                            nexus.sendMessage(from, ini_buff, sticker, { quoted: nex }).then(() => {
                                 fs.unlinkSync(file_name)
                             })
                         });
@@ -1951,7 +1951,7 @@ async function starts() {
                     if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
                     ini_txt = args.join(" ")
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/${command}?apikey=${apikey}&text=${ini_txt}`)
-                    await lolhuman.sendMessage(from, ini_buffer, sticker, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, sticker, { quoted: nex })
                     break
                 case 'triggered':
                     ini_url = args[0]
@@ -1961,7 +1961,7 @@ async function starts() {
                     exec(`wget "${ini_buffer}" -O ${ranp} && ffmpeg -i ${ranp} -vcodec libwebp -filter:v fps=fps=15 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${rano}`, (err) => {
                         fs.unlinkSync(ranp)
                         buff = fs.readFileSync(rano)
-                        lolhuman.sendMessage(from, buff, sticker, { quoted: lol }).then(() => {
+                        nexus.sendMessage(from, buff, sticker, { quoted: nex }).then(() => {
                             fs.unlinkSync(rano)
                         })
                     })
@@ -1969,7 +1969,7 @@ async function starts() {
                 case 'wasted':
                     ini_url = args[0]
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/editor/wasted?apikey=${apikey}&img=${ini_url}`)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'smoji':
                     if (args.length == 0) return reply(`Example: ${prefix + command} 😭`)
@@ -1980,7 +1980,7 @@ async function starts() {
                         emoji = encodeURI(emoji)
                     }
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/smoji/${emoji}?apikey=${apikey}`)
-                    await lolhuman.sendMessage(from, ini_buffer, sticker, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, sticker, { quoted: nex })
                     break
                 case 'smoji2':
                     if (args.length == 0) return reply(`Example: ${prefix + command} 😭`)
@@ -1992,13 +1992,13 @@ async function starts() {
                     }
                     ini_buffer = await fetchJson(`https://api.lolhuman.xyz/api/smoji3/${emoji}?apikey=${apikey}`)
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=` + ini_buffer.result.emoji.whatsapp)
-                    await lolhuman.sendMessage(from, ini_buffer, sticker, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, sticker, { quoted: nex })
                     break
                 case 'fakedonald':
                     if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
                     ini_txt = args.join(" ")
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/tweettrump?apikey=${apikey}&text=${ini_txt}`)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'faketoko':
                     await faketoko(teks = "Tahu Bacem", url_image = "https://i.ibb.co/JdfQ73m/photo-2021-02-05-10-13-39.jpg", title = "LoL Human", code = "IDR", price = 1000000)
@@ -2023,14 +2023,14 @@ async function starts() {
                     until = get_args[14]
                     img = get_args[15]
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/ktpmaker?apikey=${apikey}&nik=${nik}&prov=${prov}&kabu=${kabu}&name=${name}&ttl=${ttl}&jk=${jk}&jl=${jl}&rtrw=${rtrw}&lurah=${lurah}&camat=${camat}&agama=${agama}&nikah=${nikah}&kerja=${kerja}&warga=${warga}&until=${until}&img=${img}`)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
 
                     // Converter
                 case 'togif':
                     if ((isQuotedSticker)) {
-                        const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
+                        const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         file_name = getRandom(".mp4")
                         request({
                             url: `https://api.lolhuman.xyz/api/convert/webptomp4?apikey=${apikey}`,
@@ -2042,7 +2042,7 @@ async function starts() {
                             fs.unlinkSync(filePath)
                             get_result = JSON.parse(body)
                             getBuffer(get_result.result).then(result => {
-                                lolhuman.sendMessage(from, result, video, { mimetype: Mimetype.gif })
+                                nexus.sendMessage(from, result, video, { mimetype: Mimetype.gif })
                                 fs.unlinkSync(file_name)
                             })
                         });
@@ -2052,8 +2052,8 @@ async function starts() {
                     break
                 case 'tomp4':
                     if ((isQuotedSticker)) {
-                        const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
+                        const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         file_name = getRandom(".mp4")
                         request({
                             url: `https://api.lolhuman.xyz/api/convert/webptomp4?apikey=${apikey}`,
@@ -2065,7 +2065,7 @@ async function starts() {
                             fs.unlinkSync(filePath)
                             get_result = JSON.parse(body)
                             getBuffer(get_result.result).then(result => {
-                                lolhuman.sendMessage(from, result, video, { mimetype: Mimetype.mp4 })
+                                nexus.sendMessage(from, result, video, { mimetype: Mimetype.mp4 })
                                 fs.unlinkSync(file_name)
                             })
                         });
@@ -2087,7 +2087,7 @@ async function starts() {
                     ini_txt += `Followers : ${ini_result.followers}\n`
                     ini_txt += `Following : ${ini_result.following}\n`
                     ini_txt += `Bio : ${ini_result.bio}`
-                    lolhuman.sendMessage(from, ini_buffer, image, { caption: ini_txt })
+                    nexus.sendMessage(from, ini_buffer, image, { caption: ini_txt })
                     break
                 case 'stalkgithub':
                     if (args.length == 0) return reply(`Example: ${prefix + command} LoL-Human`)
@@ -2102,7 +2102,7 @@ async function starts() {
                     ini_txt += `Followers : ${ini_result.followers}\n`
                     ini_txt += `Following : ${ini_result.following}\n`
                     ini_txt += `Bio : ${ini_result.bio}`
-                    lolhuman.sendMessage(from, ini_buffer, image, { caption: ini_txt })
+                    nexus.sendMessage(from, ini_buffer, image, { caption: ini_txt })
                     break
                 case 'stalktwitter':
                     if (args.length == 0) return reply(`Example: ${prefix + command} jokowi`)
@@ -2118,7 +2118,7 @@ async function starts() {
                     ini_txt += `Following : ${ini_result.following}\n`
                     ini_txt += `Like : ${ini_result.like}\n`
                     ini_txt += `Description : ${ini_result.description}`
-                    lolhuman.sendMessage(from, ini_buffer, image, { caption: ini_txt })
+                    nexus.sendMessage(from, ini_buffer, image, { caption: ini_txt })
                     break
                 case 'stalktiktok':
                     if (args.length == 0) return reply(`Example: ${prefix + command} bulansutena`)
@@ -2133,7 +2133,7 @@ async function starts() {
                     ini_txt += `Video : ${get_result.video}\n`
                     ini_txt += `Bio : ${get_result.bio}\n`
                     pp_tt = await getBuffer(get_result.user_picture)
-                    lolhuman.sendMessage(from, pp_tt, image, { quoted: lol, caption: ini_txt })
+                    nexus.sendMessage(from, pp_tt, image, { quoted: nex, caption: ini_txt })
                     break
 
                     // Other
@@ -2141,13 +2141,13 @@ async function starts() {
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://api.lolhuman.xyz`)
                     ini_link = args[0]
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/ssweb?apikey=${apikey}&url=${ini_link}`)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'ssweb2':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://api.lolhuman.xyz`)
                     ini_link = args[0]
                     ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/sswebfull?apikey=${apikey}&url=${ini_link}`)
-                    await lolhuman.sendMessage(from, ini_buffer, image, { quoted: lol })
+                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
                 case 'shortlink':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://api.lolhuman.xyz`)
@@ -2195,9 +2195,9 @@ async function starts() {
                 case 'walden':
                 case 'willow':
                 case 'xpro2':
-                    if ((isMedia && !lol.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia)
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia)
                         file_name = getRandom('.jpg')
                         request({
                             url: `https://api.lolhuman.xyz/api/filter/${command}?apikey=${apikey}`,
@@ -2210,7 +2210,7 @@ async function starts() {
                             fs.unlinkSync(filePath)
                             fs.writeFileSync(file_name, body, "binary")
                             ini_buff = fs.readFileSync(file_name)
-                            lolhuman.sendMessage(from, ini_buff, image, { quoted: lol }).then(() => {
+                            nexus.sendMessage(from, ini_buff, image, { quoted: nex }).then(() => {
                                 fs.unlinkSync(file_name)
                             })
                         });
@@ -2219,9 +2219,9 @@ async function starts() {
                     }
                     break
                 case 'pencil':
-                    if ((isMedia && !lol.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(lol).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : lol
-                        filePath = await lolhuman.downloadAndSaveMediaMessage(encmedia)
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia)
                         file_name = getRandom('.jpg')
                         request({
                             url: `https://api.lolhuman.xyz/api/editor/pencil?apikey=${apikey}`,
@@ -2234,7 +2234,7 @@ async function starts() {
                             fs.unlinkSync(filePath)
                             fs.writeFileSync(file_name, body, "binary")
                             ini_buff = fs.readFileSync(file_name)
-                            await lolhuman.sendMessage(from, ini_buff, image, { quoted: lol }).then(() => {
+                            await nexus.sendMessage(from, ini_buff, image, { quoted: nex }).then(() => {
                                 fs.unlinkSync(file_name)
                             })
                         });
@@ -2257,7 +2257,7 @@ async function starts() {
                 case 'megumin':
                 case 'wallnime':
                     getBuffer(`https://api.lolhuman.xyz/api/random/${command}?apikey=${apikey}`).then((gambar) => {
-                        lolhuman.sendMessage(from, gambar, image, { quoted: lol })
+                        nexus.sendMessage(from, gambar, image, { quoted: nex })
                     })
                     break
                 case 'chiisaihentai':
@@ -2280,7 +2280,7 @@ async function starts() {
                 case 'animebellybutton':
                 case 'hentai4everyone':
                     await getBuffer(`https://api.lolhuman.xyz/api/random/nsfw/${command}?apikey=${apikey}`).then((gambar) => {
-                        lolhuman.sendMessage(from, gambar, image, { quoted: lol })
+                        nexus.sendMessage(from, gambar, image, { quoted: nex })
                     })
                     break
                 case 'bj':
@@ -2326,7 +2326,7 @@ async function starts() {
                 case 'kemonomimi':
                 case 'nsfw_avatar':
                     getBuffer(`https://api.lolhuman.xyz/api/random2/${command}?apikey=${apikey}`).then((gambar) => {
-                        lolhuman.sendMessage(from, gambar, image, { quoted: lol })
+                        nexus.sendMessage(from, gambar, image, { quoted: nex })
                     })
                     break
 
@@ -2366,7 +2366,7 @@ async function starts() {
                     if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
                     ini_txt = args.join(" ")
                     getBuffer(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`).then((gambar) => {
-                        lolhuman.sendMessage(from, gambar, image, { quoted: lol })
+                        nexus.sendMessage(from, gambar, image, { quoted: nex })
                     })
                     break
                 case 'pornhub':
@@ -2383,7 +2383,7 @@ async function starts() {
                     txt1 = args[0]
                     txt2 = args[1]
                     getBuffer(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`).then((gambar) => {
-                        lolhuman.sendMessage(from, gambar, image, { quoted: lol })
+                        nexus.sendMessage(from, gambar, image, { quoted: nex })
                     })
                     break
 
@@ -2415,7 +2415,7 @@ async function starts() {
                     if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
                     ini_txt = args.join(" ")
                     getBuffer(`https://api.lolhuman.xyz/api/photooxy1/${command}?apikey=${apikey}&text=${ini_txt}`).then((gambar) => {
-                        lolhuman.sendMessage(from, gambar, image, { quoted: lol })
+                        nexus.sendMessage(from, gambar, image, { quoted: nex })
                     })
                     break
                 case 'tiktok':
@@ -2426,7 +2426,7 @@ async function starts() {
                     txt1 = args[0]
                     txt2 = args[1]
                     getBuffer(`https://api.lolhuman.xyz/api/photooxy2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`).then((gambar) => {
-                        lolhuman.sendMessage(from, gambar, image, { quoted: lol })
+                        nexus.sendMessage(from, gambar, image, { quoted: nex })
                     })
                     break
 
@@ -2464,7 +2464,7 @@ async function starts() {
                     if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
                     ini_txt = args.join(" ")
                     getBuffer(`https://api.lolhuman.xyz/api/ephoto1/${command}?apikey=${apikey}&text=${ini_txt}`).then((gambar) => {
-                        lolhuman.sendMessage(from, gambar, image, { quoted: lol })
+                        nexus.sendMessage(from, gambar, image, { quoted: nex })
                     })
                     break
                 default:
@@ -2472,7 +2472,7 @@ async function starts() {
                         reply(`Sorry bro, command *${prefix}${command}* gk ada di list *${prefix}help*`)
                     }
                     if (!isGroup && !isCmd && !kuis) {
-                        await lolhuman.updatePresence(from, Presence.composing)
+                        await nexus.updatePresence(from, Presence.composing)
                         simi = await fetchJson(`https://api.lolhuman.xyz/api/simi?apikey=${apikey}&text=${budy}`)
                         reply(simi.result)
                     }
