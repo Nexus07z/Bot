@@ -371,9 +371,9 @@ async function starts() {
 ├ *${prefix}menu4* (Comandos Convertidor)
 ├ *${prefix}menu5* (Comandos Creaciones)
 ├ *${prefix}menu6* (Comandos Entretenimiento)
-├ *${prefix}menu7* (Comandos Información)
-├ *${prefix}menu8* (Comandos Audios)
-├ *${prefix}menu9* (Comandos Otros)
+├ *${prefix}menu9* (Generador Text Pro Me)
+├ *${prefix}menu10* (Generador Photo Oxy)
+├ *${prefix}menu11* (Generador Ephoto 360)
 ├
 ╰─ *FIN LISTA DE MENUS*
 `
