@@ -436,17 +436,17 @@ async function starts() {
 ├ *${prefix}watercolor* [texto]
 ├ *${prefix}wonderfulgraffiti* [texto]
 │
-├ *${prefix}avenger* [texto1] [texto2]
-├ *${prefix}coolgravity* [texto1] [texto2]
-├ *${prefix}glitch* [texto1] [texto2]
-├ *${prefix}lionlogo* [texto1] [texto2]
-├ *${prefix}marvelstudio* [texto1] [texto2]
-├ *${prefix}ninjalogo* [texto1] [texto2]
-├ *${prefix}pornhub* [texto1] [texto2]
-├ *${prefix}space* [texto1] [texto2]
-├ *${prefix}steel3d* [texto1] [texto2]
-├ *${prefix}wallgravity* [texto1] [texto2]
-├ *${prefix}wolflogo* [texto1] [texto2]
+├ *${prefix}avenger* [Texto1|Texto2]
+├ *${prefix}coolgravity* [Texto1|Texto2]
+├ *${prefix}glitch* [Texto1|Texto2]
+├ *${prefix}lionlogo* [Texto1|Texto2]
+├ *${prefix}marvelstudio* [Texto1|Texto2]
+├ *${prefix}ninjalogo* [Texto1|Texto2]
+├ *${prefix}pornhub* [Texto1|Texto2]
+├ *${prefix}space* [Texto1|Texto2]
+├ *${prefix}steel3d* [Texto1|Texto2]
+├ *${prefix}wallgravity* [Texto1|Texto2]
+├ *${prefix}wolflogo* [Texto1|Texto2]
 │
 ╰───
 `
