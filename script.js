@@ -333,7 +333,7 @@ async function starts() {
             ├
             ╰─ *FIN LISTA DE MENUS*
             `
-                            nexus.sendMessage(from, Menu, text, {
+                            nexus.sendMessage(from, assistant, image, {
                                 quoted:
                                 {
                                     key: {
@@ -342,8 +342,10 @@ async function starts() {
                                     },
                                     message: {
                                         "documentMessage": { "title": "Sam | Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
-                                    },thumbnail: assistant
-                                }
+                                    }
+                                },
+                                caption: Menu, 
+                                thumbnail: assistant
                             })
                 break
                 
