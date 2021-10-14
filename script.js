@@ -2562,8 +2562,11 @@ async function starts() {
                 
 
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\nPor ejemplo: ${prefix + command} Nexus Bot`)
-                    txt1 = args[0]
-                    txt2 = args[1]
+                    a = args.join(' ')
+                    txt1 = a.substring(0, a.indexOf('|') - 0)
+                    txt2 = a.substring(a.lastIndexOf('|') + 1)
+                    if (!txt1) return reply(`Error de uso...\n*Ejemplo: ${prefix + command} Samu|330*`)
+                    if (!txt2) return reply(`Error de uso...\n*Ejemplo: ${prefix + command} Samu|330*`)
                     try {
                         get_textprome2 = await getBuffer2(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
                         nexus.sendMessage(from, get_textprome2, image, { quoted: nex })
