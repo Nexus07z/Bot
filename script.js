@@ -299,6 +299,25 @@ async function starts() {
                     }
                     await nexus.sendMessage(from, help(prefix), text, ini_csreply)
                     break
+
+                case 'stickersinfondo':
+                        
+                        imgbb = require('imgbb-uploader')
+                        if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        const media = await nexus.downloadAndSaveMediaMessage(encmedia)
+                        //reply(mess.wait)
+                        nobg = await imgbb('20a14861e4f7591f3dc52649cb07ae02', media);
+                        link = `${nobg.display_url}`;
+                
+                        const attp1 = await getBuffer(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${api}&img=https://nexus-store.site/api/removebg.php?remove=${link}`)
+                        nexus.sendMessage(from, attp1, sticker, { quoted: nex })
+                        
+                        } else {
+                            reply('*Por favor etiqueta una imagen con el comando.*')
+                        }         
+                break
+
                 case 'donate':
                     reply(donate(pushname2))
                     break
