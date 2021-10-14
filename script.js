@@ -81,29 +81,7 @@ async function starts() {
             console.log('Error :', e)
         }
     })
-    assistant = fs.readFileSync('./src/assistant.jpg')
-    nexus.updatePresence(from, Presence.recording)
-    uptime = process.uptime()
-            menunexus = `
-╭─ *INICIO LISTA DE MENUS*
-├
-├ *${prefix}menu1* (Comandos Multimedia)
-├ *${prefix}menu2* (Comandos de Sticker)
-├ *${prefix}menu3* (Comandos de Descargas)
-├ *${prefix}menu4* (Comandos Convertidor)
-├ *${prefix}menu5* (Comandos Creaciones)
-├ *${prefix}menu6* (Comandos Entretenimiento)
-├ *${prefix}menu7* (Comandos Información)
-├ *${prefix}menu8* (Comandos Audios)
-├ *${prefix}menu9* (Comandos Otros)
-├
-╰─ *FIN LISTA DE MENUS*
-`
-                    nexus.sendMessage(from, assistant, image, {
-                        quoted: nex,
-                        caption: menunexus, 
-                        thumbnail: assistant
-                    })
+    
     nexus.on('chat-update', async(nex) => {
         try {
             const time = moment.tz('Asia/Jakarta').format('HH:mm:ss')
