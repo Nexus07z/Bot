@@ -382,48 +382,48 @@ async function starts() {
 ├
 ├──「 Crea imágenes con texto 」
 ├
-├ • ${prefix}blackpink text
-├ • ${prefix}neon text
-├ • ${prefix}greenneon text
-├ • ${prefix}advanceglow text
-├ • ${prefix}futureneon text
-├ • ${prefix}sandwriting text
-├ • ${prefix}sandsummer text
-├ • ${prefix}sandengraved text
-├ • ${prefix}metaldark text
-├ • ${prefix}neonlight text
-├ • ${prefix}holographic text
-├ • ${prefix}text1917 text
-├ • ${prefix}minion text
-├ • ${prefix}deluxesilver text
-├ • ${prefix}newyearcard text
-├ • ${prefix}bloodfrosted text
-├ • ${prefix}halloween text
-├ • ${prefix}jokerlogo text
-├ • ${prefix}fireworksparkle text
-├ • ${prefix}natureleaves text
-├ • ${prefix}bokeh text
-├ • ${prefix}toxic text
-├ • ${prefix}strawberry text
-├ • ${prefix}box3d text
-├ • ${prefix}roadwarning text
-├ • ${prefix}breakwall text
-├ • ${prefix}icecold text
-├ • ${prefix}luxury text
-├ • ${prefix}cloud text
-├ • ${prefix}summersand text
-├ • ${prefix}horrorblood text
-├ • ${prefix}thunder text
-├ • ${prefix}pornhub text1 text2
-├ • ${prefix}glitch text1 text2
-├ • ${prefix}avenger text1 text2
-├ • ${prefix}space text1 text2
-├ • ${prefix}ninjalogo text1 text2
-├ • ${prefix}marvelstudio text1 text2
-├ • ${prefix}lionlogo text1 text2
-├ • ${prefix}wolflogo text1 text2
-├ • ${prefix}steel3d text1 text2
-├ • ${prefix}wallgravity text1 text2
+├ *${prefix}blackpink [texto]*
+├ *${prefix}neon [texto]*
+├ *${prefix}greenneon [texto]*
+├ *${prefix}advanceglow [texto]*
+├ *${prefix}futureneon [texto]*
+├ *${prefix}sandwriting [texto]*
+├ *${prefix}sandsummer [texto]*
+├ *${prefix}sandengraved [texto]*
+├ *${prefix}metaldark [texto]*
+├ *${prefix}neonlight [texto]*
+├ *${prefix}holographic [texto]*
+├ *${prefix}text1917 [texto]*
+├ *${prefix}minion [texto]*
+├ *${prefix}deluxesilver [texto]*
+├ *${prefix}newyearcard [texto]*
+├ *${prefix}bloodfrosted [texto]*
+├ *${prefix}halloween [texto]*
+├ *${prefix}jokerlogo [texto]*
+├ *${prefix}fireworksparkle [texto]*
+├ *${prefix}natureleaves [texto]*
+├ *${prefix}bokeh [texto]*
+├ *${prefix}toxic [texto]*
+├ *${prefix}strawberry [texto]*
+├ *${prefix}box3d [texto]*
+├ *${prefix}roadwarning [texto]*
+├ *${prefix}breakwall [texto]*
+├ *${prefix}icecold [texto]*
+├ *${prefix}luxury [texto]*
+├ *${prefix}cloud [texto]*
+├ *${prefix}summersand [texto]*
+├ *${prefix}horrorblood [texto]*
+├ *${prefix}thunder [texto]*
+├ *${prefix}pornhub [texto1] [texto2]*
+├ *${prefix}glitch [texto1] [texto2]*
+├ *${prefix}avenger [texto1] [texto2]*
+├ *${prefix}space [texto1] [texto2]*
+├ *${prefix}ninjalogo [texto1] [texto2]*
+├ *${prefix}marvelstudio [texto1] [texto2]*
+├ *${prefix}lionlogo [texto1] [texto2]*
+├ *${prefix}wolflogo [texto1] [texto2]*
+├ *${prefix}steel3d [texto1] [texto2]*
+├ *${prefix}wallgravity [texto1] [texto2]*
 ├
 ╰───
 `
