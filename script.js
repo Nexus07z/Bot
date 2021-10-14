@@ -334,10 +334,7 @@ async function starts() {
             ╰─ *FIN LISTA DE MENUS*
             `
                             nexus.sendMessage(from, assistant, image, {
-                                quoted:
-                                {
-                                    nex
-                                },
+                                quoted: nex,
                                 caption: Menu, 
                                 thumbnail: assistant
                             })
