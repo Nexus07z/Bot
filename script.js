@@ -291,7 +291,7 @@ async function starts() {
                     ownerB: '[❗] ¡Este comando solo puede ser utilizado por el creador del bot! ❌',
                     admin: '[❗] ¡Este comando solo puede ser utilizado por administradores del grupo! ❌',
                     Badmin: '[❗] ¡Este comando solo se puede usar cuando el Bot es administrador! ❌',
-                    usrReg: `😊 Hola, ${timeFt}.\n*Yo soy Sam*, Asistente de *Nexus*.\n\nAl parecer no estas registrado en _*Nexusᴮᴼᵀ*_, Para registrarte usa el comando: *${prefix}reg*`
+                    usrReg: `😊 Hola, *Yo soy Sam*, Asistente de *Nexus*.\n\nAl parecer no estas registrado en _*Nexusᴮᴼᵀ*_, Para registrarte usa el comando: *${prefix}reg*`
                     
                 }
             }
