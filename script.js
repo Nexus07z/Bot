@@ -327,7 +327,7 @@ async function starts() {
                     group: '[❗] ¡Este comando solo se puede usar en grupos! ❌',
                     benned: '⚠ *USTED ES UN USUARIO BANEADO, ESO QUIERE DECIR QUE NO PUEDE USAR EL BOT* ⚠',
                     ownerG: '[❗] ¡Este comando solo puede ser utilizado por el creador del grupo! ❌',
-                    ownerB: '[❗] ¡Este comando solo puede ser utilizado por el creador del bot! ❌',
+                    ownerB: '[❗] *¡Este comando solo puede ser utilizado por el creador del bot!*',
                     admin: '[❗] ¡Este comando solo puede ser utilizado por administradores del grupo! ❌',
                     Badmin: '[❗] ¡Este comando solo se puede usar cuando el Bot es administrador! ❌',
                     usrReg: `😊 Hola, *Yo soy Sam*, Asistente de *Nexus*.\n\nAl parecer no estas registrado en _*Nexusᴮᴼᵀ*_, Para registrarte usa el comando: *${prefix}reg*`
@@ -340,14 +340,10 @@ async function starts() {
                 case 'añadir':
                     
                     if (!isGroup) return reply(mess.only.group)
-                    
                     if (args.length < 1) return reply('Falta agregar el número de celular.')
-                    try {
-                        num = `${args[0].replace(/ /g, '')}@s.whatsapp.net`
-                        nexus.groupAdd(from, [num])
-                    } catch (e) {
-                        reply(mess.error)
-                    }
+                    num = `${args[0].replace(/ /g, '')}@s.whatsapp.net`
+                    nexus.groupAdd(from, [num])
+                    
                 break
 
                 case 'clearall':
