@@ -361,12 +361,12 @@ async function starts() {
                     if (args[0] === '1') {
                         if (isNsfw) return reply('*Ya está activo.*')
                         nsfw.push(from)
-                        fs.writeFileSync('./src/nsfw.json', JSON.stringify(nsfw))
+                        fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
                         reply(`Contenido +18 *[ Activado ]*`)
                     } else if (args[0] === '0') {
                         var ini = nsfw.indexOf(from)
                         nsfw.splice(ini, 1)
-                        fs.writeFileSync('./src/nsfw.json', JSON.stringify(nsfw))
+                        fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
                         reply(`Contenido +18 *[ Desactivado ]*`)
                     } else {
                         reply('*1 para activar, 0 para desactivar.*')
