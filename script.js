@@ -155,9 +155,14 @@ async function starts() {
 
             const botNumber = nexus.user.jid
             const isGroup = from.endsWith('@g.us')
-            const sender = isGroup ? nex.participant : nex.key.remoteJid
+            const sender = nex.key.fromMe ? nexus.user.jid : isGroup ? nex.participant : nex.key.remoteJid
+            const senderNumber = sender.split("@")[0]
             const groupMetadata = isGroup ? await nexus.groupMetadata(from) : ''
             const groupName = isGroup ? groupMetadata.subject : ''
+            const groupMembers = isGroup ? groupMetadata.participants : ''
+		    const groupAdmins = isGroup ? await wa.getGroupAdmins(groupMembers) : []
+            const isAdmin = groupAdmins.includes(sender) || false
+		    const botAdmin = groupAdmins.includes(nexus.user.jid)
             const totalchat = nexus.chats.all()
 
             const isUrl = (ini_url) => {
@@ -330,6 +335,20 @@ async function starts() {
 
             switch (command) {
                
+                case 'añadir':
+                    
+                    if (!isGroup) return reply(mess.only.group)
+                    if (!botAdmin) return reply(mess.only.Badmin)
+                    if (args.length < 1) return reply('Falta agregar el número de celular.')
+                    try {
+                        num = `${args[0].replace(/ /g, '')}@s.whatsapp.net`
+                        nexus.groupAdd(from, [num])
+                    } catch (e) {
+                        console.log('Error:', e)
+                        return nexus.sendMessage(from, 'Modo privado.', MessageType.text)
+                    }
+                break
+                
                 case 'menu':
                 case 'ayuda':
                 case 'comandos':
