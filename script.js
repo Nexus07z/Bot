@@ -351,15 +351,6 @@ async function starts() {
         
                 break
 
-                case 'clearall':
-                    if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
-                    list_chat = await nexus.chats.all()
-                    for (let chat of list_chat) {
-                        nexus.modifyChat(chat.jid, "delete")
-                    }
-                    reply("success clear all chat")
-                break
-                
                 case 'menu':
                 case 'ayuda':
                 case 'comandos':
@@ -602,64 +593,16 @@ async function starts() {
                         }         
                 break
 
-                case 'donate':
-                    reply(donate(pushname2))
-                    break
+                
                 case 'clearall':
                     if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
                     list_chat = await nexus.chats.all()
                     for (let chat of list_chat) {
-                        nexus.modifyChat(chat.jid, "delete")
+                        nexus.modifyChat(chat.jid, ChatModification.delete)
                     }
                     reply("success clear all chat")
                     break
-                case 'hidetag':
-                    if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
-                    var value = args.join(" ")
-                    var group = await nexus.groupMetadata(from)
-                    var member = group['participants']
-                    var mem = []
-                    member.map(async adm => {
-                        mem.push(adm.id.replace('c.us', 's.whatsapp.net'))
-                    })
-                    var options = {
-                        text: value,
-                        contextInfo: { mentionedJid: mem },
-                        quoted: nex
-                    }
-                    await nexus.sendMessage(from, options, text)
-                    break
-                case 'tagstick':
-                    if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
-                    if ((isMedia && !nex.message.videoMessage || isQuotedSticker) && args.length == 0) {
-                        const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom())
-                        var value = args.join(" ")
-                        var group = await nexus.groupMetadata(from)
-                        var member = group['participants']
-                        var mem = []
-                        member.map(async adm => {
-                            mem.push(adm.id.replace('c.us', 's.whatsapp.net'))
-                        })
-                        var options = {
-                            contextInfo: { mentionedJid: mem },
-                            quoted: nex
-                        }
-                        ini_buffer = fs.readFileSync(filePath)
-                        await nexus.sendMessage(from, ini_buffer, sticker, options)
-                        fs.unlinkSync(filePath)
-                    } else {
-                        reply(`Tag sticker yang sudah dikirim`)
-                    }
-                    break
-                case 'broadcast':
-                    if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
-                    list_chat = await nexus.chats.all()
-                    ini_text = args.join(" ")
-                    for (let chat of list_chat) {
-                        sendMess(chat.jid, ini_text)
-                    }
-                    break
+                
                 case 'afk':
                     alasan = args.join(" ")
                     afk[sender.split('@')[0]] = alasan.toLowerCase()
