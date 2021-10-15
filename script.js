@@ -353,6 +353,34 @@ async function starts() {
         
                 break
 
+                case 'nuevogrupo':
+                
+                    const nombregc = args.join(' ')
+                    if (!nombregc) return reply(`*Por favor escribe el nombre que quieras que tenga el grupo.*\n\n*Por ejemplo:     ${prefix + command} XD*`)
+                    const group = await nexus.groupCreate(`${nombregc}`, [sender])
+                    reply(`*El grupo fue creado correctamente con el nombre:*\n\n*${nombregc}*\n\nId del grupo: ${group.gid}`)
+                    nexus.sendMessage(group.gid, "¡Hola mundo!", MessageType.text, {
+                        quoted:
+                        {
+                            key: {
+                                fromMe: false,
+                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                            },
+                            message: {
+                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                            }
+                        }
+                    })
+
+                break
+
+                case 'link':
+				
+                    var link = await wa.getGroupInvitationCode(from)
+                    await wa.sendFakeStatus(from, link, "El lik de este grupo es: ")
+			    
+                break
+
                 case '+18':
 
                     if (!isGroup) return reply(mess.only.group)
