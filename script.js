@@ -87,10 +87,11 @@ async function starts() {
                 var pp_group = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
             }
             if (chat.action == 'add') {
+                num = chat.participants[0]
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
                 ini_img = fs.readFileSync(`./src/assistant.jpg`)
-                welcome = `*${ini_user.notify}*, bienvenido al grupo *${group_info.subject}*.\n\nPara ver todos los comandos de *Nexusᴮᴼᵀ* escribe el siguiente comando:     *${prefix}menu*`
+                welcome = `*${ini_user.notify}* - @${num.split('@')[0]}, bienvenido al grupo *${group_info.subject}*.\n\nPara ver todos los comandos de *Nexusᴮᴼᵀ* escribe el siguiente comando:     *${prefix}menu*`
                 await nexus.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welcome })
             }
             
