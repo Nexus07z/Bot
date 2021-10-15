@@ -326,7 +326,7 @@ async function starts() {
             mess = {
                 wait: '*Espera un momento por favor...*',
                 success: '✔️ HECHO ✔️',
-                nsfw: `*No puedo ejecutar ese comando, este grupo no permite contenido +18*`,
+                nsfw: `*No puedo ejecutar ese comando, este grupo no permite contenido +18.*`,
                 error: '*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*',
                 only: {
                     group: '[❗]\n*¡Este comando solo puede ser utilizado en grupos!*',
@@ -357,8 +357,8 @@ async function starts() {
 
                     if (!isGroup) return reply(mess.only.group)
                     if (!isAdmin) return reply(mess.only.admin)
-                    if (isNsfw) return reply('*El contenido +18 está activo.*')
-                    if (args.length < 1) return reply(`Escribe *1* para activar, *0* para desactivar.\n\n*Por ejemplo:     ${prefix + command} 1*`)
+                    if (isNsfw && args.length < 1) return reply('*El contenido +18 está activo.*')
+                    if (args.length < 1) return reply(`Escribe *[1]* para activar, *[0]* para desactivar.\n\n*Por ejemplo:     ${prefix + command} 1*`)
                     if (args[0] === '1') {
                         nsfw.push(from)
                         fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
@@ -369,7 +369,7 @@ async function starts() {
                         fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
                         reply(`Contenido +18 *[ Desactivado ]*`)
                     } else {
-                        reply(`Escribe *1* para activar, *0* para desactivar.\n\n*Por ejemplo:     ${prefix + command} 1*`)
+                        reply(`Escribe *[1]* para activar, *[0]* para desactivar.\n\n*Por ejemplo:     ${prefix + command} 1*`)
                     }
 			    break
 
