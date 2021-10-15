@@ -24,6 +24,7 @@ const wa = require("./lib/function")
 const { default: axios } = require('axios')
 
 // Database
+const nsfw = JSON.parse(fs.readFileSync('./database/nsfw.json'))
 const tebakgambar = JSON.parse(fs.readFileSync('./database/tebakgambar.json'))
 const sambungkata = JSON.parse(fs.readFileSync('./database/sambungkata.json'))
 const akinator = JSON.parse(fs.readFileSync('./database/akinator.json'))
@@ -168,6 +169,7 @@ async function starts() {
 		    const groupAdmins = isGroup ? await wa.getGroupAdmins(groupMembers) : []
             const isAdmin = groupAdmins.includes(sender) || false
 		    const botAdmin = groupAdmins.includes(nexus.user.jid)
+            const isNsfw = isGroup ? nsfw.includes(from) : false
             const totalchat = nexus.chats.all()
 
             const isUrl = (ini_url) => {
@@ -331,7 +333,7 @@ async function starts() {
                     benned: '⚠ *USTED ES UN USUARIO BANEADO, ESO QUIERE DECIR QUE NO PUEDE USAR EL BOT* ⚠',
                     ownerG: '[❗]\n*¡Este comando solo puede ser utilizado por el creador del grupo!*',
                     ownerB: '[❗]\n*¡Este comando solo puede ser utilizado por el creador del Bot!*',
-                    admin: '[❗] ¡Este comando solo puede ser utilizado por administradores del grupo! ❌',
+                    admin: '[❗]\n*¡Este comando solo puede ser utilizado por administradores del grupo!*',
                     Badmin: '[❗]\n*¡Este comando solo se puede usar cuando el Bot es administrador!*',
                     usrReg: `😊 Hola, *Yo soy Sam*, Asistente de *Nexus*.\n\nAl parecer no estas registrado en _*Nexusᴮᴼᵀ*_, Para registrarte usa el comando: *${prefix}reg*`
                     
@@ -350,6 +352,26 @@ async function starts() {
                     nexus.groupAdd(from, [num])
         
                 break
+
+                case '+18':
+
+                    if (!isGroup) return reply(mess.only.group)
+                    if (!isAdmin) return reply(mess.only.admin)
+                    if (args.length < 1) return reply('Escribe *1* para activar.')
+                    if (args[0] === '1') {
+                        if (isNsfw) return reply('*Ya está activo.*')
+                        nsfw.push(from)
+                        fs.writeFileSync('./src/nsfw.json', JSON.stringify(nsfw))
+                        reply(`Contenido +18 *[ Activado ]*`)
+                    } else if (args[0] === '0') {
+                        var ini = nsfw.indexOf(from)
+                        nsfw.splice(ini, 1)
+                        fs.writeFileSync('./src/nsfw.json', JSON.stringify(nsfw))
+                        reply(`Contenido +18 *[ Desactivado ]*`)
+                    } else {
+                        reply('*1 para activar, 0 para desactivar.*')
+                    }
+			    break
 
                 case 'menu':
                 case 'ayuda':
@@ -593,16 +615,6 @@ async function starts() {
                         }         
                 break
 
-                
-                case 'clearall':
-                    if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
-                    list_chat = await nexus.chats.all()
-                    for (let chat of list_chat) {
-                        nexus.modifyChat(chat.jid, 'delete')
-                    }
-                    reply("success clear all chat")
-                    break
-                
                 case 'afk':
                     alasan = args.join(" ")
                     afk[sender.split('@')[0]] = alasan.toLowerCase()
