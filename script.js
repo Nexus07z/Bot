@@ -97,8 +97,22 @@ async function starts() {
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
                 bye = `😪... *${ini_user.notify}* salió del grupo.\n*No le deseo el mal, pero tampoco el bien…* 👋`
-                await nexus.sendMessage(chat.jid, bye, MessageType.text)
-                
+                await nexus.sendMessage(chat.jid, bye, MessageType.text)    
+            }
+
+            if (chat.action == 'promote') {
+                ini_user = nexus.contacts[mem]
+                group_info = await nexus.groupMetadata(chat.jid)
+                promote = `*${ini_user.notify}* 🥳\n\n *¡FELICIDADES!*, te has convertido en administrador del grupo *${group_info.subject}.*`
+                await nexus.sendMessage(chat.jid, promote, MessageType.text)    
+            }
+
+            if (chat.action == 'demote') {
+                ini_user = nexus.contacts[mem]
+                group_info = await nexus.groupMetadata(chat.jid)
+                demote = `*${ini_user.notify}* 😪\n\n *Malas noticias*, ya no eres admnistrador del grupo *${group_info.subject}.*`
+                let buff = await getBuffer(ppimg)
+                await nexus.sendMessage(chat.jid, demote, MessageType.text)   
             }
             
         } catch (e) {
