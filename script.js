@@ -20,6 +20,7 @@ const { exec } = require("child_process")
 const { getRandom } = require('./lib/function')
 const { help, donate } = require('./help/help')
 const { exit } = require('process')
+const wa = require("./lib/function")
 const { default: axios } = require('axios')
 
 // Database
