@@ -338,7 +338,7 @@ async function starts() {
                 case 'añadir':
                     
                     if (!isGroup) return reply(mess.only.group)
-                    if (!botAdmin) return reply(mess.only.Badmin)
+                    
                     if (args.length < 1) return reply('Falta agregar el número de celular.')
                     try {
                         num = `${args[0].replace(/ /g, '')}@s.whatsapp.net`
@@ -347,6 +347,15 @@ async function starts() {
                         console.log('Error:', e)
                         return nexus.sendMessage(from, 'Modo privado.', MessageType.text)
                     }
+                break
+
+                case 'clearall':
+                    if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
+                    list_chat = await nexus.chats.all()
+                    for (let chat of list_chat) {
+                        nexus.modifyChat(chat.jid, "delete")
+                    }
+                    reply("success clear all chat")
                 break
                 
                 case 'menu':
