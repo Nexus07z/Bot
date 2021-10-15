@@ -89,8 +89,16 @@ async function starts() {
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
                 ini_img = fs.readFileSync(`./src/assistant.jpg`)
-                welkam = `*${ini_user.notify}*, bienvenido al grupo *${group_info.subject}*.\n\nPara ver todos los comandos de *Nexusᴮᴼᵀ* escribe el siguiente comando:     *${prefix}menu*`
-                await nexus.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welkam })
+                welcome = `*${ini_user.notify}*, bienvenido al grupo *${group_info.subject}*.\n\nPara ver todos los comandos de *Nexusᴮᴼᵀ* escribe el siguiente comando:     *${prefix}menu*`
+                await nexus.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welcome })
+            }
+            
+            if (chat.action == 'remove') {
+                ini_user = nexus.contacts[mem]
+                group_info = await nexus.groupMetadata(chat.jid)
+                bye = `😪... *${ini_user.notify}* salió del grupo.\n*No le deseo el mal, pero tampoco el bien…* 👋`
+                await nexus.sendMessage(chat.jid, bye, MessageType.text)
+                
             }
             
         } catch (e) {
