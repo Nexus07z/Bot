@@ -326,7 +326,7 @@ async function starts() {
             mess = {
                 wait: '*Espera un momento por favor...*',
                 success: '✔️ HECHO ✔️',
-                nsfw: `𝗟𝗼 𝘀𝗶𝗲𝗻𝘁𝗼 𝗽𝗲𝗿𝗼 𝗻𝗼 𝗽𝘂𝗲𝗱𝗼 𝗲𝗷𝗲𝗰𝘂𝘁𝗮𝗿 𝗲𝘀𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼, 𝗲𝘀𝘁𝗲 𝗴𝗿𝘂𝗽𝗼 𝗻𝗼 𝗽𝗲𝗿𝗺𝗶𝘁𝗲 𝗰𝗼𝗻𝘁𝗲𝗻𝗶𝗱𝗼 +𝟭𝟴\n*PARA ACTIVAR LOS COMANDOS +18, USA:* ${prefix}+18 1`,
+                nsfw: `*No puedo ejecutar ese comando, este grupo no permite contenido +18*`,
                 error: '*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*',
                 only: {
                     group: '[❗]\n*¡Este comando solo puede ser utilizado en grupos!*',
@@ -357,9 +357,9 @@ async function starts() {
 
                     if (!isGroup) return reply(mess.only.group)
                     if (!isAdmin) return reply(mess.only.admin)
-                    if (args.length < 1) return reply('Escribe *1* para activar.')
+                    if (isNsfw) return reply('*El contenido +18 está activo.*')
+                    if (args.length < 1) return reply(`Escribe *1* para activar, *0* para desactivar.\n\n*Por ejemplo:     ${prefix + command} 1*`)
                     if (args[0] === '1') {
-                        if (isNsfw) return reply('*Ya está activo.*')
                         nsfw.push(from)
                         fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
                         reply(`Contenido +18 *[ Activado ]*`)
@@ -369,9 +369,16 @@ async function starts() {
                         fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
                         reply(`Contenido +18 *[ Desactivado ]*`)
                     } else {
-                        reply('*1 para activar, 0 para desactivar.*')
+                        reply(`Escribe *1* para activar, *0* para desactivar.\n\n*Por ejemplo:     ${prefix + command} 1*`)
                     }
 			    break
+
+                case 'xd':
+			
+                    if (!isNsfw) return reply(mess.nsfw)
+                    reply(`hOLA`)
+				
+				break
 
                 case 'menu':
                 case 'ayuda':
