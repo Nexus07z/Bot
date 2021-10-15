@@ -96,6 +96,7 @@ async function starts() {
             }
             
             if (chat.action == 'remove') {
+                num = chat.participants[0]
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
                 bye = `😪... *${num.split('@')[0]}* salió del grupo.\n*No le deseo el mal, pero tampoco el bien…* 👋`
@@ -103,6 +104,7 @@ async function starts() {
             }
 
             if (chat.action == 'promote') {
+                num = chat.participants[0]
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
                 promote = `*${num.split('@')[0]}* 🥳\n\n *¡FELICIDADES!*, te has convertido en administrador del grupo *${group_info.subject}.*`
@@ -110,6 +112,7 @@ async function starts() {
             }
 
             if (chat.action == 'demote') {
+                num = chat.participants[0]
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
                 demote = `*${num.split('@')[0]}* 😪\n\n *Malas noticias*, ya no eres admnistrador del grupo *${group_info.subject}.*`
@@ -324,12 +327,12 @@ async function starts() {
                 nsfw: `𝗟𝗼 𝘀𝗶𝗲𝗻𝘁𝗼 𝗽𝗲𝗿𝗼 𝗻𝗼 𝗽𝘂𝗲𝗱𝗼 𝗲𝗷𝗲𝗰𝘂𝘁𝗮𝗿 𝗲𝘀𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼, 𝗲𝘀𝘁𝗲 𝗴𝗿𝘂𝗽𝗼 𝗻𝗼 𝗽𝗲𝗿𝗺𝗶𝘁𝗲 𝗰𝗼𝗻𝘁𝗲𝗻𝗶𝗱𝗼 +𝟭𝟴\n*PARA ACTIVAR LOS COMANDOS +18, USA:* ${prefix}+18 1`,
                 error: '*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*',
                 only: {
-                    group: '[❗]\n*¡Este comando solo se puede usar en grupos!*',
+                    group: '[❗]\n*¡Este comando solo puede ser utilizado en grupos!*',
                     benned: '⚠ *USTED ES UN USUARIO BANEADO, ESO QUIERE DECIR QUE NO PUEDE USAR EL BOT* ⚠',
                     ownerG: '[❗]\n*¡Este comando solo puede ser utilizado por el creador del grupo!*',
                     ownerB: '[❗]\n*¡Este comando solo puede ser utilizado por el creador del Bot!*',
                     admin: '[❗] ¡Este comando solo puede ser utilizado por administradores del grupo! ❌',
-                    Badmin: '[❗] ¡Este comando solo se puede usar cuando el Bot es administrador! ❌',
+                    Badmin: '[❗]\n*¡Este comando solo se puede usar cuando el Bot es administrador!*',
                     usrReg: `😊 Hola, *Yo soy Sam*, Asistente de *Nexus*.\n\nAl parecer no estas registrado en _*Nexusᴮᴼᵀ*_, Para registrarte usa el comando: *${prefix}reg*`
                     
                 }
@@ -341,10 +344,11 @@ async function starts() {
                     
                     if (!isGroup) return reply(mess.only.group)
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
-                    if (args.length < 1) return reply('Falta agregar el número de celular.')
+                    if (!botAdmin) return reply(mess.only.Badmin)
+                    if (args.length < 1) return reply(`*Falta agregar el número de celular.*\n\n*Por ejemplo:     ${prefix + command} 51963324153*`)
                     num = `${args[0].replace(/ /g, '')}@s.whatsapp.net`
                     nexus.groupAdd(from, [num])
-                    
+        
                 break
 
                 case 'clearall':
