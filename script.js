@@ -598,7 +598,7 @@ async function starts() {
                     if (sender.split("@")[0] != owner) return reply("Command only for owner bot")
                     list_chat = await nexus.chats.all()
                     for (let chat of list_chat) {
-                        nexus.modifyChat(chat.jid, ChatModification.delete)
+                        nexus.modifyChat(chat.jid, 'delete')
                     }
                     reply("success clear all chat")
                     break
