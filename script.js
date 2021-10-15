@@ -60,7 +60,7 @@ async function starts() {
     nexus.on('CB:action,,call', async json => {
         const callerId = json[2][0][1].from;
         console.log("Llamada recibida de " + callerId)
-        nexus.sendMessage(callerId, "Las llamadas no están permitidas, *por favor lee las reglas.* Ahora estas bloqueado por el sistema automático de Nexusᴮᴼᵀ.", MessageType.text,
+        nexus.sendMessage(callerId, "Las llamadas no están permitidas, *afectan la estabilidad del Bot.* Ahora estas bloqueado por el sistema automático de Nexusᴮᴼᵀ.", MessageType.text,
             {
                 quoted:
                 {
@@ -91,28 +91,28 @@ async function starts() {
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
                 ini_img = fs.readFileSync(`./src/assistant.jpg`)
-                welcome = `*${ini_user.notify}* - @${num.split('@')[0]}, bienvenido al grupo *${group_info.subject}*.\n\nPara ver todos los comandos de *Nexusᴮᴼᵀ* escribe el siguiente comando:     *${prefix}menu*`
+                welcome = `*${num.split('@')[0]}*, te doy la bienvenida al grupo *${group_info.subject}*.\n\nPara ver todos los comandos de *Nexusᴮᴼᵀ* escribe el siguiente comando:     *${prefix}menu*`
                 await nexus.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welcome })
             }
             
             if (chat.action == 'remove') {
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
-                bye = `😪... *${ini_user.notify}* salió del grupo.\n*No le deseo el mal, pero tampoco el bien…* 👋`
+                bye = `😪... *${num.split('@')[0]}* salió del grupo.\n*No le deseo el mal, pero tampoco el bien…* 👋`
                 await nexus.sendMessage(chat.jid, bye, MessageType.text)    
             }
 
             if (chat.action == 'promote') {
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
-                promote = `*${ini_user.notify}* 🥳\n\n *¡FELICIDADES!*, te has convertido en administrador del grupo *${group_info.subject}.*`
+                promote = `*${num.split('@')[0]}* 🥳\n\n *¡FELICIDADES!*, te has convertido en administrador del grupo *${group_info.subject}.*`
                 await nexus.sendMessage(chat.jid, promote, MessageType.text)    
             }
 
             if (chat.action == 'demote') {
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
-                demote = `*${ini_user.notify}* 😪\n\n *Malas noticias*, ya no eres admnistrador del grupo *${group_info.subject}.*`
+                demote = `*${num.split('@')[0]}* 😪\n\n *Malas noticias*, ya no eres admnistrador del grupo *${group_info.subject}.*`
                 let buff = await getBuffer(ppimg)
                 await nexus.sendMessage(chat.jid, demote, MessageType.text)   
             }
@@ -346,8 +346,7 @@ async function starts() {
                         num = `${args[0].replace(/ /g, '')}@s.whatsapp.net`
                         nexus.groupAdd(from, [num])
                     } catch (e) {
-                        console.log('Error:', e)
-                        return nexus.sendMessage(from, 'Modo privado.', MessageType.text)
+                        reply(mess.error)
                     }
                 break
 
