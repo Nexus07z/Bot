@@ -324,7 +324,7 @@ async function starts() {
                 nsfw: `𝗟𝗼 𝘀𝗶𝗲𝗻𝘁𝗼 𝗽𝗲𝗿𝗼 𝗻𝗼 𝗽𝘂𝗲𝗱𝗼 𝗲𝗷𝗲𝗰𝘂𝘁𝗮𝗿 𝗲𝘀𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼, 𝗲𝘀𝘁𝗲 𝗴𝗿𝘂𝗽𝗼 𝗻𝗼 𝗽𝗲𝗿𝗺𝗶𝘁𝗲 𝗰𝗼𝗻𝘁𝗲𝗻𝗶𝗱𝗼 +𝟭𝟴\n*PARA ACTIVAR LOS COMANDOS +18, USA:* ${prefix}+18 1`,
                 error: '*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*',
                 only: {
-                    group: '[❗] ¡Este comando solo se puede usar en grupos! ❌',
+                    group: '[❗] *¡Este comando solo se puede usar en grupos!*',
                     benned: '⚠ *USTED ES UN USUARIO BANEADO, ESO QUIERE DECIR QUE NO PUEDE USAR EL BOT* ⚠',
                     ownerG: '[❗] ¡Este comando solo puede ser utilizado por el creador del grupo! ❌',
                     ownerB: '[❗] *¡Este comando solo puede ser utilizado por el creador del bot!*',
