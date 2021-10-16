@@ -404,7 +404,7 @@ async function starts() {
                     await FakeTokoForwarded(from, `*Adios...*`, '')
                     await sleep(5000)
                     nexus.groupRemove(from, mentionUser)
-                       
+
                 break
 
                 case 'entrabot':
@@ -443,15 +443,15 @@ async function starts() {
                     if (!isAdmin) return await reply(mess.only.admin)
                     if (!botAdmin) return await reply(mess.only.Badmin)
                     if (args[0] === 'abrir') {
-                        samu330.groupSettingChange(from, GroupSettingChange.messageSend, false).then(() => {
+                        nexus.groupSettingChange(from, GroupSettingChange.messageSend, false).then(() => {
                             sendFakeStatus(from, "*Grupo abierto.*", "GROUP SETTING")
                         })
                     } else if (args[0] === 'cerrar') {
-                        samu330.groupSettingChange(from, GroupSettingChange.messageSend, true).then(() => {
+                        nexus.groupSettingChange(from, GroupSettingChange.messageSend, true).then(() => {
                             sendFakeStatus(from, "*Grupo cerrado.*", "GROUP SETTING")
                         })
                     } else {
-                        await reply(`Ejemplo:     ${prefix}${command} abrir/cerrar`)
+                        await reply(`*Ejemplo:     ${prefix}${command} abrir/cerrar*`)
                     }
                 break
 
