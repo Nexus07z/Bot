@@ -612,19 +612,19 @@ async function starts() {
 
                 case 'chat':
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
-                    if (args.length == 0) return reply(`*Agrega el número y el mensaje.*\n\n*Por ejemplo:\n${prefix + command} 51963324153|Hola*`)
+                    if (args.length == 0) return reply(`*Agrega el número y el mensaje.*\n\n*Por ejemplo:*\n*${prefix + command} 51963324153|Hola*`)
                     var pc = budy.slice(6)
                     var nomor = pc.split("|")[0];
                     var org = pc.split("|")[1];
-                    if (!nomor) return reply(`*Falta el número.*\n\n*Ejemplo:\n${prefix + command} 51963324153|Hola*`)
-                    if (!org) return reply(`*Falta el mensaje.*\n\n*Ejemplo:\n${prefix + command} 51963324153|Hola*`)
+                    if (!nomor) return reply(`*Falta el número.*\n\n*Ejemplo:     ${prefix + command} 51963324153|Hola*`)
+                    if (!org) return reply(`*Falta el mensaje.*\n\n*Ejemplo:     ${prefix + command} 51963324153|Hola*`)
                     nexus.sendMessage(nomor + '@s.whatsapp.net', org, MessageType.text)
                     reply(`*El memsaje:* ${org} *Se envio a:* ${nomor}`)
 				break
 
                 case 'chatbot':
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
-                    if (args.length == 0) return reply(`*Agrega el número y el mensaje.*\n\n*Por ejemplo:\n${prefix + command} 51963324153|Hola*`)
+                    if (args.length == 0) return reply(`*Agrega el número y el mensaje.*\n\n*Por ejemplo:*\n*${prefix + command} 51963324153|Hola*`)
                     var pc = budy.slice(6)
                     var nomor = pc.split("|")[0];
                     var org = pc.split("|")[1];
