@@ -92,7 +92,7 @@ async function starts() {
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
                 ini_img = fs.readFileSync(`./src/assistant.jpg`)
-                welcome = `*${num.split('@')[0]}*, te doy la bienvenida al grupo *${group_info.subject}*.\n\nPara ver todos los comandos de *Nexusᴮᴼᵀ* escribe el siguiente comando:     *${prefix}menu*`
+                welcome = `*${num.split('@')[0]}*, te doy la bienvenida al grupo *${group_info.subject}*.\n\n*Por favor lee mis reglas:* \n${prefix}reglas\n\nPara ver todos los comandos de *Nexusᴮᴼᵀ* escribe el siguiente comando:     *${prefix}menu*`
                 await nexus.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welcome })
             }
             
