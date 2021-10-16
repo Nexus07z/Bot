@@ -609,6 +609,15 @@ async function starts() {
                     })
 
 				break
+
+                case 'chat':
+                    if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
+                    var pc = budy.slice(6)
+                    var nomor = pc.split("|")[0];
+                    var org = pc.split("|")[1];
+                    nexus.sendMessage(nomor + '@s.whatsapp.net', org, MessageType.text)
+                    reply(`*El memsaje:* ${org} *Se envio a:* ${nomor}`)
+				break
                 
                 case '+18':
 
