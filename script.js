@@ -256,6 +256,16 @@ async function starts() {
                 
             }
 
+            async function sendKontak(from, nomor, nama) {
+
+                var punya_wa = "0@s.whatsapp.net"
+
+                const vcard = 'BEGIN:VCARD\n' + 'VERSION:3.0\n' + 'FN:' + nama + '\n' + 'ORG:Contacto\n' + 'TEL;type=CELL;type=VOICE;waid=' + nomor + ':+' + nomor + '\n' + 'END:VCARD'
+              
+                await nexus.sendMessage(from, {displayname: nama, vcard: vcard}, MessageType.contact)
+                
+            }
+
             colors = ['red', 'white', 'black', 'blue', 'yellow', 'green', 'aqua']
             const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
             const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
@@ -453,6 +463,45 @@ async function starts() {
                     } else {
                         await reply(`*Ejemplo:     ${prefix}${command} abrir/cerrar*`)
                     }
+                break
+
+                case 'contacto':
+                    
+                    argz = arg.split('|')
+                    if (!argz) return reply(`Usa ${prefix}contacto @(tag/número)|nombre`)
+                    if (nex.message.extendedTextMessage != undefined) {
+                        mentioned = nex.message.extendedTextMessage.contextInfo.mentionedJid
+                        sendKontak(from, mentioned[0].split('@')[0], argz[1])
+                    } else {
+                        sendKontak(from, argz[0], argz[1])
+                    }
+
+                break
+                
+                case 'setnombre':
+
+                    if (!isGroup) return await reply(mess.only.group)
+                    if (!isAdmin) return await reply(mess.only.admin)
+                    if (!botAdmin) return await reply(mess.only.Badmin)
+                    if (args.length < 1) return reply('*Escribe un nombre.*')
+                    var newName = args.join(" ")
+                    nexus.groupUpdateSubject(from, newName).then(() => {
+                        sendFakeStatus(from, "El nombre del grupo se ha cambiado a: " + newName, "GROUP SETTING")
+                    })
+                    
+                break
+
+                case 'setdesc':
+
+                    if (!isGroup) return await reply(mess.only.group)
+                    if (!isAdmin) return await reply(mess.only.admin)
+                    if (!botAdmin) return await reply(mess.only.Badmin)
+                    if (args.length < 1) return reply('*Escribe una descripción.*')
+                    var newDesc = args.join(" ")
+                    nexus.groupUpdateDescription(from, newDesc).then(() => {
+                        sendFakeStatus(from, "La descripción del grupo se ha cambiado a: " + newDesc, "GROUP SETTING")
+                    })
+
                 break
 
                 case 'salir':
