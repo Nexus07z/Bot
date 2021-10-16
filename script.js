@@ -466,7 +466,7 @@ async function starts() {
                 break
 
                 case 'reglas':
-				reply(`*Hola, estas son las reglas que debes seguir para que no tengas ningún problema con el Bot.*\n\n1- _Mantén una conducta respetuosa._\n\n2- _Evita abrir una conversación privada con el Bot._\n\n3- _❌ SPAM DE COMANDOS ❌_ \n*Esto es enserio, puedes hacer que el Bot se apague.*\n\n4- _📵 NO HAGAS LLAMADAS POR WHATSAPP AL BOT 📵_ \n*Serás bloqueado inmediatamente*\n\n5- _🕐 Espera el tiempo necesario cuando pidas alguna función, ya que algunas tardan en realizarse, no escribas el comando nuevamente hasta que el BOT te responda o te llegue un mensaje de error._\n\nPor favor cumple y respeta las reglas.`)
+				reply(`*Hola, estas son las reglas que debes seguir para que no tengas ningún problema con el Bot.*\n\n1- _Mantén una conducta respetuosa._\n\n2- _Evita abrir una conversación privada con el Bot._\n\n3- _❌ SPAM DE COMANDOS ❌_ \n*Esto es enserio, puedes hacer que el Bot se apague.*\n\n4- _📵 NO HAGAS LLAMADAS POR WHATSAPP AL BOT 📵_ \n*Serás bloqueado inmediatamente.*\n\n5- _🕐 Espera el tiempo necesario cuando pidas alguna función, ya que algunas tardan en realizarse, no escribas el comando nuevamente hasta que el BOT te responda o te llegue un mensaje de error._\n\nPor favor cumple y respeta las reglas.`)
 				break
 
                 case 'grupo':
@@ -581,7 +581,7 @@ async function starts() {
                 case 'apagar':
 
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
-                    reply('*Nexusᴮᴼᵀ esta desactivado*')
+                    reply('*Nexusᴮᴼᵀ esta desactivado.*')
                     setTimeout(() => {
                         nexus.close()
                     }, 3000)
@@ -594,7 +594,7 @@ async function starts() {
                     reply('*Nexusᴮᴼᵀ esta recibiendo nuevas actualizaciones.*')
                     exec(`bash update.sh`, (err, stdout) => {
                         if (err) return reply(mess.error)
-                        if (stdout) reply(`*Nexusᴮᴼᵀ se actualizó correctamente.*\n\n*Informe de la actualización:*\n\n${stdout}\n\nLos cambios serán reflejados la próxima vez que inicie el bot.`)
+                        if (stdout) reply(`*Nexusᴮᴼᵀ se actualizó correctamente.*\n\n*Informe de la actualización:*\n\n${stdout}\n\n*Los cambios serán reflejados la próxima vez que inicie el Bot.*`)
                     })
 
 				break
@@ -630,7 +630,7 @@ async function starts() {
                     txt2 = a.substring(a.lastIndexOf('|') + 1)
                     if (!txt1) return reply(`*Te falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
                     if (!txt2) return reply(`*Te falta agregar el nombre.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
-                    nexus.sendMessage(txt1 + '@s.whatsapp.net', "*¡Hola* *" + txt2 + "!*\n\nSoy *Nexusᴮᴼᵀ*, un programa creado por *Smith* con el número *963324153.*\n\nTengo una gran cantidad de *comandos* que pueden resultarte útiles, trata de usarlos con mucha discreción.\n\nPor favor lee mis reglas.\n\n*" + prefix + "reglas*\n\nUtiliza el comando *" + prefix + "menu* para ver la lista de comandos.", MessageType.text, {
+                    nexus.sendMessage(txt1 + '@s.whatsapp.net', "*¡Hola* *" + txt2 + "!*\n\nSoy *Nexusᴮᴼᵀ*, un programa creado por *Smith* con el número *51963324153.*\n\nTengo una gran cantidad de *comandos* que pueden resultarte útiles, trata de usarlos con mucha discreción.\n\nPor favor lee mis reglas.\n\n*" + prefix + "reglas*\n\nUtiliza el comando *" + prefix + "menu* para ver la lista de comandos.", MessageType.text, {
                         quoted:
                         {
                             key: {
@@ -650,16 +650,16 @@ async function starts() {
                     if (!isGroup) return reply(mess.only.group)
                     if (!isAdmin) return reply(mess.only.admin)
                     if (isNsfw && args.length < 1) return reply('*El contenido +18 está activo.*')
-                    if (args.length < 1) return reply(`Escribe *[1]* para activar, *[0]* para desactivar.\n\n*Por ejemplo:     ${prefix + command} 1*`)
+                    if (args.length < 1) return reply(`*Escribe [1] para activar, [0] para desactivar.*\n\n*Por ejemplo:     ${prefix + command} 1*`)
                     if (args[0] === '1') {
                         nsfw.push(from)
                         fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
-                        reply(`Contenido +18 *[ Activado ]*`)
+                        reply(`*Contenido +18* *[ Activado ]*`)
                     } else if (args[0] === '0') {
                         var ini = nsfw.indexOf(from)
                         nsfw.splice(ini, 1)
                         fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
-                        reply(`Contenido +18 *[ Desactivado ]*`)
+                        reply(`*Contenido +18* *[ Desactivado ]*`)
                     } else {
                         reply(`Escribe *[1]* para activar, *[0]* para desactivar.\n\n*Por ejemplo:     ${prefix + command} 1*`)
                     }
