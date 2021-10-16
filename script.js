@@ -401,18 +401,19 @@ async function starts() {
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
                     if (!botAdmin) return reply(mess.only.Badmin)
                     if (nex.message.extendedTextMessage != undefined) {
+                    if (!mentioned) return reply(`*Debes agregar el tag del usuario.*\n\n*Por ejemplo:     ${prefix + command} @usuario.*`)
+                        
                         mentioned = nex.message.extendedTextMessage.contextInfo.mentionedJid
                            if (mentionUser.length == 1)
-                            await FakeTokoForwarded(from, `*Adios..1.*`, '')
+                            await FakeTokoForwarded(from, `*Adios...*`, '')
                             await sleep(5000)
                             nexus.groupRemove(from, mentionUser)
 
                         } else {
-                            await FakeTokoForwarded(from, `*Adios...2*`, '')
+                            await FakeTokoForwarded(from, `*Adios...*`, '')
                             await sleep(5000)
                             nexus.groupRemove(from, mentioned)
                         }
-                        if (!mentioned) return reply(`*Debes agregar el tag del usuario.*\n\n*Por ejemplo:     ${prefix + command} @usuario*\nTambién puedes etiquetar un mensaje del usuario a eliminar.`)
                         
                      
                 break
