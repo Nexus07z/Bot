@@ -141,7 +141,7 @@ async function starts() {
             const insom = from.endsWith('@g.us')
             const nameReq = insom ? nex.participant : nex.key.remoteJid
             pushname2 = nexus.contacts[nameReq] != undefined ? nexus.contacts[nameReq].vname || nexus.contacts[nameReq].notify : undefined
-            chats = (type === 'conversation') ? sam.message.conversation : (type === 'extendedTextMessage') ? sam.message.extendedTextMessage.text : ''
+            chats = (type === 'conversation') ? nex.message.conversation : (type === 'extendedTextMessage') ? nex.message.extendedTextMessage.text : ''
 
             const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 
