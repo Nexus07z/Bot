@@ -450,7 +450,7 @@ async function starts() {
                 break
 
                 case 'reglas':
-				reply(`*Hola, estas son las reglas que debes seguir para que no tengas ningún problema con el Bot.*\n\n1- _Mantén una conducta respetuosa._\n2- _Evita abrir una conversación privada con el Bot._\n3- _❌ NO HAGAS SPAM DE COMANDOS ❌_ *Esto es enserio, puedes hacer que el Bot se apague.*\n4- _📵 NO HAGAS LLAMADAS POR WHATSAPP AL BOT 📵_ *Serás bloqueado inmediatamente*\n5- _🕐 Espera el tiempo necesario cuando pidas alguna función, ya que algunas tardan en realizarse, no escribas el comando nuevamente hasta que el BOT te responda o te llegue un mensaje de error._\n\nPor favor cumple y respeta las reglas.`)
+				reply(`*Hola, estas son las reglas que debes seguir para que no tengas ningún problema con el Bot.*\n\n1- _Mantén una conducta respetuosa._\n\n2- _Evita abrir una conversación privada con el Bot._\n\n3- _❌ SPAM DE COMANDOS ❌_ \n*Esto es enserio, puedes hacer que el Bot se apague.*\n\n4- _📵 NO HAGAS LLAMADAS POR WHATSAPP AL BOT 📵_ \n*Serás bloqueado inmediatamente*\n\n5- _🕐 Espera el tiempo necesario cuando pidas alguna función, ya que algunas tardan en realizarse, no escribas el comando nuevamente hasta que el BOT te responda o te llegue un mensaje de error._\n\nPor favor cumple y respeta las reglas.`)
 				break
 
                 case 'grupo':
@@ -584,12 +584,14 @@ async function starts() {
 				break
 
                 case 'resetear':
+
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
                     reply('*Nexusᴮᴼᵀ se puede utilizar en otro dispositivo.*')
                     exec(`bash restore.sh`, (err, stdout) => {
                         if (err) return reply(mess.error)
                         if (stdout) reply(stdout)
                     })
+
 				break
                 
                 case '+18':
