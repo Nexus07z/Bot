@@ -117,7 +117,6 @@ async function starts() {
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
                 demote = `*${num.split('@')[0]}* 😪\n\n *Malas noticias*, ya no eres admnistrador del grupo *${group_info.subject}.*`
-                let buff = await getBuffer(ppimg)
                 await nexus.sendMessage(chat.jid, demote, MessageType.text)   
             }
             
@@ -579,14 +578,14 @@ async function starts() {
                     reply('*Nexusᴮᴼᵀ esta recibiendo nuevas actualizaciones.*')
                     exec(`bash update.sh`, (err, stdout) => {
                         if (err) return reply(mess.error)
-                        if (stdout) reply(`*Nexusᴮᴼᵀ se ah actualizado de forma satisfactoria*\n Informe de la actualización:\n\n${stdout}\n\nLos cambios serán reflejados la próxima vez que inicie el bot.`)
+                        if (stdout) reply(`*Nexusᴮᴼᵀ se actualizó correctamente.*\n\n*Informe de la actualización:*\n\n${stdout}\n\nLos cambios serán reflejados la próxima vez que inicie el bot.`)
                     })
 
 				break
 
                 case 'resetear':
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
-                    reply('*Nexusᴮᴼᵀ se puede utilizar en otro dispositivo*')
+                    reply('*Nexusᴮᴼᵀ se puede utilizar en otro dispositivo.*')
                     exec(`bash restore.sh`, (err, stdout) => {
                         if (err) return reply(mess.error)
                         if (stdout) reply(stdout)
@@ -628,12 +627,6 @@ async function starts() {
                     Menu = `
 ╭─ *INICIO LISTA DE MENUS*
 │
-├ *${prefix}menu1* (Comandos Multimedia)
-├ *${prefix}menu2* (Comandos de Sticker)
-├ *${prefix}menu3* (Comandos de Descargas)
-├ *${prefix}menu4* (Comandos Convertidor)
-├ *${prefix}menu5* (Comandos Creaciones)
-├ *${prefix}menu6* (Comandos Entretenimiento)
 ├ *${prefix}menu9* (Generador Text Pro Me)
 ├ *${prefix}menu10* (Generador Photo Oxy)
 ├ *${prefix}menu11* (Generador Ephoto 360)
