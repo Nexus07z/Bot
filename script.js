@@ -450,7 +450,7 @@ async function starts() {
                         json:["action", "invite", `${args[0].replace('https://chat.whatsapp.com/','')}`]
                     })
                     reply('*Ya entre al grupo.* 😉')
-                    nexus.sendMessage(id, `*¡Hola!* \nMe han designado como *BOT* para este grupo.🤖\n\n*Por favor lee mis reglas:* \n${prefix}reglas\n\nPor favor síguelas o atente a las consecuencias. ⚠\n*Quedo a su disposición.*`, MessageType.text, {
+                    nexus.sendMessage(id, `*¡Hola!* \nMe han designado como *BOT* para este grupo.🤖\n\n*Por favor lee mis reglas:* \n\n${prefix}reglas\n\nPor favor síguelas o atente a las consecuencias. ⚠\n\n*Para ver todos los comandos escribe el siguiente comando:*\n\n${prefix}menu`, MessageType.text, {
                         quoted:
                         {
                             key: {
