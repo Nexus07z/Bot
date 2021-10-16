@@ -622,17 +622,16 @@ async function starts() {
                     reply(`*El mensaje:* ${chatmsg} *Se envio al número:* ${chatnum}`)
 				break
 
-                case 'chatbot':
+                case 'chatb':
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
-                    if (args.length == 0) return reply(`*Te falta agregar el número y el nombre.*\n\n*Por ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
-                    var pc = budy.slice(6)
-                    var nomor = pc.split("|")[0];
-                    var org = pc.split("|")[1];
-                    if (!nomor) return reply(`*Te falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
-                    if (!org) return reply(`*Te falta agregar el nombre.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
-                    //const chatbotmsg = "*¡Hola!*\n\nSoy *Nexusᴮᴼᵀ*, creado por *Smith* con el número *51963324153.*\n\nTengo una gran cantidad de comandos que pueden resultarte útiles.\n\nPor favor lee mis reglas:\n\n*${prefix}reglas*\n\nUtiliza el comando *${prefix}menu* para ver la lista de comandos."
-                    nexus.sendMessage(nomor + '@s.whatsapp.net', org, MessageType.text)
-                    reply(`*El mensaje ChatBot se envio al número:* ${nomor}`)
+                    if (args.length == 0) return reply(`*Te falta agregar el número y el mensaje.*\n\n*Por ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
+                    var chatb = budy.slice(6)
+                    var chatbnum = chatb.split("|")[0];
+                    var chatbmsg = chatb.split("|")[1];
+                    if (!chatbnum) return reply(`*Te falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
+                    if (!chatbmsg) return reply(`*Te falta agregar el mensaje.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
+                    nexus.sendMessage(chatnum + '@s.whatsapp.net', chatbmsg, MessageType.text)
+                    reply(`*El mensaje:* ${chatbmsg} *Se envio al número:* ${chatbnum}`)
 				break
                 
                 case '+18':
