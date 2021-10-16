@@ -235,7 +235,7 @@ async function starts() {
                 await nexus.sendMessage(from, text, MessageType.text, ini_csstatus)
             }
 
-            async function FakeTokoForwarded(from, text, fake) {
+            async function FakeTokoForwarded(from, teks, fake) {
 
                 var punya_wa = "0@s.whatsapp.net"
 
@@ -252,7 +252,7 @@ async function starts() {
                         }
                     }
                 }
-                await nexus.sendMessage(from, text, MessageType.text, ini_csFakeTokoForwarded)
+                await nexus.sendMessage(from, teks, MessageType.text, ini_csFakeTokoForwarded)
                 
             }
 
