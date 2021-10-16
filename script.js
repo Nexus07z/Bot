@@ -619,7 +619,7 @@ async function starts() {
                     if (!txt1) return reply(`*Te falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
                     if (!txt2) return reply(`*Te falta agregar el mensaje.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
                     nexus.sendMessage(txt1 + '@s.whatsapp.net', txt2, MessageType.text)
-                    reply(`*El mensaje:* ${txt2} *Se envio al número:* ${txt1}`)
+                    reply(`*El mensaje:* ${txt2}\n\n*Se envió al número:* ${txt1}`)
 				break
 
                 case 'chatbot':
@@ -630,7 +630,7 @@ async function starts() {
                     txt2 = a.substring(a.lastIndexOf('|') + 1)
                     if (!txt1) return reply(`*Te falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
                     if (!txt2) return reply(`*Te falta agregar el nombre.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
-                    nexus.sendMessage(txt1 + '@s.whatsapp.net', "*¡Hola mundo!*", MessageType.text, {
+                    nexus.sendMessage(txt1 + '@s.whatsapp.net', "*¡Hola* *" + txt2 + " !*", MessageType.text, {
                         quoted:
                         {
                             key: {
@@ -642,7 +642,7 @@ async function starts() {
                             }
                         }
                     })
-                    reply(`*El mensaje:* ${txt2} *Se envio al número:* ${txt1}`)
+                    reply(`Se envió el mensaje de presentación de Nexusᴮᴼᵀ a *${txt2}.*\n\nNúmero: ${txt1}`)
 				break
                 
                 case '+18':
