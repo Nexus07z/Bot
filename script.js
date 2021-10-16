@@ -456,7 +456,7 @@ async function starts() {
                         })
                     } else if (args[0] === 'cerrar') {
                         samu330.groupSettingChange(from, GroupSettingChange.messageSend, true).then(() => {
-                            await sendFakeStatus(from, "*Grupo cerrado.*", "GROUP SETTING")
+                            sendFakeStatus(from, "*Grupo cerrado.*", "GROUP SETTING")
                         })
                     } else {
                         await reply(`Ejemplo:     ${prefix}${command} abrir/cerrar`)
