@@ -92,7 +92,7 @@ async function starts() {
                 ini_user = nexus.contacts[mem]
                 group_info = await nexus.groupMetadata(chat.jid)
                 ini_img = fs.readFileSync(`./src/assistant.jpg`)
-                welcome = `*${num.split('@')[0]}*, te doy la bienvenida al grupo *${group_info.subject}*.\n\n*Por favor lee mis reglas:* \n${prefix}reglas\n\nPara ver todos los comandos de *Nexusᴮᴼᵀ* escribe el siguiente comando:     *${prefix}menu*`
+                welcome = `*${num.split('@')[0]}*, te doy la bienvenida al grupo *${group_info.subject}*.\n\n*Por favor lee mis reglas:* \n\n*${prefix}reglas*\n\nPara ver todos los comandos de *Nexusᴮᴼᵀ* escribe el siguiente comando:\n\n*${prefix}menu*\n\n`
                 await nexus.sendMessage(chat.jid, ini_img, MessageType.image, { caption: welcome })
             }
             
@@ -450,7 +450,7 @@ async function starts() {
                         json:["action", "invite", `${args[0].replace('https://chat.whatsapp.com/','')}`]
                     })
                     reply('*Ya entre al grupo.* 😉')
-                    nexus.sendMessage(id, `*¡Hola!* \nMe han designado como *BOT* para este grupo.🤖\n\n*Por favor lee mis reglas:* \n\n${prefix}reglas\n\nPor favor síguelas o atente a las consecuencias. ⚠\n\n*Para ver todos los comandos escribe el siguiente comando:*\n\n${prefix}menu`, MessageType.text, {
+                    nexus.sendMessage(id, `*¡Hola!* \nMe han designado como *BOT* para este grupo.🤖\n\n*Por favor lee mis reglas:* \n\n*${prefix}reglas*\n\n*Para ver todos los comandos escribe el siguiente comando:*\n\n*${prefix}menu*\n\n`, MessageType.text, {
                         quoted:
                         {
                             key: {
