@@ -403,16 +403,17 @@ async function starts() {
                     if (nex.message.extendedTextMessage != undefined) {
                         mentioned = nex.message.extendedTextMessage.contextInfo.mentionedJid
                         if (!mentioned) return reply(`*Debes agregar el tag del usuario.*\n\n*Por ejemplo:     ${prefix + command} @usuario*\nTambién puedes etiquetar un mensaje del usuario a eliminar.`)
-                        await FakeTokoForwarded(from, `*Adios..1.*`, '')
-                        await sleep(5000)
-                        if (mentionUser.length == 1)
-                            nexus.groupRemove(from, mentionUser)
                         
-                    } else {
-                        await FakeTokoForwarded(from, `*Adios...2*`, '')
-                        await sleep(5000)
-                        nexus.groupRemove(from, mentioned)
-                    }
+                        if (mentionUser.length == 1)
+                            await FakeTokoForwarded(from, `*Adios..1.*`, '')
+                            await sleep(5000)
+                            nexus.groupRemove(from, mentionUser)
+                            
+                        } else {
+                            await FakeTokoForwarded(from, `*Adios...2*`, '')
+                            await sleep(5000)
+                            nexus.groupRemove(from, mentioned)
+                        }
                 break
 
                 case 'entrabot':
