@@ -401,9 +401,8 @@ async function starts() {
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
                     if (!botAdmin) return reply(mess.only.Badmin)
                     if (nex.message.extendedTextMessage != undefined) {
+                    mentioned = nex.message.extendedTextMessage.contextInfo.mentionedJid
                     if (!mentioned) return reply(`*Debes agregar el tag del usuario.*\n\n*Por ejemplo:     ${prefix + command} @usuario.*`)
-                        
-                        mentioned = nex.message.extendedTextMessage.contextInfo.mentionedJid
                            if (mentionUser.length == 1)
                             await FakeTokoForwarded(from, `*Adios...*`, '')
                             await sleep(5000)
