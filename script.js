@@ -436,10 +436,10 @@ async function starts() {
                 case 'salir':
                     
                     if (!isGroup) return await reply(mess.only.group)
-                    reply(`Nexusᴮᴼᵀ ya no estara disponible en este grupo.`).then(async () => {
+                    reply(`Nexusᴮᴼᵀ ya no estara disponible en este grupo.`)
                         await help.sleep(3000)
                         await nexus.groupLeave(from)
-                    })
+                    
                 break
 
                 case '+18':
