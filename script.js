@@ -213,6 +213,26 @@ async function starts() {
                 await nexus.sendMessage(from, teks, text, ini_cstoko)
             }
 
+            async function sendFakeStatus(from, text, mentioned = []) {
+                var punya_wa = "0@s.whatsapp.net"
+                var ini_buffer = await getBuffer(url_image)
+                const ini_csstatus = {
+                    contextInfo: {
+                        participant: punya_wa,
+                        remoteJid: 'status@broadcast',
+                        quotedMessage: {
+                            imageMessage: {
+                                caption: 'Sam | Nexusᴮᴼᵀ',
+                                jpegThumbnail: ini_buffer
+                        
+                            }
+                        },
+                        mentionedJid: mentioned
+                    }
+                }
+                await nexus.sendMessage(from, text, MessageType.text, ini_csstatus)
+            }
+
             colors = ['red', 'white', 'black', 'blue', 'yellow', 'green', 'aqua']
             const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
             const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
@@ -378,7 +398,7 @@ async function starts() {
 	
                     const linkgc = await nexus.groupInviteCode(from)
                     const code = "https://chat.whatsapp.com/" + linkgc
-                    await wa.sendFakeStatus(from, code, "El lik de este grupo es: ")
+                    await sendFakeStatus(from, code, "El lik de este grupo es: ")
                     
                 break
 
