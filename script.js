@@ -375,9 +375,24 @@ async function starts() {
                 break
 
                 case 'link':
-				
-                    var link = await wa.getGroupInvitationCode(from)
-                    await wa.sendFakeStatus(from, link, "El lik de este grupo es: ")
+	
+                    const linkgc = await nexus.groupInviteCode(from)
+                    const code = "https://chat.whatsapp.com/" + linkgc
+                    const options = {
+                        contextInfo: {
+                            participant: '0@s.whatsapp.net',
+                            remoteJid: 'status@broadcast',
+                            quotedMessage: {
+                                imageMessage: {
+                                    caption: 'Sam | Nexusᴮᴼᵀ',
+                                    jpegThumbnail: bufferFakeReply
+                                }
+                            },
+                            mentionedJid: "El lik de este grupo es: "
+                        }
+                    }
+                    await nexus.sendMessage(from, code, MessageType.text, options)
+                    
 			    
                 break
 
