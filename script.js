@@ -450,7 +450,7 @@ async function starts() {
                         json:["action", "invite", `${args[0].replace('https://chat.whatsapp.com/','')}`]
                     })
                     reply('*Ya entre al grupo.* 😉')
-                    nexus.sendMessage(id, `*¡Hola!* \nMe han designado como *BOT* para este grupo.🤖\n\n*Por favor lee mis reglas:* \n${prefix}reglas\n\nPor favor síguelas o atente a las consecuencias. ⚠\n*Quedo a su disposición.*`, MessageType.text, {
+                    nexus.sendMessage(id, `*¡Hola!* \nMe han designado como *BOT* para este grupo.🤖\n\n*Por favor lee mis reglas:* \n${prefix}reglas\n\nPor favor síguelas o atente a las consecuencias. ⚠\n*Quedo a su disposición.*\n\nPara ver todos los comandos de *Nexusᴮᴼᵀ* escribe el siguiente comando:     *${prefix}menu*`, MessageType.text, {
                         quoted:
                         {
                             key: {
@@ -488,10 +488,10 @@ async function starts() {
 
                 case 'contacto':
                     
-                    if (args.length == 0) return reply(`*Agrega el tag/número y el nombre.*\n\n*Por ejemplo:\n${prefix + command} @(tag/número)|nombre*`)
+                    if (args.length == 0) return reply(`*Agrega el tag/número y el nombre.*\n\n*Por ejemplo:*\n*${prefix + command} @(tag/número)|nombre*`)
                     argz = arg.split('|')
-                    if (!argz[0]) return reply(`*Falta el tag/número.*\n\n*Ejemplo:\n${prefix + command} @(tag/número)|nombre*`)
-                    if (!argz[1]) return reply(`*Falta el nombre.*\n\n*Ejemplo:\n${prefix + command} @(tag/número)|nombre*`)
+                    if (!argz[0]) return reply(`*Falta el tag/número.*\n\n*Ejemplo:*\n*${prefix + command} @(tag/número)|nombre*`)
+                    if (!argz[1]) return reply(`*Falta el nombre.*\n\n*Ejemplo:*\n*${prefix + command} @(tag/número)|nombre*`)
                     
                     if (nex.message.extendedTextMessage != undefined) {
                         mentioned = nex.message.extendedTextMessage.contextInfo.mentionedJid
@@ -532,7 +532,7 @@ async function starts() {
 
                     if (!isGroup) return reply(mess.only.group)
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
-                    reply(`*Nexusᴮᴼᵀ* ya no estara disponible en este grupo.`)
+                    reply(`*Nexusᴮᴼᵀ ya no estara disponible en este grupo.*`)
                     await sleep(3000)
                     await nexus.groupLeave(from)
                     
