@@ -222,7 +222,7 @@ async function starts() {
                         remoteJid: 'status@broadcast',
                         quotedMessage: {
                             imageMessage: {
-                                caption: 'Sam | Nexusᴮᴼᵀ',
+                                caption: 'Nexusᴮᴼᵀ',
 
                                 jpegThumbnail: fs.readFileSync('./src/assistant.jpg') 
                         
@@ -396,11 +396,50 @@ async function starts() {
                 break
 
                 case 'link':
-	
+                    
+                    if (!isGroup) return reply(mess.only.group)
                     const linkgc = await nexus.groupInviteCode(from)
                     const code = "https://chat.whatsapp.com/" + linkgc
                     await sendFakeStatus(from, code, "El lik de este grupo es: ")
                     
+                break
+
+                case 'entrabot':
+
+                    linkgp = args.join(' ')
+                    if (!linkgp) return reply('Falta el link del grupo.')
+                    if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) return reply('*Este no es un link de WhatsApp...*')
+                    var eb = q.split('https://chat.whatsapp.com/')[1]
+                    var { id } = await nexus.query({ 
+                    json: ["query", "invite", eb],
+                    expect200:true })
+
+                    nexus.query({
+                        json:["action", "invite", `${args[0].replace('https://chat.whatsapp.com/','')}`]
+                    })
+                    reply('Ya entre al grupo. 😉')
+                    nexus.sendMessage(id, `*¡Hola!* \nSoy Sam, me han designado como *BOT* para este grupo.🤖\n\n*Por favor lee mis reglas:* \n${prefix}reglas\n\nPor favor síguelas o atente a las consecuencias. ⚠\n*Quedo a su disposición, no me hagan sentir mal.... porque yo también tengo sentimientos. 😣*`, MessageType.text, {
+                        quoted:
+                        {
+                            key: {
+                                fromMe: false,
+                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                            },
+                            message: {
+                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                            }
+                        }
+                    })
+
+                break
+
+                case 'salir':
+                    
+                    if (!isGroup) return await reply(mess.only.group)
+                    reply(`Nexusᴮᴼᵀ ya no estara disponible en este grupo.`).then(async () => {
+                        await help.sleep(3000)
+                        await nexus.groupLeave(from)
+                    })
                 break
 
                 case '+18':
