@@ -400,21 +400,11 @@ async function starts() {
                     if (!isGroup) return reply(mess.only.group)
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
                     if (!botAdmin) return reply(mess.only.Badmin)
-                    if (nex.message.extendedTextMessage != undefined) {
-                    mentioned = nex.message.extendedTextMessage.contextInfo.mentionedJid
-                    if (!mentioned) return reply(`*Debes agregar el tag del usuario.*\n\n*Por ejemplo:     ${prefix + command} @usuario.*`)
-                           if (mentionUser.length == 1)
-                            await FakeTokoForwarded(from, `*Adios...*`, '')
-                            await sleep(5000)
-                            nexus.groupRemove(from, mentionUser)
-
-                        } else {
-                            await FakeTokoForwarded(from, `*Adios...*`, '')
-                            await sleep(5000)
-                            nexus.groupRemove(from, mentioned)
-                        }
-                        
-                     
+                    if (args.length < 1) return reply(`*Debes agregar el tag del usuario.*\n\n*Por ejemplo:     ${prefix + command} @usuario.*`)   
+                    await FakeTokoForwarded(from, `*Adios...*`, '')
+                    await sleep(5000)
+                    nexus.groupRemove(from, mentionUser)
+                       
                 break
 
                 case 'entrabot':
