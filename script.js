@@ -177,6 +177,19 @@ async function starts() {
             const isUrl = (ini_url) => {
                 return ini_url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/, 'gi'))
             }
+            const sendFileFromUrl = async (link, type, options) => {
+                hasil = await getBuffer(link)
+                nexus.sendMessage(from, hasil, type, options).catch(e => {
+                    fetch(link).then((hasil) => {
+                        nexus.sendMessage(from, hasil, type, options).catch(e => {
+                            nexus.sendMessage(from, { url: link }, type, options).catch(e => {
+                                reply('[ ! ]\n*Error al descargar el archivo.*')
+                                console.log(e)
+                            })
+                        })
+                    })
+                })
+            }
             const reply = (teks) => {
                 nexus.sendMessage(from, teks, text, { quoted: nex })
             }
@@ -270,7 +283,9 @@ async function starts() {
             colors = ['red', 'white', 'black', 'blue', 'yellow', 'green', 'aqua']
             const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
             const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
+            const isQuotedAudio = type === 'extendedTextMessage' && content.includes('audioMessage')
             const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
+
             const isMedia = isQuotedImage || isQuotedVideo
 
             if (!isGroup && !isCmd) console.log(color(time, "white"), color("[ PRIVATE ]", "aqua"), color(budy, "white"), "from", color(sender.split('@')[0], "yellow"))
@@ -408,6 +423,7 @@ async function starts() {
                 break
 
                 case 'eliminar':
+                    
                     if (!isGroup) return reply(mess.only.group)
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
                     if (!botAdmin) return reply(mess.only.Badmin)
@@ -522,7 +538,7 @@ async function starts() {
                     
                 break
 
-                case 'link':
+                case 'linkgrupo':
                     
                     if (!isGroup) return reply(mess.only.group)
                     const linkgc = await nexus.groupInviteCode(from)
@@ -649,6 +665,62 @@ async function starts() {
                     })
                 break
 
+                case 'menug':
+                    whatsapp = '0@s.whatsapp.net'
+                    nexus.updatePresence(from, Presence.recording)
+                    Menug = `
+╭───「 *Comandos* 」
+│
+├ *${prefix}contacto* [texto]
+├ *${prefix}nuevogrupo* [texto]
+│
+├「 *Grupo-Creador-BotAdmin* 」
+│
+├ *${prefix}autoadm*
+├ *${prefix}añadir* @[Usuario]
+├ *${prefix}eliminar* @[Usuario]
+│
+├「 *Grupo-Creador* 」
+│
+├ *${prefix}entrabot* [Link de grupo]
+├ *${prefix}salir*
+│
+├「 *Grupo-Admin-BotAdmin* 」
+│
+├ *${prefix}grupo* [abrir/cerrar]
+├ *${prefix}setdesc* [texto]
+├ *${prefix}setnombre* [nombre]
+│
+├「 *Grupo* 」
+│
+├ *${prefix}linkgrupo*
+│
+├「 *Grupo-Admin* 」
+│
+├ *${prefix}+18* [1/0]
+│
+├「 *Creador* 」
+│
+├ *${prefix}actualizar*
+├ *${prefix}apagar*
+├ *${prefix}resetear*
+│
+╰───
+`
+                    nexus.sendMessage(from, Menug, text, {
+                        quoted:
+                        {
+                            key: {
+                                fromMe: false,
+                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                            },
+                            message: {
+                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                            }
+                        }
+                    })
+                break
+                
                 case 'menu9':
                     whatsapp = '0@s.whatsapp.net'
                     nexus.updatePresence(from, Presence.recording)
