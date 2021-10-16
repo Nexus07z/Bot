@@ -235,6 +235,27 @@ async function starts() {
                 await nexus.sendMessage(from, text, MessageType.text, ini_csstatus)
             }
 
+            async function FakeTokoForwarded(from, text, fake) {
+
+                var punya_wa = "0@s.whatsapp.net"
+
+                const ini_csFakeTokoForwarded = {
+                    contextInfo: {
+                        fromMe: false,
+                        participant: punya_wa,
+                        remoteJid: 'status@broadcast',
+                        message: {
+                            documentMessage: {
+                                title: 'Nexusᴮᴼᵀ',
+                                jpegThumbnail: fs.readFileSync('./src/assistant.jpg') 
+                            }
+                        }
+                    }
+                }
+                await nexus.sendMessage(from, text, MessageType.text, ini_csFakeTokoForwarded)
+                
+            }
+
             colors = ['red', 'white', 'black', 'blue', 'yellow', 'green', 'aqua']
             const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
             const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
@@ -375,6 +396,92 @@ async function starts() {
         
                 break
 
+                case 'eliminar':
+                    if (!isGroup) return reply(mess.only.group)
+                    if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
+                    if (!botAdmin) return reply(mess.only.Badmin)
+                    if (nex.message.extendedTextMessage != undefined) {
+                        mentioned = nex.message.extendedTextMessage.contextInfo.mentionedJid
+                        if (!mentioned) return reply(`*Debes agregar el tag del usuario.*\n\n*Por ejemplo:     ${prefix + command} @usuario*\nTambién puedes etiquetar un mensaje del usuario a eliminar.`)
+                        await FakeTokoForwarded(from, `*Adios...*`, '')
+                        await sleep(5000)
+                        if (mentionUser.length == 1)
+                            nexus.groupRemove(from, mentionUser)
+                        
+                    } else {
+                        await FakeTokoForwarded(from, `*Adios...*`, '')
+                        await sleep(5000)
+                        nexus.groupRemove(from, mentioned)
+                    }
+                break
+
+                case 'entrabot':
+
+                    if (!isGroup) return reply(mess.only.group)
+                    if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
+                    linkgp = args.join(' ')
+                    if (!linkgp) return reply('*Falta el link del grupo.*')
+                    if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) return reply('*Este no es un link de WhatsApp...*')
+                    var eb = q.split('https://chat.whatsapp.com/')[1]
+                    var { id } = await nexus.query({ 
+                    json: ["query", "invite", eb],
+                    expect200:true })
+
+                    nexus.query({
+                        json:["action", "invite", `${args[0].replace('https://chat.whatsapp.com/','')}`]
+                    })
+                    reply('*Ya entre al grupo.* 😉')
+                    nexus.sendMessage(id, `*¡Hola!* \nMe han designado como *BOT* para este grupo.🤖\n\n*Por favor lee mis reglas:* \n${prefix}reglas\n\nPor favor síguelas o atente a las consecuencias. ⚠\n*Quedo a su disposición.*`, MessageType.text, {
+                        quoted:
+                        {
+                            key: {
+                                fromMe: false,
+                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                            },
+                            message: {
+                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                            }
+                        }
+                    })
+
+                break
+
+                case 'grupo':
+                    if (!isGroup) return await reply(mess.only.group)
+                    if (!isAdmin) return await reply(mess.only.admin)
+                    if (!botAdmin) return await reply(mess.only.Badmin)
+                    if (args[0] === 'abrir') {
+                        samu330.groupSettingChange(from, GroupSettingChange.messageSend, false).then(() => {
+                            sendFakeStatus(from, "*Grupo abierto.*", "GROUP SETTING")
+                        })
+                    } else if (args[0] === 'cerrar') {
+                        samu330.groupSettingChange(from, GroupSettingChange.messageSend, true).then(() => {
+                            await sendFakeStatus(from, "*Grupo cerrado.*", "GROUP SETTING")
+                        })
+                    } else {
+                        await reply(`Ejemplo:     ${prefix}${command} abrir/cerrar`)
+                    }
+                break
+
+                case 'salir':
+
+                    if (!isGroup) return reply(mess.only.group)
+                    if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
+                    reply(`*Nexusᴮᴼᵀ* ya no estara disponible en este grupo.`)
+                    await sleep(3000)
+                    await nexus.groupLeave(from)
+                    
+                break
+
+                case 'link':
+                    
+                    if (!isGroup) return reply(mess.only.group)
+                    const linkgc = await nexus.groupInviteCode(from)
+                    const code = "https://chat.whatsapp.com/" + linkgc
+                    await sendFakeStatus(from, code, "El lik de este grupo es: ")
+                    
+                break
+
                 case 'nuevogrupo':
                 
                     const nombregc = args.join(' ')
@@ -394,54 +501,6 @@ async function starts() {
                         }
                     })
 
-                break
-
-                case 'link':
-                    
-                    if (!isGroup) return reply(mess.only.group)
-                    const linkgc = await nexus.groupInviteCode(from)
-                    const code = "https://chat.whatsapp.com/" + linkgc
-                    await sendFakeStatus(from, code, "El lik de este grupo es: ")
-                    
-                break
-
-                case 'entrabot':
-
-                    linkgp = args.join(' ')
-                    if (!linkgp) return reply('Falta el link del grupo.')
-                    if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) return reply('*Este no es un link de WhatsApp...*')
-                    var eb = q.split('https://chat.whatsapp.com/')[1]
-                    var { id } = await nexus.query({ 
-                    json: ["query", "invite", eb],
-                    expect200:true })
-
-                    nexus.query({
-                        json:["action", "invite", `${args[0].replace('https://chat.whatsapp.com/','')}`]
-                    })
-                    reply('Ya entre al grupo. 😉')
-                    nexus.sendMessage(id, `*¡Hola!* \nSoy Sam, me han designado como *BOT* para este grupo.🤖\n\n*Por favor lee mis reglas:* \n${prefix}reglas\n\nPor favor síguelas o atente a las consecuencias. ⚠\n*Quedo a su disposición, no me hagan sentir mal.... porque yo también tengo sentimientos. 😣*`, MessageType.text, {
-                        quoted:
-                        {
-                            key: {
-                                fromMe: false,
-                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
-                            },
-                            message: {
-                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
-                            }
-                        }
-                    })
-
-                break
-
-                case 'salir':
-
-                    if (!isGroup) return reply(mess.only.group)
-                    if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
-                    reply(`*Nexusᴮᴼᵀ* ya no estara disponible en este grupo.`)
-                    await sleep(3000)
-                    await nexus.groupLeave(from)
-                    
                 break
 
                 case '+18':
