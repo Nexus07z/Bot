@@ -630,9 +630,8 @@ async function starts() {
                     var org = pc.split("|")[1];
                     if (!nomor) return reply(`*Te falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
                     if (!org) return reply(`*Te falta agregar el nombre.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
-                    nexus.sendMessage(nomor + '@s.whatsapp.net', org, MessageType.text)
-                    nexus.sendMessage(nomor, `*¡Hola ${org}!*\n\nSoy *Nexusᴮᴼᵀ*, creado por *Smith* con el número *51963324153.*\n\nTengo una gran cantidad de comandos que pueden resultarte útiles.\n\nPor favor lee mis reglas:\n\n
-                    *${prefix}reglas*\n\nUtiliza el comando *${prefix}menu* para ver la lista de comandos.`, MessageType.text, {
+
+                    nexus.sendMessage(nomor + '@s.whatsapp.net', `*¡Hola ${org}!*\n\nSoy *Nexusᴮᴼᵀ*, creado por *Smith* con el número *51963324153.*\n\nTengo una gran cantidad de comandos que pueden resultarte útiles.\n\nPor favor lee mis reglas:\n\n*${prefix}reglas*\n\nUtiliza el comando *${prefix}menu* para ver la lista de comandos.`, MessageType.text, {
                         quoted:
                         {
                             key: {
