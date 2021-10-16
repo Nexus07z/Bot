@@ -624,14 +624,14 @@ async function starts() {
 
                 case 'chatb':
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
-                    if (args.length == 0) return reply(`*Te falta agregar el número y el mensaje.*\n\n*Por ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
-                    var chatb = budy.slice(6)
-                    var chatbnum = chatb.split("|")[0];
-                    var chatbmsg = chatb.split("|")[1];
-                    if (!chatbnum) return reply(`*Te falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
-                    if (!chatbmsg) return reply(`*Te falta agregar el mensaje.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
-                    nexus.sendMessage(chatnum + '@s.whatsapp.net', chatbmsg, MessageType.text)
-                    reply(`*El mensaje:* ${chatbmsg} *Se envio al número:* ${chatbnum}`)
+                    if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus|Bot*`)
+                    a = args.join(' ')
+                    txt1 = a.substring(0, a.indexOf('|') - 0)
+                    txt2 = a.substring(a.lastIndexOf('|') + 1)
+                    if (!txt1) return reply(`*Falta el primer texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
+                    if (!txt2) return reply(`*Falta el segundo texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
+                    nexus.sendMessage(txt1 + '@s.whatsapp.net', txt2, MessageType.text)
+                    reply(`*El mensaje:* ${txt2} *Se envio al número:* ${txt1}`)
 				break
                 
                 case '+18':
