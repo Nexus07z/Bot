@@ -215,7 +215,7 @@ async function starts() {
 
             async function sendFakeStatus(from, text, mentioned = []) {
                 var punya_wa = "0@s.whatsapp.net"
-                var ini_buffer = await getBuffer(url_image)
+
                 const ini_csstatus = {
                     contextInfo: {
                         participant: punya_wa,
@@ -223,7 +223,8 @@ async function starts() {
                         quotedMessage: {
                             imageMessage: {
                                 caption: 'Sam | Nexusᴮᴼᵀ',
-                                jpegThumbnail: ini_buffer
+
+                                jpegThumbnail: fs.readFileSync('./src/assistant.jpg') 
                         
                             }
                         },
