@@ -469,8 +469,11 @@ async function starts() {
 
                 case 'contacto':
                     
+                    if (args.length == 0) return reply(`*Agrega el tag/número y el nombre.*\n\n*Por ejemplo:     ${prefix + command} @(tag/número)|nombre*`)
                     argz = arg.split('|')
-                    if (!argz) return reply(`Usa ${prefix}contacto @(tag/número)|nombre`)
+                    if (!argz[0]) return reply(`*Falta el tag/número.*\n\n*Ejemplo:     ${prefix + command} @(tag/número)|nombre*`)
+                    if (!argz[1]) return reply(`*Falta el nombre.*\n\n*Ejemplo:     ${prefix + command} @(tag/número)|nombre*`)
+                    
                     if (nex.message.extendedTextMessage != undefined) {
                         mentioned = nex.message.extendedTextMessage.contextInfo.mentionedJid
                         sendKontak(from, mentioned[0].split('@')[0], argz[1])
