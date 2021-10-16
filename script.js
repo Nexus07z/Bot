@@ -616,10 +616,10 @@ async function starts() {
                     var pc = budy.slice(6)
                     var nomor = pc.split("|")[0];
                     var org = pc.split("|")[1];
-                    if (!nomor) return reply(`*Falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
-                    if (!org) return reply(`*Falta agregar el mensaje.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
+                    if (!nomor) return reply(`*Te falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
+                    if (!org) return reply(`*Te falta agregar el mensaje.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Hola*`)
                     nexus.sendMessage(nomor + '@s.whatsapp.net', org, MessageType.text)
-                    reply(`*El memsaje:* ${org} *Se envio a:* ${nomor}`)
+                    reply(`*El mensaje:* ${org} *Se envio al número:* ${nomor}`)
 				break
 
                 case 'chatbot':
@@ -628,8 +628,8 @@ async function starts() {
                     var pc = budy.slice(6)
                     var nomor = pc.split("|")[0];
                     var org = pc.split("|")[1];
-                    if (!nomor) return reply(`*Falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
-                    if (!org) return reply(`*Falta agregar el nombre.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
+                    if (!nomor) return reply(`*Te falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
+                    if (!org) return reply(`*Te falta agregar el nombre.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
                     nexus.sendMessage(nomor + '@s.whatsapp.net', org, MessageType.text)
                     nexus.sendMessage(nomor, `*¡Hola ${org}!*\n\nSoy *Nexusᴮᴼᵀ*, creado por *Smith* con el número *51963324153.*\n\nTengo una gran cantidad de comandos que pueden resultarte útiles.\n\nPor favor lee mis reglas:\n\n
                     *${prefix}reglas*\n\nUtiliza el comando *${prefix}menu* para ver la lista de comandos.`, MessageType.text, {
@@ -644,7 +644,7 @@ async function starts() {
                             }
                         }
                     })
-                    reply(`*El memsaje:* ${org} *Se envio a:* ${nomor}`)
+                    reply(`*El mensaje ChatBot se envio al número:* ${nomor}`)
 				break
                 
                 case '+18':
