@@ -642,7 +642,7 @@ async function starts() {
                             }
                         }
                     })
-                    reply(`Se envió el mensaje de presentación de Nexusᴮᴼᵀ a *${txt2}.*\n\nNúmero: ${txt1}`)
+                    reply(`*Se envió el mensaje de presentación de Nexusᴮᴼᵀ a ${txt2}.*\n\n*Número:* ${txt1}`)
 				break
                 
                 case '+18':
