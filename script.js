@@ -170,6 +170,7 @@ async function starts() {
             const isAdmin = groupAdmins.includes(sender) || false
 		    const botAdmin = groupAdmins.includes(nexus.user.jid)
             const isNsfw = isGroup ? nsfw.includes(from) : false
+            const q = args.join(' ')
             const totalchat = nexus.chats.all()
 
             const isUrl = (ini_url) => {
@@ -379,8 +380,8 @@ async function starts() {
                     const nombregc = args.join(' ')
                     if (!nombregc) return reply(`*Por favor escribe el nombre que quieras que tenga el grupo.*\n\n*Por ejemplo:     ${prefix + command} XD*`)
                     const group = await nexus.groupCreate(`${nombregc}`, [sender])
-                    reply(`*El grupo fue creado correctamente con el nombre:*\n\n*${nombregc}*\n\nId del grupo: ${group.gid}`)
-                    nexus.sendMessage(group.gid, "¡Hola mundo!", MessageType.text, {
+                    reply(`*El grupo fue creado correctamente con el nombre:*\n\n*${nombregc}*\n\n*Id del grupo:*\n\n${group.gid}`)
+                    nexus.sendMessage(group.gid, "*¡Hola mundo!*", MessageType.text, {
                         quoted:
                         {
                             key: {
@@ -434,11 +435,12 @@ async function starts() {
                 break
 
                 case 'salir':
-                    
-                    if (!isGroup) return await reply(mess.only.group)
-                    reply(`Nexusᴮᴼᵀ ya no estara disponible en este grupo.`)
-                        await sleep(3000)
-                        await nexus.groupLeave(from)
+
+                    if (!isGroup) return reply(mess.only.group)
+                    if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
+                    reply(`*Nexusᴮᴼᵀ* ya no estara disponible en este grupo.`)
+                    await sleep(3000)
+                    await nexus.groupLeave(from)
                     
                 break
 
