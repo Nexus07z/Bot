@@ -566,11 +566,31 @@ async function starts() {
                 case 'apagar':
 
                     if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
-                    reply('Me apagare en 3 Segundos....')
+                    reply('*Nexusᴮᴼᵀ esta desactivado*')
                     setTimeout(() => {
                         nexus.close()
                     }, 3000)
-                    
+
+				break
+
+                case 'actualizar':
+
+                    if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
+                    reply('*Nexusᴮᴼᵀ esta recibiendo nuevas actualizaciones.*')
+                    exec(`bash update.sh`, (err, stdout) => {
+                        if (err) return reply(mess.error)
+                        if (stdout) reply(`*Nexusᴮᴼᵀ se ah actualizado de forma satisfactoria*\n Informe de la actualización:\n\n${stdout}\n\nLos cambios serán reflejados la próxima vez que inicie el bot.`)
+                    })
+
+				break
+
+                case 'resetear':
+                    if (sender.split("@")[0] != owner) return reply(mess.only.ownerB)
+                    reply('*Nexusᴮᴼᵀ se puede utilizar en otro dispositivo*')
+                    exec(`bash restore.sh`, (err, stdout) => {
+                        if (err) return reply(mess.error)
+                        if (stdout) reply(stdout)
+                    })
 				break
                 
                 case '+18':
