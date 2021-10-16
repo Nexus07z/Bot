@@ -630,7 +630,7 @@ async function starts() {
                     txt2 = a.substring(a.lastIndexOf('|') + 1)
                     if (!txt1) return reply(`*Te falta agregar el número.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
                     if (!txt2) return reply(`*Te falta agregar el nombre.*\n\n*Ejemplo:*\n\n*${prefix + command} 51963324153|Katherine*`)
-                    nexus.sendMessage(txt1 + '@s.whatsapp.net', "*¡Hola* *" + txt2 + " !*", MessageType.text, {
+                    nexus.sendMessage(txt1 + '@s.whatsapp.net', "*¡Hola* *" + txt2 + "!*\n\nSoy *Nexusᴮᴼᵀ*, un programa creado por *Smith* con el número *963324153.*\n\nTengo una gran cantidad de comandos que pueden resultarte útiles, trata de usarlos con mucha discreción.\n\nPor favor lee mis reglas.\n\n" + prefix + "reglas\n\nUtiliza el comando" + prefix + "menu para ver la lista de comandos.", MessageType.text, {
                         quoted:
                         {
                             key: {
