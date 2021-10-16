@@ -171,6 +171,7 @@ async function starts() {
 		    const botAdmin = groupAdmins.includes(nexus.user.jid)
             const isNsfw = isGroup ? nsfw.includes(from) : false
             const q = args.join(' ')
+            const arg = chats.slice(command.length + 2, chats.length)
             const totalchat = nexus.chats.all()
 
             const isUrl = (ini_url) => {
