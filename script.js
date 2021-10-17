@@ -286,7 +286,7 @@ async function starts() {
             const isQuotedAudio = type === 'extendedTextMessage' && content.includes('audioMessage')
             const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
 
-            const isMedia = isQuotedImage || isQuotedVideo || isQuotedAudio
+            const isMedia = isQuotedImage || isQuotedVideo
 
             if (!isGroup && !isCmd) console.log(color(time, "white"), color("[ PRIVATE ]", "aqua"), color(budy, "white"), "from", color(sender.split('@')[0], "yellow"))
             if (isGroup && !isCmd) console.log(color(time, "white"), color("[  GROUP  ]", "aqua"), color(budy, "white"), "from", color(sender.split('@')[0], "yellow"), "in", color(groupName, "yellow"))
