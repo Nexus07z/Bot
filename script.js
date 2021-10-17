@@ -1234,34 +1234,6 @@ async function starts() {
 
                 break
 
-                case 'twtdl':
-                    if (args.length == 0) return reply(`Exampele: ${prefix + command} https://twitter.com/gofoodindonesia/status/1229369819511709697`)
-                    ini_url = args[0]
-                    ini_url = await fetchJson(`https://api.lolhuman.xyz/api/twitter?apikey=${apikey}&url=${ini_url}`)
-                    ini_url = ini_url.result
-                    ini_url = ini_url[ini_url.length - 1].link
-                    ini_buffer = await getBuffer(ini_url)
-                    await nexus.sendMessage(from, ini_buffer, video, { quoted: nex })
-                    break
-                case 'fbdl':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://id-id.facebook.com/SamsungGulf/videos/video-bokeh/561108457758458/`)
-                    ini_url = args[0]
-                    ini_url = await fetchJson(`https://api.lolhuman.xyz/api/facebook?apikey=${apikey}&url=${ini_url}`)
-                    ini_url = ini_url.result[0].link
-                    ini_buffer = await getBuffer(ini_url)
-                    await nexus.sendMessage(from, ini_buffer, video, { quoted: nex })
-                    break
-                case 'zippyshare':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://www51.zippyshare.com/v/5W0TOBz1/file.html`)
-                    ini_url = args[0]
-                    ini_url = await fetchJson(`https://api.lolhuman.xyz/api/zippyshare?apikey=${apikey}&url=${ini_url}`)
-                    ini_url = ini_url.result
-                    ini_txt = `File Name : ${ini_url.name_file}\n`
-                    ini_txt += `Size : ${ini_url.size}\n`
-                    ini_txt += `Date Upload : ${ini_url.date_upload}\n`
-                    ini_txt += `Download Url : ${ini_url.download_url}`
-                    reply(ini_txt)
-                    break
                 case 'pinterest':
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
                     query = args.join(" ")
@@ -1288,18 +1260,7 @@ async function starts() {
                     ini_buffer = await getBuffer(ini_url)
                     await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
-                case 'pixiv':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
-                    query = args.join(" ")
-                    ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/pixiv?apikey=${apikey}&query=${query}`)
-                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
-                    break
-                case 'pixivdl':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} 63456028`)
-                    query = args[0]
-                    ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/pixivdl/${pixivid}?apikey=${apikey}`)
-                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
-                    break
+                
                 case 'xhamstersearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Japanese`)
                     query = args.join(" ")
