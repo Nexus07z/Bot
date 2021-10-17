@@ -765,6 +765,8 @@ async function starts() {
                     Menu1 = `
 ╭───「 *Descargas* 」
 │
+├「 *YouTube* 」
+│
 ├ *${prefix}ytplay* [nombre de la canción]
 │ Descarga un audio de youtube.
 │
@@ -984,24 +986,6 @@ async function starts() {
                     })
                 break
                 
-                case 'stickersinfondo':
-                        
-                        imgbb = require('imgbb-uploader')
-                        if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        const media = await nexus.downloadAndSaveMediaMessage(encmedia)
-                        //reply(mess.wait)
-                        nobg = await imgbb(apiimgbb, media);
-                        link = `${nobg.display_url}`;
-                
-                        const attp1 = await getBuffer(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=https://nexus-store.site/api/removebg.php?remove=${link}`)
-                        nexus.sendMessage(from, attp1, sticker, { quoted: nex })
-                        
-                        } else {
-                            reply('*Por favor etiqueta una imagen con el comando.*')
-                        }         
-                break
-
                 // Downloader //
                 case 'ytplay':
 
@@ -1089,30 +1073,89 @@ async function starts() {
 
                 break
 
+                case 'stickersinfondo':
+                        
+                    imgbb = require('imgbb-uploader')
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                    const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                    const media = await nexus.downloadAndSaveMediaMessage(encmedia)
+                    //reply(mess.wait)
+                    nobg = await imgbb(apiimgbb, media);
+                    link = `${nobg.display_url}`;
+            
+                    const attp1 = await getBuffer(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=https://nexus-store.site/api/removebg.php?remove=${link}`)
+                    nexus.sendMessage(from, attp1, sticker, { quoted: nex })
+                    
+                    } else {
+                        reply('*Por favor etiqueta una imagen con el comando.*')
+                    }       
+
+                break
+
                 case 'telesticker':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://t.me/addstickers/LINE_Menhera_chan_ENG`)
+                    if (args.length == 0) return reply(`*Agrega el link de telegram.*\n\n*Por ejemlo*\n\n*${prefix + command} https://t.me/addstickers/LINE_Menhera_chan_ENG*`)
                     ini_url = args[0]
-                    ini_url = await fetchJson(`https://api.lolhuman.xyz/api/telestick?apikey=${apikey}&url=${ini_url}`)
-                    ini_sticker = ini_url.result.sticker
-                    for (sticker_ in ini_sticker) {
-                        ini_buffer = await getBuffer(ini_sticker[sticker_])
-                        await nexus.sendMessage(from, ini_buffer, sticker)
+
+                    try {
+                        ini_url = await fetchJson(`https://api.lolhuman.xyz/api/telestick?apikey=${apikey}&url=${ini_url}`)
+                        ini_sticker = ini_url.result.sticker
+                        for (sticker_ in ini_sticker) {
+                            ini_buffer = await getBuffer2(ini_sticker[sticker_])
+                            await nexus.sendMessage(from, ini_buffer, sticker)
+                        }
+                    } catch {
+                        reply(mess.error)
                     }
-                    break
-                case 'tiktoknowm':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://vt.tiktok.com/ZSwWCk5o/`)
-                    ini_url = args[0]
-                    ini_url = `https://api.lolhuman.xyz/api/tiktok?apikey=${apikey}&url=${ini_url}`
-                    get_result = await fetchJson(ini_url)
-                    ini_buffer = await getBuffer(get_result.result.link)
-                    await nexus.sendMessage(from, ini_buffer, video, { quoted: nex })
-                    break
+
+                break
+
+                case 'tiktok':
+
+                    if (args.length == 0) return reply(`*Agrega el link de tiktok.*\n\n*Por ejemplo:*\n\n*${prefix + command} https://vm.tiktok.com/ZMdvgJgM7/*`)
+                    if (!isUrl(args[0]) && !args[0].includes('tiktok')) return reply('*El link tiene que ser de tiktok.*')
+                    reply(mess.wait);
+                    query = args.join(' ')
+                    try {
+                        get_result = await fetchJson(`https://api.lolhuman.xyz/api/tiktok3?apikey=${apikey}&url=${query}`)
+                        get_result = get_result.result
+                        get_video = await getBuffer2(get_result)
+                        await nexus.sendMessage(from, get_video, video, { mimetype: 'video/mp4', quoted: nex })
+                    } catch {
+                        reply(mess.error)
+                    }
+
+			    break
+
+                case 'tiktokwm':
+                    
+                    if (args.length == 0) return reply(`*Agrega el link de tiktok.*\n\n*Por ejemplo:*\n\n*${prefix + command} https://vm.tiktok.com/ZMdvgJgM7/*`)
+                    if (!isUrl(args[0]) && !args[0].includes('tiktok')) return reply('*El link tiene que ser de tiktok.*')
+                    reply(mess.wait);
+                    query = args.join(' ')
+                    try {
+                        const tiktokwm = await getBuffer2(`https://api.lolhuman.xyz/api/tiktokwm?apikey=${api}&url=${query}`)
+                        nexus.sendMessage(from, tiktokwm, video, { mimetype: 'video/mp4', quoted: nex })
+                    } catch {
+                        reply(mess.error)
+                    }
+
+                break
+
                 case 'tiktokmusic':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://vt.tiktok.com/ZSwWCk5o/`)
-                    ini_link = args[0]
-                    get_audio = await getBuffer(`https://api.lolhuman.xyz/api/tiktokmusic?apikey=${apikey}&url=${ini_link}`)
-                    await nexus.sendMessage(from, get_audio, audio, { mimetype: Mimetype.mp4Audio, quoted: nex })
-                    break
+
+                    if (args.length == 0) return reply(`*Agrega el link de tiktok.*\n\n*Por ejemplo:*\n\n*${prefix + command} https://vm.tiktok.com/ZMdvgJgM7/*`)
+                    if (!isUrl(args[0]) && !args[0].includes('tiktok')) return reply('*El link tiene que ser de tiktok.*')
+                    reply(mess.wait);
+                    query = args.join(' ')
+                    try {
+                        const tiktokmusic = await getBuffer2(`https://api.lolhuman.xyz/api/tiktokmusic?apikey=${apikey}&url=${query}`)
+                        nexus.sendMessage(from, tiktokmusic, audio, { mimetype: 'audio/mp4', quoted: nex })
+                    } catch {
+                        reply(mess.error)
+                    }
+                    
+                break
+        
                 case 'spotify':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://open.spotify.com/track/0ZEYRVISCaqz5yamWZWzaA`)
                     url = args[0]
