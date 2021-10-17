@@ -835,16 +835,16 @@ async function starts() {
 ╭───「 *Stickers* 」
 │
 ├ *${prefix}sticker*
-│ Cambia el nombre del sticker.
+│ Crea un sticker.
 │
-├ *${prefix}sticker2*
-│ Cambia el nombre del sticker.
+├ *${prefix}stickerwm*
+│ Crea un sticker con autor Nexus.
 │
-├ *${prefix}stickerp*
-│ Cambia el nombre del sticker.
+├ ${prefix}stickerp [Package|Author]
+│ Crea un sticker con nombre personalizado.
 │
-├ *${prefix}renombrar*
-│ Cambia el nombre del sticker.
+├ ${prefix}renombrar
+│ Cambia el nombre de un sticker.
 │
 ├ *${prefix}stickersinfondo*
 │ Crea un sticker sin fondo.
@@ -1279,7 +1279,58 @@ async function starts() {
 
                 break
 
-                
+                case 'stickerwm':
+
+                    if ((isQuotedImage)) {
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        var image_buffer = await nexus.downloadMediaMessage(encmedia);
+                        try {
+                            var formdata = new FormData()
+                            formdata.append('package', 'Sticker')
+                            formdata.append('author', 'Nexus')
+                            formdata.append('img', image_buffer, { filename: 'tahu.jpg' })
+                            axios.post(`https://api.lolhuman.xyz/api/convert/towebpauthor?apikey=${apikey}`, formdata.getBuffer(), { headers: { "content-type": `multipart/form-data; boundary=${formdata._boundary}` }, responseType: 'arraybuffer' }).then((res) => {
+                                nexus.sendMessage(from, res.data, sticker)
+                            })
+                        } catch {
+                            reply(mess.error)
+                        }
+                    } else {
+                        reply(`*Por favor etiqueta una imagen con el comando.*`)
+                    }
+
+                break
+
+                case 'sticker':
+
+                    if ((isQuotedVideo || isQuotedImage) && args.length == 0) {
+                        const encmedia = isQuotedImage || isQuotedVideo ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        var filepath = await nexus.downloadAndSaveMediaMessage(encmedia, getRandom())
+                        var randomName = getRandom('.webp')
+                        try {
+                            ffmpeg(`./${filepath}`)
+                                .input(filepath)
+                                .on('error', () => {
+                                    fs.unlinkSync(filepath)
+                                    reply(mess.error)
+                                })
+                                .on('end', () => {
+                                    nexus.sendMessage(from, fs.readFileSync(randomName), sticker, { quoted: nex })
+                                    fs.unlinkSync(filepath)
+                                    fs.unlinkSync(randomName)
+                                })
+                                .addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
+                                .toFormat('webp')
+                                .save(randomName)
+                        } catch {
+                            reply(mess.error)
+                        }
+                    } else {
+                        reply(`*Por favor etiqueta una imagen con el comando.*`)
+                    }
+
+                break
+
                 case 'stickersinfondo':
                         
                     imgbb = require('imgbb-uploader')
@@ -1347,6 +1398,17 @@ async function starts() {
 
                 break
 
+                case 'colores':
+                    if (args.length < 1) return reply(`*Agrega el texto que deseas convertir en sticker de colores.*\n\n*Por ejemplo:*\n\n*${prefix + command} Nexus*`)
+                    var teks = encodeURIComponent(args.join(' '))
+                    try {
+                        const attp1 = await getBuffer2(`https://api.xteam.xyz/attp?file&text=${teks}`)
+                        nexus.sendMessage(from, attp1, sticker, { quoted: nex })
+                    } catch {
+                        reply(mess.error)
+                    }
+			    break
+
                 case 'music?':
         
                     if (isQuotedAudio && args.length == 0) {
@@ -1399,89 +1461,7 @@ async function starts() {
 
                 break
 
-                case 'colores':
-                    if (args.length < 1) return reply(`*Agrega el texto que deseas convertir en sticker de colores.*\n\n*Por ejemplo:*\n\n*${prefix + command} Nexus*`)
-                    var teks = encodeURIComponent(args.join(' '))
-                    try {
-                        const attp1 = await getBuffer2(`https://api.xteam.xyz/attp?file&text=${teks}`)
-                        nexus.sendMessage(from, attp1, sticker, { quoted: nex })
-                    } catch {
-                        reply(mess.error)
-                    }
-			    break
-
-                case 'sticker':
-			
-					if (isMedia && !nex.message.videoMessage || isQuotedImage) {
-					const encmedia1 = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-					const media1 = await nexus.downloadAndSaveMediaMessage(encmedia1, `./sticker/${sender}`)
-					const packname10 = `Sam NexusBOT\n\n        Sticker`
-					const author10 = args.join(' ')
-					exif.create(packname10, author10, `stickwm_${sender}`)
-					await ffmpeg(`${media1}`)
-						.input(media1)
-						.on('start', function (cmd) {
-							console.log(`Started : ${cmd}`)
-						})
-						.on('error', function (err) {
-							console.log(`Error : ${err}`)
-							fs.unlinkSync(media1)
-							reply('*Intenta de nuevo*')
-						})
-						.on('end', function () {
-							console.log('Finish')
-							exec(`webpmux -set exif ./sticker/stickwm_${sender}.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
-								if (error) return reply('error')
-                                nexus.sendMessage(from, fs.readFileSync(`./sticker/${sender}.webp`), sticker, { quoted: nex })
-								fs.unlinkSync(media1)
-								fs.unlinkSync(`./sticker/${sender}.webp`)
-								fs.unlinkSync(`./sticker/stickwm_${sender}.exif`)
-							})
-						})
-						.addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,
-fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p]
-paletteuse`])
-						.toFormat('webp')
-						.save(`./sticker/${sender}.webp`)
-				} else if ((isMedia && sam.message.videoMessage.fileLength < 10000000 || isQuotedVideo && sam.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.fileLength < 10000000)) {
-					const encmedia2 = isQuotedVideo ? JSON.parse(JSON.stringify(sam).replace('quotedM', 'm')).message.extendedTextMessage.
-						contextInfo : sam
-					const media2 = await samu330.downloadAndSaveMediaMessage(encmedia2, `./sticker/${sender}`)
-					const packname101 = `Sam NexusBOT\n\n        Sticker`
-					const author101 = args.join(' ')
-					exif.create(packname101, author101, `stickwm_${sender}`)
-					reply(mess.wait)
-					await ffmpeg(`${media2}`)
-						.inputFormat(media2.split('.')[4])
-						.on('start', function (cmd) {
-							console.log(`Started : ${cmd}`)
-						})
-						.on('error', function (err) {
-							console.log(`Error : ${err}`)
-							fs.unlinkSync(media2)
-							tipe = media.endsWith('.mp4') ? 'video' : 'gif'
-							reply('*Intenta de nuevo*')
-						})
-						.on('end', function () {
-							console.log('Finish')
-							exec(`webpmux -set exif ./sticker/stickwm_${sender}.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
-								if (error) return reply('error')
-								wa.sendSticker(from, fs.readFileSync(`./sticker/${sender}.webp`), ftoko)
-								fs.unlinkSync(media2)
-								fs.unlinkSync(`./sticker/${sender}.webp`)
-								fs.unlinkSync(`./sticker/stickwm_${sender}.exif`)
-							})
-						})
-						.addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decre
-ase,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
-						.toFormat('webp')
-						.save(`./sticker/${sender}.webp`)
-				} else {
-					reply(`*Por favor etiqueta una imagen/video/gif con el comando.*\nNota: El video/gif no debe de durar mas de 10 segundos.`)
-				}
-			break
-
-                
+            
                 case 'ocr':
                     if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
                         var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
@@ -1551,47 +1531,6 @@ ase,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=rese
 
                     
                 // Creator
-                
-                case 'stickerwm':
-                    if ((isQuotedImage)) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        var image_buffer = await nexus.downloadMediaMessage(encmedia);
-                        var formdata = new FormData()
-                        formdata.append('package', 'LoL')
-                        formdata.append('author', 'Human')
-                        formdata.append('img', image_buffer, { filename: 'tahu.jpg' })
-                        axios.post(`https://api.lolhuman.xyz/api/convert/towebpauthor?apikey=${apikey}`, formdata.getBuffer(), { headers: { "content-type": `multipart/form-data; boundary=${formdata._boundary}` }, responseType: 'arraybuffer' }).then((res) => {
-                            nexus.sendMessage(from, res.data, sticker)
-                        })
-                    } else {
-                        reply(`Kirim gambar dengan caption ${prefix + command} atau tag gambar yang sudah dikirim`)
-                    }
-                break
-
-                case 'sticker2':
-                    if ((isQuotedVideo || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage || isQuotedVideo ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        var filepath = await nexus.downloadAndSaveMediaMessage(encmedia, getRandom())
-                        var randomName = getRandom('.webp')
-                        ffmpeg(`./${filepath}`)
-                            .input(filepath)
-                            .on('error', () => {
-                                fs.unlinkSync(filepath)
-                                reply('Terjadi kesalahan saat mengconvert sticker.')
-                            })
-                            .on('end', () => {
-                                nexus.sendMessage(from, fs.readFileSync(randomName), sticker, { quoted: nex })
-                                fs.unlinkSync(filepath)
-                                fs.unlinkSync(randomName)
-                            })
-                            .addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
-                            .toFormat('webp')
-                            .save(randomName)
-                    } else {
-                        reply(`Kirim gambar dengan caption ${prefix}sticker atau tag gambar yang sudah dikirim`)
-                    }
-                break
-            
                 
                 case 'ttp':
                 case 'ttp2':
