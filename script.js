@@ -1241,7 +1241,15 @@ async function starts() {
                         get_result = await fetchJson(`https://api.lolhuman.xyz/api/musicsearch?apikey=${apikey}`, {...options })
                         fs.unlinkSync(filePath)
                         get_result = get_result.result
-                        reply(`*Artistas:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Géneros:* ${get_result.genres}`)
+                        //reply(`*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Géneros:* ${get_result.genres}`)
+
+                        get_result2 = await fetchJson(`https://api.vhtear.com/ytmp3?query=${get_result.artists} ${get_result.title}&apikey=${apikeyvh}`)
+                        get_result2 = get_result2.result
+                        ini_txt = `*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Géneros:* ${get_result.genres}`
+                        ini_buffer = await getBuffer2(get_result2.image)
+                        await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
+                        get_audio = await getBuffer2(get_result2.mp3)
+                        await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', quoted: nex })
                     } else {
                         reply(`*Por favor etiqueta un audio con el comando.*`)
                     }
