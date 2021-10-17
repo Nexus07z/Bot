@@ -828,6 +828,59 @@ async function starts() {
                     })
                 break
 
+                case 'menu2':
+                    whatsapp = '0@s.whatsapp.net'
+                    nexus.updatePresence(from, Presence.recording)
+                    Menu2 = `
+╭───「 *Stickers* 」
+│
+├ *${prefix}stickersinfondo*
+│ Crea un sticker sin fondo.
+│
+├ *${prefix}telesticker* [link de telegram]
+│ Envia stickers de telegram.
+│
+╰───
+`
+                    nexus.sendMessage(from, Menu2, text, {
+                        quoted:
+                        {
+                            key: {
+                                fromMe: false,
+                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                            },
+                            message: {
+                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                            }
+                        }
+                    })
+                break
+
+                case 'menu8':
+                    whatsapp = '0@s.whatsapp.net'
+                    nexus.updatePresence(from, Presence.recording)
+                    Menu8 = `
+╭───「 *Otros* 」
+│
+├ *${prefix}music?*
+│ Identifica una música y la descarga.
+│
+╰───
+`
+                    nexus.sendMessage(from, Menu8, text, {
+                        quoted:
+                        {
+                            key: {
+                                fromMe: false,
+                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                            },
+                            message: {
+                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                            }
+                        }
+                    })
+                break
+
                 
                 case 'menu9':
                     whatsapp = '0@s.whatsapp.net'
@@ -1171,7 +1224,7 @@ async function starts() {
 
                 case 'fbdl':
 
-                    if (args.length == 0) return reply(`*Agrega el link de facebook.*\n\n*Por ejemplo:*\n\n*${prefix + command} https://www.facebook.com/watch?v=373323097729968*`)
+                    if (args.length == 0) return reply(`*Agrega el link de facebook.*\n\n*Por ejemplo:*\n\n*${prefix + command} https://www.facebook.com/watch/?v=1809622532552726&ref=sharing*`)
                     if (!isUrl(args[0]) && !args[0].includes('facebook')) return reply('*El link tiene que ser de facebook.*')
                     reply(mess.wait);
                     query = args.join(' ')
@@ -1223,9 +1276,26 @@ async function starts() {
 
                 break
 
+                case 'telesticker':
+                    if (args.length == 0) return reply(`*Agrega el link de telegram.*\n\n*Por ejemlo*\n\n*${prefix + command} https://t.me/addstickers/LINE_Menhera_chan_ENG*`)
+                    ini_url = args[0]
+
+                    try {
+                        ini_url = await fetchJson(`https://api.lolhuman.xyz/api/telestick?apikey=${apikey}&url=${ini_url}`)
+                        ini_sticker = ini_url.result.sticker
+                        for (sticker_ in ini_sticker) {
+                            ini_buffer = await getBuffer2(ini_sticker[sticker_])
+                            await nexus.sendMessage(from, ini_buffer, sticker)
+                        }
+                    } catch {
+                        reply(mess.error)
+                    }
+
+                break
+
                 case 'music?':
         
-                    if ((isMedia && !nex.message.videoMessage && !nex.message.imageMessage || isQuotedAudio) && args.length == 0) {
+                    if (isQuotedAudio && args.length == 0) {
                         var encmedia = isQuotedAudio ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
                         var filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         var form = new FormData();
@@ -1254,23 +1324,6 @@ async function starts() {
                         reply(`*Por favor etiqueta un audio con el comando.*`)
                     }
                     break
-
-                case 'telesticker':
-                    if (args.length == 0) return reply(`*Agrega el link de telegram.*\n\n*Por ejemlo*\n\n*${prefix + command} https://t.me/addstickers/LINE_Menhera_chan_ENG*`)
-                    ini_url = args[0]
-
-                    try {
-                        ini_url = await fetchJson(`https://api.lolhuman.xyz/api/telestick?apikey=${apikey}&url=${ini_url}`)
-                        ini_sticker = ini_url.result.sticker
-                        for (sticker_ in ini_sticker) {
-                            ini_buffer = await getBuffer2(ini_sticker[sticker_])
-                            await nexus.sendMessage(from, ini_buffer, sticker)
-                        }
-                    } catch {
-                        reply(mess.error)
-                    }
-
-                break
                 
                 case 'xhamstersearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Japanese`)
