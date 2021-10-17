@@ -1233,33 +1233,6 @@ async function starts() {
                     }
 
                 break
-
-                case 'pinterest':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
-                    query = args.join(" ")
-                    ini_url = await fetchJson(`https://api.lolhuman.xyz/api/pinterest?apikey=${apikey}&query=${query}`)
-                    ini_url = ini_url.result
-                    ini_buffer = await getBuffer(ini_url)
-                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
-                    break
-                case 'pinterest2':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/pinterest2?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    for (var x = 0; x <= 5; x++) {
-                        var ini_buffer = await getBuffer(get_result[x])
-                        await nexus.sendMessage(from, ini_buffer, image)
-                    }
-                    break
-                case 'pinterestdl':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://id.pinterest.com/pin/696580267364426905/`)
-                    ini_url = args[0]
-                    ini_url = await fetchJson(`https://api.lolhuman.xyz/api/pinterestdl?apikey=${apikey}&url=${ini_url}`)
-                    ini_url = ini_url.result[0]
-                    ini_buffer = await getBuffer(ini_url)
-                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
-                    break
                 
                 case 'xhamstersearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Japanese`)
