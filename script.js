@@ -1054,13 +1054,13 @@ async function starts() {
                     reply(mess.wait);
                     query = args.join(' ')
                     try {
-                        get_result = await getJson(`https://api.vhtear.com/ytmp3?query=${query}&apikey=${apikeyvh}`)
+                        get_result = await fetchJson(`https://api.vhtear.com/ytmp3?query=${query}&apikey=${apikeyvh}`)
                         get_result = get_result.result
                         ini_txt = `Titulo : ${get_result.title}\n\n`
                         ini_txt += `Si el audio no llega, puedes descargarlo mediante el siguiente link:\n\n${get_result.mp3}`
-                        ini_buffer = await getBuffer(get_result.image)
+                        ini_buffer = await getBuffer2(get_result.image)
                         await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
-                        get_audio = await getBuffer(get_result.mp3)
+                        get_audio = await getBuffer2(get_result.mp3)
                         await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', quoted: nex })
                     } catch {
                         reply(`*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*`)
