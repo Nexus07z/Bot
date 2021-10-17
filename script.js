@@ -837,6 +837,9 @@ async function starts() {
 ├ *${prefix}stickersinfondo*
 │ Crea un sticker sin fondo.
 │
+├ *${prefix}stickernobg*
+│ Crea un sticker sin fondo.
+│
 ├ *${prefix}telesticker* [link de telegram]
 │ Envia stickers de telegram.
 │
@@ -1280,6 +1283,34 @@ async function starts() {
 
                 break
 
+                case 'stickernobg':
+                    
+                    imgbb = require('imgbb-uploader')
+                    if (isMedia && !nex.message.videoMessage || isQuotedImage) {
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM','m')).message.extendedTextMessage.contextInfo : nex
+                        const media = await nexus.downloadAndSaveMediaMessage(encmedia)
+                        reply(mess.wait)
+                        nobg2 = await imgbb('20a14861e4f7591f3dc52649cb07ae02', media);
+                        link = `${nobg2.display_url}`;
+                        
+                        //ini_buffer = `https://api.lolhuman.xyz/api/removebg?apikey=${api}&img=${link}`
+                        try {
+                            get_result = await fetchJson(`https://api.vhtear.com/removebgwithurl?link=${link}&apikey=${apikeyvh}`)
+                            get_result = get_result.result
+                            short = await fetchJson(`https://api.lolhuman.xyz/api/shortlink?apikey=${apikey}&url=${get_result.image}`)
+                    
+                            const attp1 = await getBuffer2(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=${short.result}`)
+                            nexus.sendMessage(from, attp1, sticker, { quoted: nex })
+                        } catch {
+                            reply(mess.error)
+                        }
+                    
+                    } else {
+                        reply('*Por favor etiqueta una imagen con el comando.*')
+                    }
+                    
+                break
+
                 case 'telesticker':
                     if (args.length == 0) return reply(`*Agrega el link de telegram.*\n\n*Por ejemlo*\n\n*${prefix + command} https://t.me/addstickers/LINE_Menhera_chan_ENG*`)
                     ini_url = args[0]
@@ -1335,465 +1366,24 @@ async function starts() {
 
                 break
 
-                case 'stickernobg':
-                    
-                    imgbb = require('imgbb-uploader')
-                    if (isMedia && !nex.message.videoMessage || isQuotedImage) {
-                    const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM','m')).message.extendedTextMessage.contextInfo : nex
-                    const media = await nexus.downloadAndSaveMediaMessage(encmedia)
-                    reply(mess.wait)
-                    nobg2 = await imgbb('20a14861e4f7591f3dc52649cb07ae02', media);
-                    link = `${nobg2.display_url}`;
-                    
-                    //ini_buffer = `https://api.lolhuman.xyz/api/removebg?apikey=${api}&img=${link}`
-                    
-                    get_result = await fetchJson(`https://api.vhtear.com/removebgwithurl?link=${link}&apikey=${apikeyvh}`)
-                    get_result = get_result.result
-                    short = await fetchJson(`https://api.lolhuman.xyz/api/shortlink?apikey=${apikey}&url=${get_result.image}`)
-            
-                    const attp1 = await getBuffer2(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=${short.result}`)
-                    nexus.sendMessage(from, attp1, sticker, { quoted: nex })
-                    
-                    } else {
-                        reply('*Por favor etiqueta una imagen con el comando.*')
-                    }
-                    
-                break
-
-                case 'anime?':
-                    
-                    imgbb = require('imgbb-uploader')
-                    if (isMedia && !nex.message.videoMessage || isQuotedImage) {
-                    const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM','m')).message.extendedTextMessage.contextInfo : nex
-                    const media = await nexus.downloadAndSaveMediaMessage(encmedia)
-                    reply(mess.wait)
-                    wanime = await imgbb('20a14861e4f7591f3dc52649cb07ae02', media);
-                    link = `${wanime.display_url}`;
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/wait?apikey=${apikey}&img=${link}`)
-                    get_result = get_result.result
-                    
-                        ini_video = await getBuffer2(get_result.video)
-                        ini_txt = `Anilist id : ${get_result.anilist_id}\n`
-                        ini_txt += `MAL id : ${get_result.mal_id}\n`
-                        ini_txt += `Title Romaji : ${get_result.title_romaji}\n`
-                        ini_txt += `Title Native : ${get_result.title_native}\n`
-                        ini_txt += `Title English : ${get_result.title_english}\n`
-                        ini_txt += `at : ${get_result.at}\n`
-                        ini_txt += `Episode : ${get_result.episode}\n`
-                        ini_txt += `Similarity : ${get_result.similarity}`
-                        await nexus.sendMessage(from, ini_video, video, { quoted: nex, caption: ini_txt })
-                    
-                    } else {
-                        reply('*Por favor etiqueta una imagen con el comando.*')
-                    }
-                    
-                break
                 
-                case 'wait':
-                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        var filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
-                        var form = new FormData();
-                        var stats = fs.statSync(filePath);
-                        var fileSizeInBytes = stats.size;
-                        var fileStream = fs.createReadStream(filePath);
-                        form.append('img', fileStream, { knownLength: fileSizeInBytes });
-                        var options = {
-                            method: 'POST',
-                            credentials: 'include',
-                            body: form
-                        }
-                        get_result = await fetchJson(`https://api.lolhuman.xyz/api/wait?apikey=${apikey}`, {...options })
-                        fs.unlinkSync(filePath)
-                        get_result = get_result.result
-                        ini_video = await getBuffer2(get_result.video)
-                        ini_txt = `Anilist id : ${get_result.anilist_id}\n`
-                        ini_txt += `MAL id : ${get_result.mal_id}\n`
-                        ini_txt += `Title Romaji : ${get_result.title_romaji}\n`
-                        ini_txt += `Title Native : ${get_result.title_native}\n`
-                        ini_txt += `Title English : ${get_result.title_english}\n`
-                        ini_txt += `at : ${get_result.at}\n`
-                        ini_txt += `Episode : ${get_result.episode}\n`
-                        ini_txt += `Similarity : ${get_result.similarity}`
-                        await nexus.sendMessage(from, ini_video, video, { quoted: nex, caption: ini_txt })
-                    } else {
-                        reply(`Kirim gambar dengan caption ${prefix + command} atau tag gambar yang sudah dikirim`)
-                    }
-                    break
-                
+                case 'letra':
 
-                    // Information //
-                case 'kbbi':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} kursi`)
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/kbbi?apikey=${apikey}&query=${args.join(" ")}`)
-                    lila = get_result.result
-                    ini_txt = `\`\`\`Kata : ${lila[0].nama}\`\`\`\n`
-                    ini_txt += `\`\`\`Kata Dasar : ${lila[0].kata_dasar}\`\`\`\n`
-                    ini_txt += `\`\`\`Pelafalan : ${lila[0].pelafalan}\`\`\`\n`
-                    ini_txt += `\`\`\`Bentuk Tidak Baku : ${lila[0].bentuk_tidak_baku}\`\`\`\n\n`
-                    for (var x of lila) {
-                        ini_txt += `\`\`\`Kode : ${x.makna[0].kelas[0].kode}\`\`\`\n`
-                        ini_txt += `\`\`\`Kelas : ${x.makna[0].kelas[0].nama}\`\`\`\n`
-                        ini_txt += `\`\`\`Artinya : \n${x.makna[0].kelas[0].deskripsi}\`\`\`\n\n`
-                        ini_txt += `\`\`\`Makna Lain : \n${x.makna[0].submakna}\`\`\`\n `
-                        ini_txt += `\`\`\`Contoh Kalimat : \n${x.makna[0].contoh}\`\`\`\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'brainly2':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} siapakah sukarno`)
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/brainly2?apikey=${apikey}&query=${args.join(" ")}`)
-                    lala = get_result.result
-                    ini_txt = "Beberapa Pembahasan Dari Brainly :\n\n"
-                    for (var x of lala) {
-                        ini_txt += `==============================\n`
-                        ini_txt += `\`\`\`Pertanyaan :\`\`\`\n${x.question.content}\n\n`
-                        ini_txt += `\`\`\`Jawaban :\`\`\`\n${x.answer[0].content}\n`
-                        ini_txt += `==============================\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'jarak':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} jakarta - yogyakarta`)
-                    pauls = args.join(" ")
-                    teks1 = pauls.split("-")[0].trim()
-                    teks2 = pauls.split("-")[1].trim()
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/jaraktempuh?apikey=${apikey}&kota1=${teks1}&kota2=${teks2}`)
-                    x = get_result.result
-                    ini_txt = `Informasi Jarak dari ${teks1} ke ${teks2} :\n\n`
-                    ini_txt += `\`\`\`◪ Asal :\`\`\` ${x.from.name}\n`
-                    ini_txt += `\`\`\`◪ Garis Lintang :\`\`\` ${x.from.latitude}\n`
-                    ini_txt += `\`\`\`◪ Garis Bujur :\`\`\` ${x.from.longitude}\n\n`
-                    ini_txt += `\`\`\`◪ Tujuan :\`\`\` ${x.to.name}\n`
-                    ini_txt += `\`\`\`◪ Garis Lintang :\`\`\` ${x.to.latitude}\n`
-                    ini_txt += `\`\`\`◪ Garis Bujur :\`\`\` ${x.to.longitude}\n\n`
-                    ini_txt += `\`\`\`◪ Jarak Tempuh :\`\`\` ${x.jarak}\n`
-                    ini_txt += `\`\`\`◪ Waktu Tempuh :\`\`\`\n`
-                    ini_txt += `   ╭───────────────❏\n`
-                    ini_txt += `❍┤ Kereta Api : ${x.kereta_api}\n`
-                    ini_txt += `❍┤ Pesawat : ${x.pesawat}\n`
-                    ini_txt += `❍┤ Mobil : ${x.mobil}\n`
-                    ini_txt += `❍┤ Motor : ${x.motor}\n`
-                    ini_txt += `❍┤ Jalan Kaki : ${x.jalan_kaki}\n`
-                    ini_txt += `   ╰───────────────❏\n`
-                    reply(ini_txt)
-                    break
-                case 'urbandictionary':
-                    urb = args.join(" ")
-                    get_result = await fetchJson(`http://lolhuman.herokuapp.com/api/urdict?apikey=${apikey}&query=${urb}`)
-                    lilu = get_result.result
-                    for (var x of lilu) {
-                        ini_txt = `\`\`\`Meaning :\n${x.definition}\`\`\`\n\n`
-                        ini_txt += `\`\`\`Link : ${x.permalink}\`\`\`\n\n`
-                        ini_txt += `\`\`\`Sounds Url : ${x.sound_urls[0]}\`\`\`\n\n`
-                        ini_txt += `\`\`\`Like : ${x.thumbs_up}\`\`\`\n\n`
-                        ini_txt += `\`\`\`Dislike : ${x.thumbs_down}\`\`\`\n\n`
-                        ini_txt += `\`\`\`Created On : \n${x.written_on}\`\`\`\n\n`
-                        ini_txt += `\`\`\`Author : ${x.author}\`\`\`\n\n`
-                        ini_txt += `\`\`\`Word : ${x.word}\`\`\`\n\n`
-                        ini_txt += `\`\`\`Defined Id : ${x.defid}\`\`\`\n\n`
-                        ini_txt += `\`\`\`Example : ${x.example}\`\`\`\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'chord':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Melukis senja`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/chord?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = `Title : ${get_result.title}\n`
-                    ini_txt += `Chord : \n${get_result.chord}`
-                    reply(ini_txt)
-                    break
-                case 'heroml':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Fanny`)
-                    hero = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/heroml/${hero}?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Name : ${get_result.hero_name}\n`
-                    ini_txt += `Entrance Quotes : ${get_result.ent_quotes}\n`
-                    ini_txt += `Role : ${get_result.detail.role}\n`
-                    ini_txt += `Specialty : ${get_result.detail.specialty}\n`
-                    ini_txt += `Laning : ${get_result.detail.laning_recommendation}\n`
-                    ini_txt += `Release : ${get_result.detail.release_date}\n`
-                    ini_txt += `Movement speed : ${get_result.attr.movement_speed}\n`
-                    ini_txt += `Physical attack : ${get_result.attr.physical_attack}\n`
-                    ini_txt += `Magic power : ${get_result.attr.magic_power}\n`
-                    ini_txt += `Physical defense : ${get_result.attr.physical_defense}\n`
-                    ini_txt += `Magic defense : ${get_result.attr.magic_defense}\n`
-                    ini_txt += `Critical rate : ${get_result.attr.basic_atk_crit_rate}\n`
-                    ini_txt += `Hp : ${get_result.attr.hp}\n`
-                    ini_txt += `Mana : ${get_result.attr.mana}\n`
-                    ini_txt += `Mana regen : ${get_result.attr.mana_regen}\n`
-                    ini_icon = await getBuffer(get_result.icon)
-                    await nexus.sendMessage(from, ini_icon, image, { quoted: nex, caption: ini_txt })
-                    break
-                case 'mlstalk':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} 84830127/2169`)
-                    ml_id = args[0]
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/mobilelegend/${ml_id}?apikey=${apikey}`)
-                    reply(get_result.result)
-                    break
-                case 'genshin':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} jean`)
-                    hero = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/genshin/${hero}?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Name : ${get_result.title}\n`
-                    ini_txt += `Intro : ${get_result.intro}\n`
-                    ini_txt += `Icon : ${get_result.icon}\n`
-                    ini_icon = await getBuffer(get_result.cover1)
-                    await nexus.sendMessage(from, ini_icon, image, { quoted: nex, caption: ini_txt })
-                    ini_voice = await getBuffer(get_result.cv[0].audio[0])
-                    await nexus.sendMessage(from, ini_voice, audio, { quoted: nex, mimetype: Mimetype.mp4Audio })
-                    break
-                case 'qrreader':
-                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        const filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
-                        const form = new FormData();
-                        const stats = fs.statSync(filePath);
-                        const fileSizeInBytes = stats.size;
-                        const fileStream = fs.createReadStream(filePath);
-                        form.append('img', fileStream, { knownLength: fileSizeInBytes });
-                        const options = {
-                            method: 'POST',
-                            credentials: 'include',
-                            body: form
-                        }
-                        get_result = await fetchJson(`https://api.lolhuman.xyz/api/read-qr?apikey=${apikey}`, {...options })
-                        fs.unlinkSync(filePath)
-                        reply("Result: " + get_result.result)
-                    } else {
-                        reply(`Kirim gambar dengan caption ${prefix + command} atau tag gambar yang sudah dikirim`)
-                    }
-                    break
-                case 'wikipedia':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Tahu`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/wiki?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    reply(get_result)
-                    break
-                case 'translate':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} en Tahu Bacem`)
-                    kode_negara = args[0]
-                    args.shift()
-                    ini_txt = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/translate/auto/${kode_negara}?apikey=${apikey}&text=${ini_txt}`)
-                    get_result = get_result.result
-                    init_txt = `From : ${get_result.from}\n`
-                    init_txt += `To : ${get_result.to}\n`
-                    init_txt += `Original : ${get_result.original}\n`
-                    init_txt += `Translated : ${get_result.translated}\n`
-                    init_txt += `Pronunciation : ${get_result.pronunciation}\n`
-                    reply(init_txt)
-                    break
-                case 'brainly':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Soekarno adalah`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/brainly?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = "Result : \n"
-                    for (var x of get_result) {
-                        ini_txt += `${x.title}\n`
-                        ini_txt += `${x.url}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'jadwaltv':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} RCTI`)
-                    channel = args[0]
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/jadwaltv/${channel}?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Jadwal TV ${channel.toUpperCase()}\n`
-                    for (var x in get_result) {
-                        ini_txt += `${x} - ${get_result[x]}\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'jadwaltvnow':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/jadwaltv/now?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Jadwal TV Now :\n`
-                    for (var x in get_result) {
-                        ini_txt += `${x.toUpperCase()}${get_result[x]}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'newsinfo':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/newsinfo?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = "Result :\n"
-                    for (var x of get_result) {
-                        ini_txt += `Title : ${x.title}\n`
-                        ini_txt += `Author : ${x.author}\n`
-                        ini_txt += `Source : ${x.source.name}\n`
-                        ini_txt += `Url : ${x.url}\n`
-                        ini_txt += `Published : ${x.publishedAt}\n`
-                        ini_txt += `Description : ${x.description}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'cnnindonesia':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/cnnindonesia?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = "Result :\n"
-                    for (var x of get_result) {
-                        ini_txt += `Judul : ${x.judul}\n`
-                        ini_txt += `Link : ${x.link}\n`
-                        ini_txt += `Tipe : ${x.tipe}\n`
-                        ini_txt += `Published : ${x.waktu}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'cnnnasional':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/cnnindonesia/nasional?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = "Result :\n"
-                    for (var x of get_result) {
-                        ini_txt += `Judul : ${x.judul}\n`
-                        ini_txt += `Link : ${x.link}\n`
-                        ini_txt += `Tipe : ${x.tipe}\n`
-                        ini_txt += `Published : ${x.waktu}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'cnninternasional':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/cnnindonesia/internasional?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = "Result :\n"
-                    for (var x of get_result) {
-                        ini_txt += `Judul : ${x.judul}\n`
-                        ini_txt += `Link : ${x.link}\n`
-                        ini_txt += `Tipe : ${x.tipe}\n`
-                        ini_txt += `Published : ${x.waktu}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'infogempa':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/infogempa?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Lokasi : ${get_result.lokasi}\n`
-                    ini_txt += `Waktu : ${get_result.waktu}\n`
-                    ini_txt += `Potensi : ${get_result.potensi}\n`
-                    ini_txt += `Magnitude : ${get_result.magnitude}\n`
-                    ini_txt += `Kedalaman : ${get_result.kedalaman}\n`
-                    ini_txt += `Koordinat : ${get_result.koordinat}`
-                    get_buffer = await getBuffer(get_result.map)
-                    await nexus.sendMessage(from, get_buffer, image, { quoted: nex, caption: ini_txt })
-                    break
-                case 'lirik':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
                     query = args.join(" ")
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/lirik?apikey=${apikey}&query=${query}`)
                     reply(get_result.result)
-                    break
-                case 'cuaca':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Yogyakarta`)
-                    daerah = args[0]
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/cuaca/${daerah}?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Tempat : ${get_result.tempat}\n`
-                    ini_txt += `Cuaca : ${get_result.cuaca}\n`
-                    ini_txt += `Angin : ${get_result.angin}\n`
-                    ini_txt += `Description : ${get_result.description}\n`
-                    ini_txt += `Kelembapan : ${get_result.kelembapan}\n`
-                    ini_txt += `Suhu : ${get_result.suhu}\n`
-                    ini_txt += `Udara : ${get_result.udara}\n`
-                    ini_txt += `Permukaan laut : ${get_result.permukaan_laut}\n`
-                    await nexus.sendMessage(from, { degreesLatitude: get_result.latitude, degreesLongitude: get_result.longitude }, location, { quoted: nex })
-                    reply(ini_txt)
-                    break
-                case 'covidindo':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/corona/indonesia?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Positif : ${get_result.positif}\n`
-                    ini_txt += `Sembuh : ${get_result.sembuh}\n`
-                    ini_txt += `Dirawat : ${get_result.dirawat}\n`
-                    ini_txt += `Meninggal : ${get_result.meninggal}`
-                    reply(ini_txt)
-                    break
-                case 'covidglobal':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/corona/global?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Positif : ${get_result.positif}\n`
-                    ini_txt += `Sembuh : ${get_result.sembuh}\n`
-                    ini_txt += `Dirawat : ${get_result.dirawat}\n`
-                    ini_txt += `Meninggal : ${get_result.meninggal}`
-                    reply(ini_txt)
-                    break
-                case 'kodepos':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Slemanan or ${prefix + command} 66154`)
-                    daerah = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/kodepos?apikey=${apikey}&query=${daerah}`)
-                    get_result = get_result.result[0]
-                    ini_txt = `Provinsi : ${get_result.province}\n`
-                    ini_txt += `Kabupaten : ${get_result.city}\n`
-                    ini_txt += `Kecamatan : ${get_result.subdistrict}\n`
-                    ini_txt += `Kelurahan : ${get_result.urban}\n`
-                    ini_txt += `Kode Pos : ${get_result.postalcode}`
-                    reply(ini_txt)
-                    break
-                case 'jadwalbola':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/jadwalbola?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = "Jadwal Bola :\n"
-                    for (var x of get_result) {
-                        ini_txt += `Hari : ${x.hari}\n`
-                        ini_txt += `Jam : ${x.jam}\n`
-                        ini_txt += `Event : ${x.event}\n`
-                        ini_txt += `Match : ${x.match}\n`
-                        ini_txt += `TV : ${x.tv}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'indbeasiswa':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/indbeasiswa?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = 'Info Beasiswa :\n'
-                    for (var x of get_result) {
-                        ini_txt += `Title : ${x.title}\n`
-                        ini_txt += `Link : ${x.link}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'hoax':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/turnbackhoax?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = 'Info Hoax :\n'
-                    for (var x of get_result) {
-                        ini_txt += `Title : ${x.title}\n`
-                        ini_txt += `Link : ${x.link}\n`
-                        ini_txt += `Posted : ${x.posted}\n`
-                        ini_txt += `Description : ${x.desc}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'nsfwcheck':
-                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        var filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
-                        var form = new FormData();
-                        var stats = fs.statSync(filePath);
-                        var fileSizeInBytes = stats.size;
-                        var fileStream = fs.createReadStream(filePath);
-                        form.append('img', fileStream, { knownLength: fileSizeInBytes });
-                        var options = {
-                            method: 'POST',
-                            credentials: 'include',
-                            body: form
-                        }
-                        get_result = await fetchJson(`https://api.lolhuman.xyz/api/nsfwcheck?apikey=${apikey}`, {...options })
-                        fs.unlinkSync(filePath)
-                        get_result = get_result.result
-                        is_nsfw = "No"
-                        if (Number(get_result.replace("%", "")) >= 50) is_nsfw = "Yes"
-                        reply(`Is NSFW? ${is_nsfw}\nNSFW Score : ${get_result}`)
-                    } else {
-                        reply(`Kirim gambar dengan caption ${prefix + command} atau tag gambar yang sudah dikirim`)
-                    }
-                    break
+
+                break
+
+                case 'colores':
+                    if (args.length < 1) return reply(`*Agrega el texto que deseas convertir en sticker de colores.*\n\n*Por ejemplo:*\n\n*${prefix + command} gato*`)
+                    var teks = encodeURIComponent(args.join(' '))
+                    const attp1 = await getBuffer2(`https://api.xteam.xyz/attp?file&text=${teks}`)
+                    nexus.sendMessage(from, attp1, sticker, { quoted: nex })
+			    break
+
+                
                 case 'ocr':
                     if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
                         var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
@@ -1817,132 +1407,6 @@ async function starts() {
                     }
                     break
 
-                    // Movie & Story
-                case 'lk21':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Transformer`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/lk21?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = `Title : ${get_result.title}\n`
-                    ini_txt += `Link : ${get_result.link}\n`
-                    ini_txt += `Genre : ${get_result.genre}\n`
-                    ini_txt += `Views : ${get_result.views}\n`
-                    ini_txt += `Duration : ${get_result.duration}\n`
-                    ini_txt += `Tahun : ${get_result.tahun}\n`
-                    ini_txt += `Rating : ${get_result.rating}\n`
-                    ini_txt += `Desc : ${get_result.desc}\n`
-                    ini_txt += `Actors : ${get_result.actors.join(", ")}\n`
-                    ini_txt += `Location : ${get_result.location}\n`
-                    ini_txt += `Date Release : ${get_result.date_release}\n`
-                    ini_txt += `Language : ${get_result.language}\n`
-                    ini_txt += `Link Download : ${get_result.link_dl}`
-                    thumbnail = await getBuffer(get_result.thumbnail)
-                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
-                    break
-                case 'drakorongoing':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/drakorongoing?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = "Ongoing Drakor\n\n"
-                    for (var x of get_result) {
-                        ini_txt += `Title : ${x.title}\n`
-                        ini_txt += `Link : ${x.link}\n`
-                        ini_txt += `Thumbnail : ${x.thumbnail}\n`
-                        ini_txt += `Year : ${x.category}\n`
-                        ini_txt += `Total Episode : ${x.total_episode}\n`
-                        ini_txt += `Genre : ${x.genre.join(", ")}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'wattpad':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://www.wattpad.com/707367860-kumpulan-quote-tere-liye-tere-liye-quote-quote`)
-                    ini_url = args[0]
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/wattpad?apikey=${apikey}&url=${ini_url}`)
-                    get_result = get_result.result
-                    ini_txt = `Title : ${get_result.title}\n`
-                    ini_txt += `Rating : ${get_result.rating}\n`
-                    ini_txt += `Motify date : ${get_result.modifyDate}\n`
-                    ini_txt += `Create date: ${get_result.createDate}\n`
-                    ini_txt += `Word : ${get_result.word}\n`
-                    ini_txt += `Comment : ${get_result.comment}\n`
-                    ini_txt += `Vote : ${get_result.vote}\n`
-                    ini_txt += `Reader : ${get_result.reader}\n`
-                    ini_txt += `Pages : ${get_result.pages}\n`
-                    ini_txt += `Description : ${get_result.desc}\n\n`
-                    ini_txt += `Story : \n${get_result.story}`
-                    thumbnail = await getBuffer(get_result.photo)
-                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
-                    break
-                case 'wattpadsearch':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Tere Liye`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/wattpadsearch?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = "Wattpad Seach : \n"
-                    for (var x of get_result) {
-                        ini_txt += `Title : ${x.title}\n`
-                        ini_txt += `Url : ${x.url}\n`
-                        ini_txt += `Part : ${x.parts}\n`
-                        ini_txt += `Motify date : ${x.modifyDate}\n`
-                        ini_txt += `Create date: ${x.createDate}\n`
-                        ini_txt += `Coment count: ${x.commentCount}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'cerpen':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/cerpen?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Title : ${get_result.title}\n`
-                    ini_txt += `Creator : ${get_result.creator}\n`
-                    ini_txt += `Story :\n${get_result.cerpen}`
-                    reply(ini_txt)
-                    break
-                case 'ceritahoror':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/ceritahoror?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Title : ${get_result.title}\n`
-                    ini_txt += `Desc : ${get_result.desc}\n`
-                    ini_txt += `Story :\n${get_result.story}\n`
-                    thumbnail = await getBuffer(get_result.thumbnail)
-                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
-                    break
-
-                    // Random Text //
-                case 'quotes':
-                    quotes = await fetchJson(`https://api.lolhuman.xyz/api/random/quotes?apikey=${apikey}`)
-                    quotes = quotes.result
-                    author = quotes.by
-                    quotes = quotes.quote
-                    reply(`_${quotes}_\n\n*― ${author}*`)
-                    break
-                case 'quotesanime':
-                    quotes = await fetchJson(`https://api.lolhuman.xyz/api/random/quotesnime?apikey=${apikey}`)
-                    quotes = quotes.result
-                    quote = quotes.quote
-                    char = quotes.character
-                    anime = quotes.anime
-                    episode = quotes.episode
-                    reply(`_${quote}_\n\n*― ${char}*\n*― ${anime} ${episode}*`)
-                    break
-                case 'quotesdilan':
-                    quotedilan = await fetchJson(`https://api.lolhuman.xyz/api/quotes/dilan?apikey=${apikey}`)
-                    reply(quotedilan.result)
-                    break
-                case 'quotesimage':
-                    get_result = await getBuffer(`https://api.lolhuman.xyz/api/random/${command}?apikey=${apikey}`)
-                    await nexus.sendMessage(from, get_result, image, { quotes: nex })
-                    break
-                case 'faktaunik':
-                case 'katabijak':
-                case 'pantun':
-                case 'bucin':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/random/${command}?apikey=${apikey}`)
-                    reply(get_result.result)
-                    break
-                case 'randomnama':
-                    anu = await fetchJson(`https://api.lolhuman.xyz/api/random/nama?apikey=${apikey}`)
-                    reply(anu.result)
-                    break
-
                     // Searching
                 case 'gimage':
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
@@ -1960,12 +1424,7 @@ async function starts() {
                         await nexus.sendMessage(from, ini_buffer, image)
                     }
                     break
-                case 'konachan':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} azur_lane`)
-                    query = args.join(" ")
-                    ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/konachan?apikey=${apikey}&query=${query}`)
-                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
-                    break
+                
                 case 'wallpapersearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
                     query = args.join(" ")
@@ -1980,50 +1439,7 @@ async function starts() {
                     ini_buffer = await getBuffer(get_result.result)
                     await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
                     break
-                case 'playstore':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} telegram`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/playstore?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = 'Play Store Search : \n'
-                    for (var x of get_result) {
-                        ini_txt += `Name : ${x.title}\n`
-                        ini_txt += `ID : ${x.appId}\n`
-                        ini_txt += `Developer : ${x.developer}\n`
-                        ini_txt += `Link : ${x.url}\n`
-                        ini_txt += `Price : ${x.priceText}\n`
-                        ini_txt += `Price : ${x.price}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'shopee':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} tas gendong`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/shopee?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = 'Shopee Search : \n'
-                    for (var x of get_result) {
-                        ini_txt += `Name : ${x.name}\n`
-                        ini_txt += `Terjual : ${x.sold}\n`
-                        ini_txt += `Stock : ${x.stock}\n`
-                        ini_txt += `Lokasi : ${x.shop_loc}\n`
-                        ini_txt += `Link : ${x.link_produk}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'google':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/gsearch?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = 'Google Search : \n'
-                    for (var x of get_result) {
-                        ini_txt += `Title : ${x.title}\n`
-                        ini_txt += `Link : ${x.link}\n`
-                        ini_txt += `Desc : ${x.desc}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
+                
                 case 'stickerwa':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Koceng Imot`)
                     query = args.join(" ")
@@ -2033,172 +1449,11 @@ async function starts() {
                         ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=${x}`)
                         await nexus.sendMessage(from, ini_buffer, sticker)
                     }
-                    break
+                break
 
-                    // Primbon
-                case 'artinama':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
-                    ini_nama = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/artinama?apikey=${apikey}&nama=${ini_nama}`)
-                    reply(get_result.result)
-                    break
-                case 'jodoh':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Tahu & Bacem`)
-                    ini_nama = args.join(" ").split("&")
-                    nama1 = ini_nama[0].trim()
-                    nama2 = ini_nama[1].trim()
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/jodoh/${nama1}/${nama2}?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Positif : ${get_result.positif}\n`
-                    ini_txt += `Negative : ${get_result.negatif}\n`
-                    ini_txt += `Deskripsi : ${get_result.deskripsi}`
-                    reply(ini_txt)
-                    break
-                case 'weton':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} 12 12 2020`)
-                    tanggal = args[0]
-                    bulan = args[1]
-                    tahun = args[2]
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/weton/${tanggal}/${bulan}/${tahun}?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Weton : ${get_result.weton}\n`
-                    ini_txt += `Pekerjaan : ${get_result.pekerjaan}\n`
-                    ini_txt += `Rejeki : ${get_result.rejeki}\n`
-                    ini_txt += `Jodoh : ${get_result.jodoh}`
-                    reply(ini_txt)
-                    break
-                case 'jadian':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} 12 12 2020`)
-                    tanggal = args[0]
-                    bulan = args[1]
-                    tahun = args[2]
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/jadian/${tanggal}/${bulan}/${tahun}?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Karakteristik : ${get_result.karakteristik}\n`
-                    ini_txt += `Deskripsi : ${get_result.deskripsi}`
-                    reply(ini_txt)
-                    break
-                case 'tebakumur':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
-                    ini_name = args.join(" ")
-                    if (args.length == 0) return reply(`Example: ${prefix + command} LoL Human`)
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/tebakumur?apikey=SoftApikey&name=${ini_name}`)
-                    get_result = get_result.result
-                    ini_txt = `Nama : ${get_result.name}\n`
-                    ini_txt += `Umur : ${get_result.age}`
-                    reply(ini_txt)
-                    break
-
-                    // Entertainment
-                case 'asupan':
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/asupan?apikey=${apikey}`)
-                    ini_buffer = await getBuffer(get_result.result)
-                    await nexus.sendMessage(from, ini_buffer, video, { quoted: nex, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
-                    break
-                case 'wancak':
-                    ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/onecak?apikey=${apikey}`)
-                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex })
-                    break
-                case 'sambungkata':
-                    if (sambungkata.hasOwnProperty(sender.split('@')[0])) return reply("Selesein yg sebelumnya dulu atuh")
-                    if (args.length == 0) return reply(`Example: ${prefix + command} tahu`)
-                    ini_txt = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/sambungkata?apikey=${apikey}&text=${ini_txt}`)
-                    get_result = get_result.result
-                    await nexus.sendMessage(from, get_result, text, { quoted: nex }).then(() => {
-                        sambungkata[sender.split('@')[0]] = get_result.toLowerCase()
-                        fs.writeFileSync("./database/sambungkata.json", JSON.stringify(sambungkata))
-                    })
-                    break
-                case 'cancelsambungkata':
-                    if (!sambungkata.hasOwnProperty(sender.split('@')[0])) return reply("Anda tidak memiliki tebak gambar sebelumnya")
-                    delete sambungkata[sender.split('@')[0]]
-                    fs.writeFileSync("./database/sambungkata.json", JSON.stringify(sambungkata))
-                    reply("Success mengcancel sambung kata sebelumnya")
-                    break
-                case 'tebakgambar': // case by piyo-chan
-                    if (tebakgambar.hasOwnProperty(sender.split('@')[0])) return reply("Selesein yg sebelumnya dulu atuh")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/tebak/gambar?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_image = get_result.image
-                    jawaban = get_result.answer
-                    ini_buffer = await getBuffer(ini_image)
-                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: "Jawab gk? Jawab lahhh, masa enggak. 30 detik cukup kan? gk cukup pulang aja" }).then(() => {
-                        tebakgambar[sender.split('@')[0]] = jawaban.toLowerCase()
-                        fs.writeFileSync("./database/tebakgambar.json", JSON.stringify(tebakgambar))
-                    })
-                    await sleep(30000)
-                    if (tebakgambar.hasOwnProperty(sender.split('@')[0])) {
-                        reply("Jawaban: " + jawaban)
-                        delete tebakgambar[sender.split('@')[0]]
-                        fs.writeFileSync("./database/tebakgambar.json", JSON.stringify(tebakgambar))
-                    }
-                    break
-                case 'canceltebakgambar':
-                    if (!tebakgambar.hasOwnProperty(sender.split('@')[0])) return reply("Anda tidak memiliki tebak gambar sebelumnya")
-                    delete tebakgambar[sender.split('@')[0]]
-                    fs.writeFileSync("./database/tebakgambar.json", JSON.stringify(tebakgambar))
-                    reply("Success mengcancel tebak gambar sebelumnya")
-                    break
-
-                case 'akinator': // Premium / VIP apikey only
-                    if (akinator.hasOwnProperty(sender.split('@')[0])) return reply("Selesein yg sebelumnya dulu atuh")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/akinator/start?apikey=${apikey}`)
-                    var { server, frontaddr, session, signature, question, step } = get_result.result
-                    const data = {}
-                    data["server"] = server
-                    data["frontaddr"] = frontaddr
-                    data["session"] = session
-                    data["signature"] = signature
-                    data["question"] = question
-                    data["step"] = step
-                    ini_txt = `${question}\n\n`
-                    ini_txt += "0 - Ya\n"
-                    ini_txt += "1 - Tidak\n"
-                    ini_txt += "2 - Saya Tidak Tau\n"
-                    ini_txt += "3 - Mungkin\n"
-                    ini_txt += "4 - Mungkin Tidak"
-                    await nexus.sendMessage(from, ini_txt, text, { quoted: nex }).then(() => {
-                        akinator[sender.split('@')[0]] = data
-                        fs.writeFileSync("./database/akinator.json", JSON.stringify(akinator))
-                    })
-                    break
-                case 'cancelakinator':
-                    if (!akinator.hasOwnProperty(sender.split('@')[0])) return reply("Anda tidak memiliki akinator sebelumnya")
-                    delete akinator[sender.split('@')[0]]
-                    fs.writeFileSync("./database/akinator.json", JSON.stringify(akinator))
-                    reply("Success mengcancel akinator sebelumnya")
-                    break
-
-
-                    // Creator
-                case 'quotemaker3':
-                    if ((isMedia && !nex.message.videoMessage || isQuotedImage)) {
-                        if (args.length == 0) return reply(`Example: ${prefix + command} LoL|Human`)
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
-                        file_name = getRandom(".webp")
-                        ini_txt = args.join(" ")
-                        request({
-                            url: `https://api.lolhuman.xyz/api/quotemaker3?apikey=${apikey}`,
-                            method: 'POST',
-                            formData: {
-                                "img": fs.createReadStream(filePath),
-                                "text": ini_txt
-                            },
-                            encoding: "binary"
-                        }, function(error, response, body) {
-                            fs.unlinkSync(filePath)
-                            fs.writeFileSync(file_name, body, "binary")
-                            ini_buff = fs.readFileSync(file_name)
-                            nexus.sendMessage(from, ini_buff, image, { quoted: nex }).then(() => {
-                                fs.unlinkSync(file_name)
-                            })
-                        });
-                    } else {
-                        reply(`Kirim gambar dengan caption ${prefix + command} atau tag gambar yang sudah dikirim`)
-                    }
-                    break
+                    
+                // Creator
+                
                 case 'stickerwm':
                     if ((isQuotedImage)) {
                         const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
@@ -2213,7 +1468,8 @@ async function starts() {
                     } else {
                         reply(`Kirim gambar dengan caption ${prefix + command} atau tag gambar yang sudah dikirim`)
                     }
-                    break
+                break
+
                 case 'sticker':
                     if ((isQuotedVideo || isQuotedImage) && args.length == 0) {
                         const encmedia = isQuotedImage || isQuotedVideo ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
@@ -2236,93 +1492,9 @@ async function starts() {
                     } else {
                         reply(`Kirim gambar dengan caption ${prefix}sticker atau tag gambar yang sudah dikirim`)
                     }
-                    break
-                case 'roundsticker':
-                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia)
-                        file_name = getRandom('.webp')
-                        request({
-                            url: `https://api.lolhuman.xyz/api/convert/towebpwround?apikey=${apikey}`,
-                            method: 'POST',
-                            formData: {
-                                "img": fs.createReadStream(filePath)
-                            },
-                            encoding: "binary"
-                        }, function(error, response, body) {
-                            fs.unlinkSync(filePath)
-                            fs.writeFileSync(file_name, body, "binary")
-                            ini_buff = fs.readFileSync(file_name)
-                            nexus.sendMessage(from, ini_buff, sticker, { quoted: nex }).then(() => {
-                                fs.unlinkSync(file_name)
-                            })
-                        });
-                    } else {
-                        reply(`Kirim gambar dengan caption ${prefix}sticker atau tag gambar yang sudah dikirim`)
-                    }
-                    break
-                case 'stickernobg':
-                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia)
-                        file_name = getRandom('.png')
-                        file_name2 = getRandom('.webp')
-                        request({
-                            url: `https://api.lolhuman.xyz/api/removebg?apikey=${apikey}`,
-                            method: 'POST',
-                            formData: {
-                                "img": fs.createReadStream(filePath)
-                            },
-                            encoding: "binary"
-                        }, function(error, response, body) {
-                            fs.unlinkSync(filePath)
-                            fs.writeFileSync(file_name, body, "binary")
-                            ffmpeg(`./${file_name}`)
-                                .input(file_name)
-                                .on('error', function(err) {
-                                    console.log(err)
-                                    fs.unlinkSync(file_name)
-                                })
-                                .on('end', function() {
-                                    nexus.sendMessage(from, fs.readFileSync(file_name2), sticker, { quoted: nex })
-                                    fs.unlinkSync(file_name2)
-                                })
-                                .addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
-                                .toFormat('webp')
-                                .save(file_name2)
-                        });
-                    } else {
-                        reply(`Kirim gambar dengan caption ${prefix}sticker atau tag gambar yang sudah dikirim`)
-                    }
-                    break
-                case 'takestick':
-                    if ((isMedia && !nex.message.videoMessage || isQuotedSticker)) {
-                        if (args.length == 0) return reply(`Example: ${prefix + command} LoL|Human`)
-                        const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
-                        file_name = getRandom(".webp")
-                        ini_txt = args.join(" ").split("|")
-                        request({
-                            url: `https://api.lolhuman.xyz/api/convert/towebpauthor?apikey=${apikey}`,
-                            method: 'POST',
-                            formData: {
-                                "img": fs.createReadStream(filePath),
-                                "package": ini_txt[0],
-                                "author": ini_txt[1]
-                            },
-                            encoding: "binary"
-                        }, function(error, response, body) {
-                            fs.unlinkSync(filePath)
-                            fs.writeFileSync(file_name, body, "binary")
-                            ini_buff = fs.readFileSync(file_name)
-                            nexus.sendMessage(from, ini_buff, sticker, { quoted: nex }).then(() => {
-                                fs.unlinkSync(file_name)
-                            })
-                        });
-                    } else {
-                        reply(`Tag sticker yang sudah dikirim`)
-                    }
-                    break
+                break
+            
+                
                 case 'ttp':
                 case 'ttp2':
                 case 'ttp3':
@@ -2454,67 +1626,7 @@ async function starts() {
                     }
                     break
 
-                    // Stalk
-                case 'stalkig':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} jessnolimit`)
-                    username = args[0]
-                    ini_result = await fetchJson(`https://api.lolhuman.xyz/api/stalkig/${username}?apikey=${apikey}`)
-                    ini_result = ini_result.result
-                    ini_buffer = await getBuffer(ini_result.photo_profile)
-                    ini_txt = `Username : ${ini_result.username}\n`
-                    ini_txt += `Full Name : ${ini_result.fullname}\n`
-                    ini_txt += `Posts : ${ini_result.posts}\n`
-                    ini_txt += `Followers : ${ini_result.followers}\n`
-                    ini_txt += `Following : ${ini_result.following}\n`
-                    ini_txt += `Bio : ${ini_result.bio}`
-                    nexus.sendMessage(from, ini_buffer, image, { caption: ini_txt })
-                    break
-                case 'stalkgithub':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} LoL-Human`)
-                    username = args[0]
-                    ini_result = await fetchJson(`https://api.lolhuman.xyz/api/github/${username}?apikey=${apikey}`)
-                    ini_result = ini_result.result
-                    ini_buffer = await getBuffer(ini_result.avatar)
-                    ini_txt = `Name : ${ini_result.name}\n`
-                    ini_txt += `Link : ${ini_result.url}\n`
-                    ini_txt += `Public Repo : ${ini_result.public_repos}\n`
-                    ini_txt += `Public Gists : ${ini_result.public_gists}\n`
-                    ini_txt += `Followers : ${ini_result.followers}\n`
-                    ini_txt += `Following : ${ini_result.following}\n`
-                    ini_txt += `Bio : ${ini_result.bio}`
-                    nexus.sendMessage(from, ini_buffer, image, { caption: ini_txt })
-                    break
-                case 'stalktwitter':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} jokowi`)
-                    username = args[0]
-                    ini_result = await fetchJson(`https://api.lolhuman.xyz/api/twitter/${username}?apikey=${apikey}`)
-                    ini_result = ini_result.result
-                    ini_buffer = await getBuffer(ini_result.profile_picture)
-                    ini_txt = `Username : ${ini_result.screen_name}\n`
-                    ini_txt += `Name : ${ini_result.name}\n`
-                    ini_txt += `Tweet : ${ini_result.tweet}\n`
-                    ini_txt += `Joined : ${ini_result.joined}\n`
-                    ini_txt += `Followers : ${ini_result.followers}\n`
-                    ini_txt += `Following : ${ini_result.following}\n`
-                    ini_txt += `Like : ${ini_result.like}\n`
-                    ini_txt += `Description : ${ini_result.description}`
-                    nexus.sendMessage(from, ini_buffer, image, { caption: ini_txt })
-                    break
-                case 'stalktiktok':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} bulansutena`)
-                    stalk_toktok = args[0]
-                    get_result = await fetchJson(`http://lolhuman.herokuapp.com/api/stalktiktok/${stalk_toktok}?apikey=${apikey}`)
-                    get_result = get_result.result
-                    ini_txt = `Username : ${get_result.username}\n`
-                    ini_txt += `Nickname : ${get_result.nickname}\n`
-                    ini_txt += `Followers : ${get_result.followers}\n`
-                    ini_txt += `Followings : ${get_result.followings}\n`
-                    ini_txt += `Likes : ${get_result.likes}\n`
-                    ini_txt += `Video : ${get_result.video}\n`
-                    ini_txt += `Bio : ${get_result.bio}\n`
-                    pp_tt = await getBuffer(get_result.user_picture)
-                    nexus.sendMessage(from, pp_tt, image, { quoted: nex, caption: ini_txt })
-                    break
+                    
 
                     // Other
                 case 'ssweb':
@@ -2535,19 +1647,7 @@ async function starts() {
                     ini_buffer = await fetchJson(`https://api.lolhuman.xyz/api/shortlink?apikey=${apikey}&url=${ini_link}`)
                     reply(ini_buffer.result)
                     break
-                case 'spamsms':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} 08303030303030`)
-                    nomor = args[0]
-                    await fetchJson(`https://api.lolhuman.xyz/api/sms/spam1?apikey=${apikey}&nomor=${nomor}`)
-                    await fetchJson(`https://api.lolhuman.xyz/api/sms/spam2?apikey=${apikey}&nomor=${nomor}`)
-                    await fetchJson(`https://api.lolhuman.xyz/api/sms/spam3?apikey=${apikey}&nomor=${nomor}`)
-                    await fetchJson(`https://api.lolhuman.xyz/api/sms/spam4?apikey=${apikey}&nomor=${nomor}`)
-                    await fetchJson(`https://api.lolhuman.xyz/api/sms/spam5?apikey=${apikey}&nomor=${nomor}`)
-                    await fetchJson(`https://api.lolhuman.xyz/api/sms/spam6?apikey=${apikey}&nomor=${nomor}`)
-                    await fetchJson(`https://api.lolhuman.xyz/api/sms/spam7?apikey=${apikey}&nomor=${nomor}`)
-                    await fetchJson(`https://api.lolhuman.xyz/api/sms/spam8?apikey=${apikey}&nomor=${nomor}`)
-                    reply("Success")
-                    break
+                
 
                 case '1977':
                 case 'aden':
