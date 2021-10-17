@@ -1352,13 +1352,10 @@ async function starts() {
                                 credentials: 'include',
                                 body: form
                             }
-                            get_result = await fetchJson(`https://api.lolhuman.xyz/api/musicsearch?apikey=${apikey}`, {...options })
+                            get_result = await fetchJson(`https://api.lolhuman.xyz/api/wait?apikey=${apikey}`, {...options })
                             fs.unlinkSync(filePath)
                             get_result = get_result.result
                             //reply(`*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Géneros:* ${get_result.genres}`)
-
-                            get_result2 = await fetchJson(`https://api.lolhuman.xyz/api/wait?query=${get_result.artists} ${get_result.title}&apikey=${apikeyvh}`)
-                            get_result2 = get_result2.result
                             ini_video = await getBuffer2(get_result.video)
                             ini_txt = `Anilist id : ${get_result.anilist_id}\n`
                             ini_txt += `MAL id : ${get_result.mal_id}\n`
