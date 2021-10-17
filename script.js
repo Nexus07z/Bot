@@ -1335,45 +1335,29 @@ async function starts() {
 
                 break
 
-                case 'anime?':
-        
-                    if (isQuotedImage && args.length == 0) {
-                        var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                        var filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
-                        reply(mess.wait);
-                        try {
-                            var form = new FormData();
-                            var stats = fs.statSync(filePath);
-                            var fileSizeInBytes = stats.size;
-                            var fileStream = fs.createReadStream(filePath);
-                            form.append('img', fileStream, { knownLength: fileSizeInBytes });
-                            var options = {
-                                method: 'POST',
-                                credentials: 'include',
-                                body: form
-                            }
-                            get_result = await fetchJson(`https://api.lolhuman.xyz/api/wait?apikey=${apikey}`, {...options })
-                            fs.unlinkSync(filePath)
-                            get_result = get_result.result
-                            //reply(`*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Géneros:* ${get_result.genres}`)
-                            ini_video = await getBuffer2(get_result.video)
-                            ini_txt = `Anilist id : ${get_result.anilist_id}\n`
-                            ini_txt += `MAL id : ${get_result.mal_id}\n`
-                            ini_txt += `Title Romaji : ${get_result.title_romaji}\n`
-                            ini_txt += `Title Native : ${get_result.title_native}\n`
-                            ini_txt += `Title English : ${get_result.title_english}\n`
-                            ini_txt += `at : ${get_result.at}\n`
-                            ini_txt += `Episode : ${get_result.episode}\n`
-                            ini_txt += `Similarity : ${get_result.similarity}`
-
-                            await nexus.sendMessage(from, ini_txt, text, { quoted: nex })
-                            
-                        } catch {
-                            reply(mess.error)
-                        }
+                case 'stickernobg':
+                    imgbb = require('imgbb-uploader')
+                    if (isMedia && !sam.message.videoMessage || isQuotedImage) {
+                    const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(sam).replace('quotedM','m')).message.extendedTextMessage.contextInfo : nex
+                    const media = await nexus.downloadAndSaveMediaMessage(encmedia)
+                    reply(mess.wait)
+                    nobg2 = await imgbb('20a14861e4f7591f3dc52649cb07ae02', media);
+                    link = `${nobg2.display_url}`;
+                    
+                    //ini_buffer = `https://api.lolhuman.xyz/api/removebg?apikey=${api}&img=${link}`
+                    
+                    get_result = await fetchJson(`https://api.vhtear.com/removebgwithurl?link=${link}&apikey=${apikeyvh}`)
+                    get_result = get_result.result
+                    short = await fetchJson(`https://api.lolhuman.xyz/api/shortlink?apikey=${apikey}&url=${get_result.image}`)
+            
+                    const attp1 = await getBuffer2(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=${short.result}`)
+                    nexus.sendMessage(from, attp1, sticker, { quoted: nex })
+                    
+                
                     } else {
-                        reply(`*Por favor etiqueta una imagen con el comando.*`)
+                        reply('*Por favor etiqueta una imagen con el comando.*')
                     }
+                    
                     
                 break
                 
