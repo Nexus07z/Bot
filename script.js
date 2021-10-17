@@ -790,6 +790,23 @@ async function starts() {
 ├ *${prefix}tiktomusic* [link de tiktok]
 │ Descarga la musica original del video.
 │ 
+├「 *Instagram* 」
+│
+├ *${prefix}igdl* [link de tiktok]
+│ Descarga un video de instagram.
+│
+│ 
+├「 *Facebook* 」
+│
+├ *${prefix}fbdl* [link de tiktok]
+│ Descarga un video de facebook.
+│
+│ 
+├「 *Twitter* 」
+│
+├ *${prefix}twtdl* [link de tiktok]
+│ Descarga un video de twitter.
+│
 ╰───
 `
                     nexus.sendMessage(from, Menu1, text, {
@@ -1131,6 +1148,56 @@ async function starts() {
 
                 break
 
+                case 'igdl':
+                    if (args.length == 0) return reply(`*Agrega el link de instagram.*\n\n*Por ejemplo:*\n\n*${prefix + command} https://www.instagram.com/tv/CRuNdt-AV-4/*`)
+                    if (!isUrl(args[0]) && !args[0].includes('instagram')) return reply('*El link tiene que ser de instagram.*')
+                    try {
+                        ini_url = args[0]
+                        ini_url = await fetchJson(`https://api.lolhuman.xyz/api/instagram?apikey=${apikey}&url=${ini_url}`)
+                        ini_url = ini_url.result
+                        ini_type = image
+                        if (ini_url.includes(".mp4")) ini_type = video
+                        ini_buffer = await getBuffer2(ini_url)
+                        await nexus.sendMessage(from, ini_buffer, ini_type, { quoted: nex })
+                    } catch {
+                        reply(mess.error)
+                    }
+                break
+
+                case 'fbdl':
+
+                    if (args.length == 0) return reply(`*Agrega el link de facebook.*\n\n*Por ejemplo:*\n\n*${prefix + command} https://www.facebook.com/watch?v=373323097729968*`)
+                    if (!isUrl(args[0]) && !args[0].includes('facebook')) return reply('*El link tiene que ser de facebook.*')
+                    reply(mess.wait);
+                    query = args.join(' ')
+                    try {
+                        get_result = await fetchJson(`https://api.vhtear.com/fbdl?link=${query}&apikey=${apikeyvh}`)
+                        get_result = get_result.result
+                        get_video = await getBuffer2(get_result.VideoUrl)
+                        await nexus.sendMessage(from, get_video, video, { mimetype: 'video/mp4', quoted: nex })
+                    } catch {
+                        reply(mess.error)
+                    }
+
+                break
+
+                case 'twtdl':
+
+                    if (args.length == 0) return reply(`*Agrega el link de twitter.*\n\n*Por ejemplo:*\n\n*${prefix + command} https://twitter.com/EA/status/1418268376447787011?s=20*`)
+                    if (!isUrl(args[0]) && !args[0].includes('twitter')) return reply('*El link tiene que ser de twitter.*')
+                    reply(mess.wait);
+                    query = args.join(' ')
+                    try {
+                        get_result = await fetchJson(`https://api.vhtear.com/twitter?link=${query}&apikey=${apikeyvh}`)
+                        get_result = get_result.result
+                        get_video = await getBuffer2(get_result.urlVideo)
+                        await nexus.sendMessage(from, get_video, video, { mimetype: 'video/mp4', quoted: nex })
+                    } catch {
+                        reply(mess.error)
+                    }
+
+                break
+
                 case 'stickersinfondo':
                         
                     imgbb = require('imgbb-uploader')
@@ -1167,74 +1234,6 @@ async function starts() {
 
                 break
 
-                case 'spotify':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://open.spotify.com/track/0ZEYRVISCaqz5yamWZWzaA`)
-                    url = args[0]
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/spotify?apikey=${apikey}&url=${url}`)
-                    get_result = get_result.result
-                    ini_txt = `Title : ${get_result.title}\n`
-                    ini_txt += `Artists : ${get_result.artists}\n`
-                    ini_txt += `Duration : ${get_result.duration}\n`
-                    ini_txt += `Popularity : ${get_result.popularity}\n`
-                    ini_txt += `Preview : ${get_result.preview_url}\n`
-                    thumbnail = await getBuffer(get_result.thumbnail)
-                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
-                    get_audio = await getBuffer(get_result.link)
-                    await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.title}.mp3`, quoted: nex })
-                    break
-                case 'spotifysearch':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/spotifysearch?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = ""
-                    for (var x of get_result) {
-                        ini_txt += `Title : ${x.title}\n`
-                        ini_txt += `Artists : ${x.artists}\n`
-                        ini_txt += `Duration : ${x.duration}\n`
-                        ini_txt += `Link : ${x.link}\n`
-                        ini_txt += `Preview : ${x.preview_url}\n\n\n`
-                    }
-                    reply(ini_txt)
-                    break
-                case 'jooxplay':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
-                    query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/jooxplay?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = `Title : ${get_result.info.song}\n`
-                    ini_txt += `Artists : ${get_result.info.singer}\n`
-                    ini_txt += `Duration : ${get_result.info.duration}\n`
-                    ini_txt += `Album : ${get_result.info.album}\n`
-                    ini_txt += `Uploaded : ${get_result.info.date}\n`
-                    ini_txt += `Lirik :\n ${get_result.lirik}\n`
-                    thumbnail = await getBuffer(get_result.image)
-                    await nexus.sendMessage(from, thumbnail, image, { quoted: nex, caption: ini_txt })
-                    get_audio = await getBuffer(get_result.audio[0].link)
-                    await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.info.song}.mp3`, quoted: nex })
-                    break
-                case 'igdl':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://www.instagram.com/p/CJ8XKFmJ4al/?igshid=1acpcqo44kgkn`)
-                    ini_url = args[0]
-                    ini_url = await fetchJson(`https://api.lolhuman.xyz/api/instagram?apikey=${apikey}&url=${ini_url}`)
-                    ini_url = ini_url.result
-                    ini_type = image
-                    if (ini_url.includes(".mp4")) ini_type = video
-                    ini_buffer = await getBuffer(ini_url)
-                    await nexus.sendMessage(from, ini_buffer, ini_type, { quoted: nex })
-                    break
-                case 'igdl2':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://www.instagram.com/p/CJ8XKFmJ4al/?igshid=1acpcqo44kgkn`)
-                    ini_url = args[0]
-                    ini_url = await fetchJson(`https://api.lolhuman.xyz/api/instagram2?apikey=${apikey}&url=${ini_url}`)
-                    ini_result = ini_url.result.media
-                    for (var x of ini_result) {
-                        ini_type = image
-                        if (x.includes(".mp4")) ini_type = video
-                        ini_buffer = await getBuffer(x)
-                        await nexus.sendMessage(from, ini_buffer, ini_type, { quoted: nex })
-                    }
-                    break
                 case 'twtdl':
                     if (args.length == 0) return reply(`Exampele: ${prefix + command} https://twitter.com/gofoodindonesia/status/1229369819511709697`)
                     ini_url = args[0]
