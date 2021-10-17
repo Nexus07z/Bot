@@ -1054,7 +1054,7 @@ async function starts() {
                     reply(mess.wait);
                     query = args.join(' ')
                     try {
-                        get_result = await getJson(`https://api.vhtear.com/ytmp3?query=${query}&apikey=${apivh}`)
+                        get_result = await getJson(`https://api.vhtear.com/ytmp3?query=${query}&apikey=${apikeyvh}`)
                         get_result = get_result.result
                         ini_txt = `Titulo : ${get_result.title}\n\n`
                         ini_txt += `Si el audio no llega, puedes descargarlo mediante el siguiente link:\n\n${get_result.mp3}`
