@@ -680,6 +680,7 @@ async function starts() {
                     Menu = `
 ╭─ *INICIO LISTA DE MENUS*
 │
+├ *${prefix}menu1* (Comandos de Descargas)
 ├ *${prefix}menu9* (Generador Text Pro Me)
 ├ *${prefix}menu10* (Generador Photo Oxy)
 ├ *${prefix}menu11* (Generador Ephoto 360)
@@ -757,6 +758,87 @@ async function starts() {
                         }
                     })
                 break
+
+                case 'menu1':
+                    whatsapp = '0@s.whatsapp.net'
+                    nexus.updatePresence(from, Presence.recording)
+                    Menu1 = `
+╭───「 *Descargas* 」
+│
+├ *${prefix}play* [nombre de la canción]
+│ Descarga un audio de youtube
+│ 
+├ *${prefix}ytmp3* [link de youtube]
+│ Descarga un audio de youtube.
+│ 
+├ *${prefix}ytmp4* [link de youtube]
+│ Descarga un video de youtube.
+│ 
+├ *${prefix}blackpink* [texto]
+├ *${prefix}bloodfrosted* [texto]
+├ *${prefix}bokeh* [texto]
+├ *${prefix}box3d* [texto]
+├ *${prefix}breakwall* [texto]
+├ *${prefix}cloud* [texto]
+├ *${prefix}deluxesilver* [texto]
+├ *${prefix}fireworksparkle* [texto]
+├ *${prefix}futureneon* [texto]
+├ *${prefix}greenneon* [texto]
+├ *${prefix}halloween* [texto]
+├ *${prefix}harrypotter* [texto]
+├ *${prefix}holographic* [texto]
+├ *${prefix}horrorblood* [texto]
+├ *${prefix}icecold* [texto]
+├ *${prefix}impressiveglitch* [texto]
+├ *${prefix}jokerlogo* [texto]
+├ *${prefix}luxury* [texto]
+├ *${prefix}magma* [texto]
+├ *${prefix}metaldark* [texto]
+├ *${prefix}minion* [texto]
+├ *${prefix}natureleaves* [texto]
+├ *${prefix}neon* [texto]
+├ *${prefix}neonlight* [texto]
+├ *${prefix}newyearcard* [texto]
+├ *${prefix}roadwarning* [texto]
+├ *${prefix}sandengraved* [texto]
+├ *${prefix}sandsummer* [texto]
+├ *${prefix}sandwriting* [texto]
+├ *${prefix}strawberry* [texto]
+├ *${prefix}summersand* [texto]
+├ *${prefix}text1917* [texto]
+├ *${prefix}thunder* [texto]
+├ *${prefix}toxic* [texto]
+├ *${prefix}watercolor* [texto]
+├ *${prefix}wonderfulgraffiti* [texto]
+│
+├ *${prefix}avenger* [Texto1|Texto2]
+├ *${prefix}coolgravity* [Texto1|Texto2]
+├ *${prefix}glitch* [Texto1|Texto2]
+├ *${prefix}lionlogo* [Texto1|Texto2]
+├ *${prefix}marvelstudio* [Texto1|Texto2]
+├ *${prefix}ninjalogo* [Texto1|Texto2]
+├ *${prefix}pornhub* [Texto1|Texto2]
+├ *${prefix}space* [Texto1|Texto2]
+├ *${prefix}steel3d* [Texto1|Texto2]
+├ *${prefix}wallgravity* [Texto1|Texto2]
+├ *${prefix}wolflogo* [Texto1|Texto2]
+│
+╰───
+`
+                    nexus.sendMessage(from, Menu1, text, {
+                        quoted:
+                        {
+                            key: {
+                                fromMe: false,
+                                participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {})
+                            },
+                            message: {
+                                "documentMessage": { "title": "Nexusᴮᴼᵀ", 'jpegThumbnail': fs.readFileSync('./src/assistant.jpg') }
+                            }
+                        }
+                    })
+                break
+
                 
                 case 'menu9':
                     whatsapp = '0@s.whatsapp.net'
@@ -968,21 +1050,23 @@ async function starts() {
 
                 // Downloader //
                 case 'ytplay':
-                    if (args.length == 0) return await reply(`Example: ${prefix + command} melukis senja`)
-                    await fetchJson(`https://api.lolhuman.xyz/api/ytsearch?apikey=${apikey}&query=${args.join(" ")}`)
-                        .then(async(result) => {
-                            await fetchJson(`https://api.lolhuman.xyz/api/ytaudio2?apikey=${apikey}&url=https://www.youtube.com/watch?v=${result.result[0].videoId}`)
-                                .then(async(result) => {
-                                    result = result.result
-                                    caption = `❖ Title    : *${result.title}*\n`
-                                    caption += `❖ Size     : *${result.size}*`
-                                    ini_buffer = await getBuffer(result.thumbnail)
-                                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: caption })
-                                    get_audio = await getBuffer(result.link)
-                                    await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${result.title}.mp3`, quoted: nex })
-                                })
-                        })
-                    break
+                    if (args.length == 0) return reply(`*Agrega lo que deseas buscar.*\n\n*Por ejemplo:*\n\n*${prefix + command} Green day Holiday*`)
+                    reply(mess.wait);
+                    query = args.join(' ')
+                    try {
+                        get_result = await getJson(`https://api.vhtear.com/ytmp3?query=${query}&apikey=${apivh}`)
+                        get_result = get_result.result
+                        ini_txt = `Titulo : ${get_result.title}\n\n`
+                        ini_txt += `Si el audio no llega, puedes descargarlo mediante el siguiente link:\n\n${get_result.mp3}`
+                        ini_buffer = await getBuffer(get_result.image)
+                        await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
+                        get_audio = await getBuffer(get_result.mp3)
+                        await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', quoted: nex })
+                    } catch {
+                        reply(`*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*`)
+                    }
+                break
+
                 case 'ytsearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
                     query = args.join(" ")
