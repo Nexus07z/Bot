@@ -779,6 +779,17 @@ async function starts() {
 ├ *${prefix}ytmp4* [link de youtube]
 │ Descarga un video de youtube.
 │
+├「 *TikTok* 」
+│
+├ *${prefix}tiktok* [link de tiktok]
+│ Descarga un video sin marca de agua.
+│
+├ *${prefix}tiktokwm* [link de tiktok]
+│ Descarga un video con marca de agua.
+│ 
+├ *${prefix}tiktomusic* [link de tiktok]
+│ Descarga la musica original del video.
+│ 
 ╰───
 `
                     nexus.sendMessage(from, Menu1, text, {
@@ -1073,42 +1084,6 @@ async function starts() {
 
                 break
 
-                case 'stickersinfondo':
-                        
-                    imgbb = require('imgbb-uploader')
-                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
-                    const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                    const media = await nexus.downloadAndSaveMediaMessage(encmedia)
-                    //reply(mess.wait)
-                    nobg = await imgbb(apiimgbb, media);
-                    link = `${nobg.display_url}`;
-            
-                    const attp1 = await getBuffer(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=https://nexus-store.site/api/removebg.php?remove=${link}`)
-                    nexus.sendMessage(from, attp1, sticker, { quoted: nex })
-                    
-                    } else {
-                        reply('*Por favor etiqueta una imagen con el comando.*')
-                    }       
-
-                break
-
-                case 'telesticker':
-                    if (args.length == 0) return reply(`*Agrega el link de telegram.*\n\n*Por ejemlo*\n\n*${prefix + command} https://t.me/addstickers/LINE_Menhera_chan_ENG*`)
-                    ini_url = args[0]
-
-                    try {
-                        ini_url = await fetchJson(`https://api.lolhuman.xyz/api/telestick?apikey=${apikey}&url=${ini_url}`)
-                        ini_sticker = ini_url.result.sticker
-                        for (sticker_ in ini_sticker) {
-                            ini_buffer = await getBuffer2(ini_sticker[sticker_])
-                            await nexus.sendMessage(from, ini_buffer, sticker)
-                        }
-                    } catch {
-                        reply(mess.error)
-                    }
-
-                break
-
                 case 'tiktok':
 
                     if (args.length == 0) return reply(`*Agrega el link de tiktok.*\n\n*Por ejemplo:*\n\n*${prefix + command} https://vm.tiktok.com/ZMdvgJgM7/*`)
@@ -1155,7 +1130,43 @@ async function starts() {
                     }
 
                 break
-        
+
+                case 'stickersinfondo':
+                        
+                    imgbb = require('imgbb-uploader')
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                    const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                    const media = await nexus.downloadAndSaveMediaMessage(encmedia)
+                    //reply(mess.wait)
+                    nobg = await imgbb(apiimgbb, media);
+                    link = `${nobg.display_url}`;
+            
+                    const attp1 = await getBuffer(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=https://nexus-store.site/api/removebg.php?remove=${link}`)
+                    nexus.sendMessage(from, attp1, sticker, { quoted: nex })
+                    
+                    } else {
+                        reply('*Por favor etiqueta una imagen con el comando.*')
+                    }       
+
+                break
+
+                case 'telesticker':
+                    if (args.length == 0) return reply(`*Agrega el link de telegram.*\n\n*Por ejemlo*\n\n*${prefix + command} https://t.me/addstickers/LINE_Menhera_chan_ENG*`)
+                    ini_url = args[0]
+
+                    try {
+                        ini_url = await fetchJson(`https://api.lolhuman.xyz/api/telestick?apikey=${apikey}&url=${ini_url}`)
+                        ini_sticker = ini_url.result.sticker
+                        for (sticker_ in ini_sticker) {
+                            ini_buffer = await getBuffer2(ini_sticker[sticker_])
+                            await nexus.sendMessage(from, ini_buffer, sticker)
+                        }
+                    } catch {
+                        reply(mess.error)
+                    }
+
+                break
+
                 case 'spotify':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://open.spotify.com/track/0ZEYRVISCaqz5yamWZWzaA`)
                     url = args[0]
