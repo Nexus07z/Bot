@@ -286,7 +286,7 @@ async function starts() {
             const isQuotedAudio = type === 'extendedTextMessage' && content.includes('audioMessage')
             const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
 
-            const isMedia = isQuotedImage || isQuotedVideo
+            const isMedia = isQuotedImage || isQuotedVideo || isQuotedAudio
 
             if (!isGroup && !isCmd) console.log(color(time, "white"), color("[ PRIVATE ]", "aqua"), color(budy, "white"), "from", color(sender.split('@')[0], "yellow"))
             if (isGroup && !isCmd) console.log(color(time, "white"), color("[  GROUP  ]", "aqua"), color(budy, "white"), "from", color(sender.split('@')[0], "yellow"), "in", color(groupName, "yellow"))
@@ -1223,8 +1223,9 @@ async function starts() {
 
                 break
 
-                case 'musicsearch':
-                    if ( args.length == 0) {
+                case 'music?':
+        
+                    if ((isMedia && !nex.message.videoMessage && !nex.message.imageMessage || isQuotedAudio) && args.length == 0) {
                         var encmedia = isQuotedAudio ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
                         var filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         var form = new FormData();
@@ -1242,7 +1243,7 @@ async function starts() {
                         get_result = get_result.result
                         reply(`Result : ${get_result.title}`)
                     } else {
-                        reply(`Kirim gambar dengan caption ${prefix + command} atau tag gambar yang sudah dikirim`)
+                        reply(`*Por favor etiqueta un audio con el comando.*`)
                     }
                     break
 
