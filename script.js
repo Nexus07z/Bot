@@ -1337,7 +1337,7 @@ async function starts() {
 
                 case 'stickernobg':
                     imgbb = require('imgbb-uploader')
-                    if (isMedia && !sam.message.videoMessage || isQuotedImage) {
+                    if (isMedia && !nex.message.videoMessage || isQuotedImage) {
                     const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM','m')).message.extendedTextMessage.contextInfo : nex
                     const media = await nexus.downloadAndSaveMediaMessage(encmedia)
                     reply(mess.wait)
