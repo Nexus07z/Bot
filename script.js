@@ -765,8 +765,8 @@ async function starts() {
                     Menu1 = `
 ╭───「 *Descargas* 」
 │
-├ *${prefix}play* [nombre de la canción]
-│ Descarga un audio de youtube
+├ *${prefix}ytplay* [nombre de la canción]
+│ Descarga un audio de youtube.
 │ 
 ├ *${prefix}ytmp3* [link de youtube]
 │ Descarga un audio de youtube.
@@ -1050,6 +1050,7 @@ async function starts() {
 
                 // Downloader //
                 case 'ytplay':
+
                     if (args.length == 0) return reply(`*Agrega lo que deseas buscar.*\n\n*Por ejemplo:*\n\n*${prefix + command} Green day Holiday*`)
                     reply(mess.wait);
                     query = args.join(' ')
@@ -1063,37 +1064,55 @@ async function starts() {
                         get_audio = await getBuffer2(get_result.mp3)
                         await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', quoted: nex })
                     } catch {
-                        reply(`*Ocurrió un problema, puedes intentarlo nuevamente más tarde.*`)
+                        reply(mess.error)
                     }
+
                 break
 
                 case 'ytsearch':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
+
+                    if (args.length == 0) return reply(`*Agrega lo que deseas buscar.*\n\n*Por ejemplo:*\n\n*${prefix + command} Green day Holiday*`)
                     query = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/ytsearch?apikey=${apikey}&query=${query}`)
-                    get_result = get_result.result
-                    ini_txt = ""
-                    for (var x of get_result) {
-                        ini_txt += `Title : ${x.title}\n`
-                        ini_txt += `Views : ${x.views}\n`
-                        ini_txt += `Published : ${x.published}\n`
-                        ini_txt += `Thumbnail : ${x.thumbnail}\n`
-                        ini_txt += `Link : https://www.youtube.com/watch?v=${x.videoId}\n\n`
+                    try {
+                        get_result = await fetchJson(`https://api.lolhuman.xyz/api/ytsearch?apikey=${apikey}&query=${query}`)
+                        get_result = get_result.result
+                        ini_txt = ""
+                        for (var x of get_result) {
+                            ini_txt += `Titulo : ${x.title}\n`
+                            ini_txt += `Vistas : ${x.views}\n`
+                            ini_txt += `Publicado : ${x.published}\n`
+                            ini_txt += `Imagen : ${x.thumbnail}\n`
+                            ini_txt += `Link : https://www.youtube.com/watch?v=${x.videoId}\n\n`
+                        }
+                        reply(ini_txt)
+                    } catch {
+                        reply(mess.error)
                     }
-                    reply(ini_txt)
-                    break
+
+                break
+
                 case 'ytmp3':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://www.youtube.com/watch?v=qZIQAk-BUEc`)
-                    ini_link = args[0]
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/ytaudio2?apikey=${apikey}&url=${ini_link}`)
-                    get_result = get_result.result
-                    caption = `❖ Title    : *${result.title}*\n`
-                    caption += `❖ Size     : *${result.size}*`
-                    ini_buffer = await getBuffer(get_result.thumbnail)
-                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
-                    get_audio = await getBuffer(get_result.link)
-                    await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.title}.mp3`, quoted: nex })
-                    break
+				
+                    if (args.length == 0) return reply(`*Agrega el link de youtube.*\n\n*Por ejemplo:*\n\n*${prefix + command} https://youtu.be/z5YonNBmNXI*`)
+                    reply(mess.wait);
+                    query = args.join(' ')
+                    
+                    try {
+                        get_result = await fetchJson(`https://api.vhtear.com/ytdl?link=${query}&apikey=${apikeyvh}`)
+                        get_result = get_result.result
+                        ini_txt = `Titulo : ${get_result.title}\n\n`
+                        ini_txt += `Si el audio no llega, puedes descargarlo mediante el siguiente link:\n\n${get_result.UrlMp3}`
+                        ini_buffer = await getBuffer2(get_result.imgUrl)
+                        await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
+                        get_audio = await getBuffer2(get_result.UrlMp3)
+                        await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.title}.mp3`, quoted: nex })
+                    } catch {
+                        reply(mess.error)
+                    }
+
+                break
+
+
                 case 'ytmp4':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://www.youtube.com/watch?v=qZIQAk-BUEc`)
                     ini_link = args[0]
