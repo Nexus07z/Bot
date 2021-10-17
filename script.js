@@ -1336,6 +1336,7 @@ async function starts() {
                 break
 
                 case 'stickernobg':
+                    
                     imgbb = require('imgbb-uploader')
                     if (isMedia && !nex.message.videoMessage || isQuotedImage) {
                     const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM','m')).message.extendedTextMessage.contextInfo : nex
@@ -1353,11 +1354,38 @@ async function starts() {
                     const attp1 = await getBuffer2(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=${short.result}`)
                     nexus.sendMessage(from, attp1, sticker, { quoted: nex })
                     
-                
                     } else {
                         reply('*Por favor etiqueta una imagen con el comando.*')
                     }
                     
+                break
+
+                case 'anime?':
+                    
+                    imgbb = require('imgbb-uploader')
+                    if (isMedia && !nex.message.videoMessage || isQuotedImage) {
+                    const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM','m')).message.extendedTextMessage.contextInfo : nex
+                    const media = await nexus.downloadAndSaveMediaMessage(encmedia)
+                    reply(mess.wait)
+                    wanime = await imgbb('20a14861e4f7591f3dc52649cb07ae02', media);
+                    link = `${wanime.display_url}`;
+                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/wait?apikey=${apikey}&img=${link}`)
+                    get_result = get_result.result
+                    
+                        ini_video = await getBuffer2(get_result.video)
+                        ini_txt = `Anilist id : ${get_result.anilist_id}\n`
+                        ini_txt += `MAL id : ${get_result.mal_id}\n`
+                        ini_txt += `Title Romaji : ${get_result.title_romaji}\n`
+                        ini_txt += `Title Native : ${get_result.title_native}\n`
+                        ini_txt += `Title English : ${get_result.title_english}\n`
+                        ini_txt += `at : ${get_result.at}\n`
+                        ini_txt += `Episode : ${get_result.episode}\n`
+                        ini_txt += `Similarity : ${get_result.similarity}`
+                        await nexus.sendMessage(from, ini_video, video, { quoted: nex, caption: ini_txt })
+                    
+                    } else {
+                        reply('*Por favor etiqueta una imagen con el comando.*')
+                    }
                     
                 break
                 
