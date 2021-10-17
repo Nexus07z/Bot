@@ -1245,7 +1245,7 @@ async function starts() {
 
                         get_result2 = await fetchJson(`https://api.vhtear.com/ytmp3?query=${get_result.artists} ${get_result.title}&apikey=${apikeyvh}`)
                         get_result2 = get_result2.result
-                        ini_txt = `*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Géneros:* ${get_result.genres}`
+                        ini_txt = `*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Lanzamiento:* ${get_result.release}\n\n*Géneros:* ${get_result.genres}`
                         ini_buffer = await getBuffer2(get_result2.image)
                         await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
                         get_audio = await getBuffer2(get_result2.mp3)
