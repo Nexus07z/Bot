@@ -1335,10 +1335,10 @@ async function starts() {
 
                 break
 
-                case 'music2?':
+                case 'anime?':
         
-                    if (isQuotedAudio && args.length == 0) {
-                        var encmedia = isQuotedAudio ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                    if (isQuotedImage && args.length == 0) {
+                        var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
                         var filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         reply(mess.wait);
                         try {
@@ -1346,7 +1346,7 @@ async function starts() {
                             var stats = fs.statSync(filePath);
                             var fileSizeInBytes = stats.size;
                             var fileStream = fs.createReadStream(filePath);
-                            form.append('file', fileStream, { knownLength: fileSizeInBytes });
+                            form.append('img', fileStream, { knownLength: fileSizeInBytes });
                             var options = {
                                 method: 'POST',
                                 credentials: 'include',
@@ -1357,18 +1357,25 @@ async function starts() {
                             get_result = get_result.result
                             //reply(`*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Géneros:* ${get_result.genres}`)
 
-                            get_result2 = await fetchJson(`https://api.vhtear.com/ytmp3?query=${get_result.artists} ${get_result.title}&apikey=${apikeyvh}`)
+                            get_result2 = await fetchJson(`https://api.lolhuman.xyz/api/wait?query=${get_result.artists} ${get_result.title}&apikey=${apikeyvh}`)
                             get_result2 = get_result2.result
-                            ini_txt = `*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Lanzamiento:* ${get_result.release}\n\n*Géneros:* ${get_result.genres}`
-                            ini_buffer = await getBuffer2(get_result2.image)
-                            await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
-                            get_audio = await getBuffer2(get_result2.mp3)
-                            await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', quoted: nex })
+                            ini_video = await getBuffer2(get_result.video)
+                            ini_txt = `Anilist id : ${get_result.anilist_id}\n`
+                            ini_txt += `MAL id : ${get_result.mal_id}\n`
+                            ini_txt += `Title Romaji : ${get_result.title_romaji}\n`
+                            ini_txt += `Title Native : ${get_result.title_native}\n`
+                            ini_txt += `Title English : ${get_result.title_english}\n`
+                            ini_txt += `at : ${get_result.at}\n`
+                            ini_txt += `Episode : ${get_result.episode}\n`
+                            ini_txt += `Similarity : ${get_result.similarity}`
+
+                            await nexus.sendMessage(from, ini_txt, text, { quoted: nex })
+                            
                         } catch {
                             reply(mess.error)
                         }
                     } else {
-                        reply(`*Por favor etiqueta un audio con el comando.*`)
+                        reply(`*Por favor etiqueta una imagen con el comando.*`)
                     }
                     
                 break
