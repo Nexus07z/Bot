@@ -1224,8 +1224,8 @@ async function starts() {
                 break
 
                 case 'musicsearch':
-                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
-                        var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                    if ( args.length == 0) {
+                        var encmedia = isQuotedAudio ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
                         var filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
                         var form = new FormData();
                         var stats = fs.statSync(filePath);
