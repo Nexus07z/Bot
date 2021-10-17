@@ -767,61 +767,15 @@ async function starts() {
 │
 ├ *${prefix}ytplay* [nombre de la canción]
 │ Descarga un audio de youtube.
+│
+├ *${prefix}ytsearch* [nombre de la canción]
+│ Muestra una lista de links de youtube.
 │ 
 ├ *${prefix}ytmp3* [link de youtube]
 │ Descarga un audio de youtube.
 │ 
 ├ *${prefix}ytmp4* [link de youtube]
 │ Descarga un video de youtube.
-│ 
-├ *${prefix}blackpink* [texto]
-├ *${prefix}bloodfrosted* [texto]
-├ *${prefix}bokeh* [texto]
-├ *${prefix}box3d* [texto]
-├ *${prefix}breakwall* [texto]
-├ *${prefix}cloud* [texto]
-├ *${prefix}deluxesilver* [texto]
-├ *${prefix}fireworksparkle* [texto]
-├ *${prefix}futureneon* [texto]
-├ *${prefix}greenneon* [texto]
-├ *${prefix}halloween* [texto]
-├ *${prefix}harrypotter* [texto]
-├ *${prefix}holographic* [texto]
-├ *${prefix}horrorblood* [texto]
-├ *${prefix}icecold* [texto]
-├ *${prefix}impressiveglitch* [texto]
-├ *${prefix}jokerlogo* [texto]
-├ *${prefix}luxury* [texto]
-├ *${prefix}magma* [texto]
-├ *${prefix}metaldark* [texto]
-├ *${prefix}minion* [texto]
-├ *${prefix}natureleaves* [texto]
-├ *${prefix}neon* [texto]
-├ *${prefix}neonlight* [texto]
-├ *${prefix}newyearcard* [texto]
-├ *${prefix}roadwarning* [texto]
-├ *${prefix}sandengraved* [texto]
-├ *${prefix}sandsummer* [texto]
-├ *${prefix}sandwriting* [texto]
-├ *${prefix}strawberry* [texto]
-├ *${prefix}summersand* [texto]
-├ *${prefix}text1917* [texto]
-├ *${prefix}thunder* [texto]
-├ *${prefix}toxic* [texto]
-├ *${prefix}watercolor* [texto]
-├ *${prefix}wonderfulgraffiti* [texto]
-│
-├ *${prefix}avenger* [Texto1|Texto2]
-├ *${prefix}coolgravity* [Texto1|Texto2]
-├ *${prefix}glitch* [Texto1|Texto2]
-├ *${prefix}lionlogo* [Texto1|Texto2]
-├ *${prefix}marvelstudio* [Texto1|Texto2]
-├ *${prefix}ninjalogo* [Texto1|Texto2]
-├ *${prefix}pornhub* [Texto1|Texto2]
-├ *${prefix}space* [Texto1|Texto2]
-├ *${prefix}steel3d* [Texto1|Texto2]
-├ *${prefix}wallgravity* [Texto1|Texto2]
-├ *${prefix}wolflogo* [Texto1|Texto2]
 │
 ╰───
 `
