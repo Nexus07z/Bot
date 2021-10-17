@@ -1209,6 +1209,7 @@ async function starts() {
                 case 'igdl':
                     if (args.length == 0) return reply(`*Agrega el link de instagram.*\n\n*Por ejemplo:*\n\n*${prefix + command} https://www.instagram.com/tv/CRuNdt-AV-4/*`)
                     if (!isUrl(args[0]) && !args[0].includes('instagram')) return reply('*El link tiene que ser de instagram.*')
+                    reply(mess.wait);
                     try {
                         ini_url = args[0]
                         ini_url = await fetchJson(`https://api.lolhuman.xyz/api/instagram?apikey=${apikey}&url=${ini_url}`)
@@ -1261,14 +1262,17 @@ async function starts() {
                         
                     imgbb = require('imgbb-uploader')
                     if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
-                    const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-                    const media = await nexus.downloadAndSaveMediaMessage(encmedia)
-                    //reply(mess.wait)
-                    nobg = await imgbb(apiimgbb, media);
-                    link = `${nobg.display_url}`;
-            
-                    const attp1 = await getBuffer(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=https://nexus-store.site/api/removebg.php?remove=${link}`)
-                    nexus.sendMessage(from, attp1, sticker, { quoted: nex })
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        const media = await nexus.downloadAndSaveMediaMessage(encmedia)
+                        //reply(mess.wait)
+                        nobg = await imgbb(apiimgbb, media);
+                        link = `${nobg.display_url}`;
+                        try {
+                            const attp1 = await getBuffer2(`https://api.lolhuman.xyz/api/convert/towebp?apikey=${apikey}&img=https://nexus-store.site/api/removebg.php?remove=${link}`)
+                            nexus.sendMessage(from, attp1, sticker, { quoted: nex })
+                        } catch {
+                            reply(mess.error)
+                        }
                     
                     } else {
                         reply('*Por favor etiqueta una imagen con el comando.*')
@@ -1298,28 +1302,33 @@ async function starts() {
                     if (isQuotedAudio && args.length == 0) {
                         var encmedia = isQuotedAudio ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
                         var filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
-                        var form = new FormData();
-                        var stats = fs.statSync(filePath);
-                        var fileSizeInBytes = stats.size;
-                        var fileStream = fs.createReadStream(filePath);
-                        form.append('file', fileStream, { knownLength: fileSizeInBytes });
-                        var options = {
-                            method: 'POST',
-                            credentials: 'include',
-                            body: form
-                        }
-                        get_result = await fetchJson(`https://api.lolhuman.xyz/api/musicsearch?apikey=${apikey}`, {...options })
-                        fs.unlinkSync(filePath)
-                        get_result = get_result.result
-                        //reply(`*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Géneros:* ${get_result.genres}`)
+                        reply(mess.wait);
+                        try {
+                            var form = new FormData();
+                            var stats = fs.statSync(filePath);
+                            var fileSizeInBytes = stats.size;
+                            var fileStream = fs.createReadStream(filePath);
+                            form.append('file', fileStream, { knownLength: fileSizeInBytes });
+                            var options = {
+                                method: 'POST',
+                                credentials: 'include',
+                                body: form
+                            }
+                            get_result = await fetchJson(`https://api.lolhuman.xyz/api/musicsearch?apikey=${apikey}`, {...options })
+                            fs.unlinkSync(filePath)
+                            get_result = get_result.result
+                            //reply(`*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Géneros:* ${get_result.genres}`)
 
-                        get_result2 = await fetchJson(`https://api.vhtear.com/ytmp3?query=${get_result.artists} ${get_result.title}&apikey=${apikeyvh}`)
-                        get_result2 = get_result2.result
-                        ini_txt = `*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Lanzamiento:* ${get_result.release}\n\n*Géneros:* ${get_result.genres}`
-                        ini_buffer = await getBuffer2(get_result2.image)
-                        await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
-                        get_audio = await getBuffer2(get_result2.mp3)
-                        await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', quoted: nex })
+                            get_result2 = await fetchJson(`https://api.vhtear.com/ytmp3?query=${get_result.artists} ${get_result.title}&apikey=${apikeyvh}`)
+                            get_result2 = get_result2.result
+                            ini_txt = `*Artista/Grupo:* ${get_result.artists}\n\n*Tema:* ${get_result.title}\n\n*Álbum:* ${get_result.album}\n\n*Lanzamiento:* ${get_result.release}\n\n*Géneros:* ${get_result.genres}`
+                            ini_buffer = await getBuffer2(get_result2.image)
+                            await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
+                            get_audio = await getBuffer2(get_result2.mp3)
+                            await nexus.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', quoted: nex })
+                        } catch {
+                            reply(mess.error)
+                        }
                     } else {
                         reply(`*Por favor etiqueta un audio con el comando.*`)
                     }
