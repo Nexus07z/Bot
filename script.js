@@ -1082,7 +1082,7 @@ async function starts() {
                             ini_txt += `Vistas : ${x.views}\n`
                             ini_txt += `Publicado : ${x.published}\n`
                             ini_txt += `Imagen : ${x.thumbnail}\n`
-                            ini_txt += `Link : https://www.youtube.com/watch?v=${x.videoId}\n\n`
+                            ini_txt += `Link : https://youtu.be/${x.videoId}\n\n`
                         }
                         reply(ini_txt)
                     } catch {
@@ -1094,6 +1094,7 @@ async function starts() {
                 case 'ytmp3':
 				
                     if (args.length == 0) return reply(`*Agrega el link de youtube. (youtu.be)*\n\n*Por ejemplo:*\n\n*${prefix + command} https://youtu.be/z5YonNBmNXI*`)
+                    if (!isUrl(args[0]) && !args[0].includes('youtu.be')) return reply('*El link tiene que ser de youtube.*')
                     reply(mess.wait);
                     query = args.join(' ')
                     
@@ -1112,18 +1113,28 @@ async function starts() {
 
                 break
 
-
                 case 'ytmp4':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} https://www.youtube.com/watch?v=qZIQAk-BUEc`)
-                    ini_link = args[0]
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/ytvideo2?apikey=${apikey}&url=${ini_link}`)
-                    get_result = get_result.result
-                    ini_txt = `${get_result.title} - ${get_result.size}`
-                    ini_buffer = await getBuffer(get_result.thumbnail)
-                    await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
-                    get_audio = await getBuffer(get_result.link)
-                    await nexus.sendMessage(from, get_audio, video, { mimetype: 'video/mp4', filename: `${get_result.title}.mp4`, quoted: nex })
-                    break
+                    if (args.length == 0) return reply(`*Agrega el link de youtube. (youtu.be)*\n\n*Por ejemplo:*\n\n*${prefix + command} https://youtu.be/z5YonNBmNXI*`)
+                    if (!isUrl(args[0]) && !args[0].includes('youtu.be')) return reply('*El link tiene que ser de youtube.*')
+                    reply(mess.wait);
+				    query = args.join(' ')
+		
+                    try {
+                        
+                        get_result = await fetchJson(`https://api.vhtear.com/ytdl?link=${query}&apikey=${apikeyvh}`)
+                        get_result = get_result.result
+                        ini_txt = `Titulo : ${get_result.title}\n\n`
+                        ini_txt += `Si el video no llega, puedes descargarlo mediante el siguiente link:\n\n${get_result.UrlVideo}`
+                        ini_buffer = await getBuffer2(get_result.imgUrl)
+                        await nexus.sendMessage(from, ini_buffer, image, { quoted: nex, caption: ini_txt })
+                        get_video = await getBuffer2(get_result.UrlVideo)
+                        await nexus.sendMessage(from, get_video, video, { mimetype: 'video/mp4', filename: `${get_result.title}.mp4`, quoted: nex })
+                    } catch {
+                        reply(mess.error)
+                    }
+
+                break
+
                 case 'telesticker':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://t.me/addstickers/LINE_Menhera_chan_ENG`)
                     ini_url = args[0]
