@@ -801,13 +801,11 @@ async function starts() {
 │
 ├ *${prefix}igdl* [link de instagram]
 │ Descarga un video de instagram.
-│
 │ 
 ├「 *Facebook* 」
 │
 ├ *${prefix}fbdl* [link de facebook]
 │ Descarga un video de facebook.
-│
 │ 
 ├「 *Twitter* 」
 │
@@ -1205,6 +1203,7 @@ async function starts() {
 
                 break
 
+                
                 case 'stickersinfondo':
                         
                     imgbb = require('imgbb-uploader')
@@ -1223,6 +1222,29 @@ async function starts() {
                     }       
 
                 break
+
+                case 'musicsearch':
+                    if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
+                        var encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        var filePath = await nexus.downloadAndSaveMediaMessage(encmedia, filename = getRandom());
+                        var form = new FormData();
+                        var stats = fs.statSync(filePath);
+                        var fileSizeInBytes = stats.size;
+                        var fileStream = fs.createReadStream(filePath);
+                        form.append('file', fileStream, { knownLength: fileSizeInBytes });
+                        var options = {
+                            method: 'POST',
+                            credentials: 'include',
+                            body: form
+                        }
+                        get_result = await fetchJson(`https://api.lolhuman.xyz/api/musicsearch?apikey=${apikey}`, {...options })
+                        fs.unlinkSync(filePath)
+                        get_result = get_result.result
+                        reply(`Result : ${get_result.title}`)
+                    } else {
+                        reply(`Kirim gambar dengan caption ${prefix + command} atau tag gambar yang sudah dikirim`)
+                    }
+                    break
 
                 case 'telesticker':
                     if (args.length == 0) return reply(`*Agrega el link de telegram.*\n\n*Por ejemlo*\n\n*${prefix + command} https://t.me/addstickers/LINE_Menhera_chan_ENG*`)
