@@ -1414,7 +1414,7 @@ async function starts() {
 			
 					if (isMedia && !nex.message.videoMessage || isQuotedImage) {
 					const encmedia1 = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
-					const media1 = await samu330.downloadAndSaveMediaMessage(encmedia1, `./sticker/${sender}`)
+					const media1 = await nexus.downloadAndSaveMediaMessage(encmedia1, `./sticker/${sender}`)
 					const packname10 = `Sam NexusBOT\n\n        Sticker`
 					const author10 = args.join(' ')
 					exif.create(packname10, author10, `stickwm_${sender}`)
