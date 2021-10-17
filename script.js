@@ -1133,7 +1133,7 @@ async function starts() {
                     reply(mess.wait);
                     query = args.join(' ')
                     try {
-                        const tiktokwm = await getBuffer2(`https://api.lolhuman.xyz/api/tiktokwm?apikey=${api}&url=${query}`)
+                        const tiktokwm = await getBuffer2(`https://api.lolhuman.xyz/api/tiktokwm?apikey=${apikey}&url=${query}`)
                         nexus.sendMessage(from, tiktokwm, video, { mimetype: 'video/mp4', quoted: nex })
                     } catch {
                         reply(mess.error)
@@ -1153,7 +1153,7 @@ async function starts() {
                     } catch {
                         reply(mess.error)
                     }
-                    
+
                 break
         
                 case 'spotify':
