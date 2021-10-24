@@ -1301,6 +1301,35 @@ async function starts() {
 
                 break
 
+                case 'renombrar':
+                    
+                    if ((isQuotedSticker)) {
+                        if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus|Bot*`)
+                        a = args.join(' ')
+                        txt1 = a.substring(0, a.indexOf('|') - 0)
+                        txt2 = a.substring(a.lastIndexOf('|') + 1)
+                        if (!txt1) return reply(`*Falta el primer texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
+                        if (!txt2) return reply(`*Falta el segundo texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
+
+                        const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        var image_buffer = await nexus.downloadMediaMessage(encmedia);
+                        try {
+                            var formdata = new FormData()
+                            formdata.append('package', txt1)
+                            formdata.append('author', txt2)
+                            formdata.append('img', image_buffer, { filename: 'tahu.jpg' })
+                            axios.post(`https://api.lolhuman.xyz/api/convert/towebpauthor?apikey=${apikey}`, formdata.getBuffer(), { headers: { "content-type": `multipart/form-data; boundary=${formdata._boundary}` }, responseType: 'arraybuffer' }).then((res) => {
+                                nexus.sendMessage(from, res.data, sticker)
+                            })
+                        } catch {
+                            reply(mess.error)
+                        }
+                    } else {
+                        reply(`*Por favor etiqueta una imagen con el comando.*`)
+                    }
+
+                break
+
                 case 'sticker':
 
                     if ((isQuotedVideo || isQuotedImage) && args.length == 0) {
