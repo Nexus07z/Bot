@@ -840,10 +840,10 @@ async function starts() {
 ├ *${prefix}stickerwm*
 │ Crea un sticker con autor Nexus.
 │
-├ ${prefix}stickerp [Package|Author]
+├ *${prefix}stickerp* [Package|Author]
 │ Crea un sticker con nombre personalizado.
 │
-├ ${prefix}renombrar
+├ *${prefix}renombrar* [Package|Author]
 │ Cambia el nombre de un sticker.
 │
 ├ *${prefix}stickersinfondo*
@@ -1301,15 +1301,43 @@ async function starts() {
 
                 break
 
-                case 'renombrar':
-                    
-                    if ((isQuotedSticker)) {
-                        if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus|Bot*`)
+                case 'stickerp':
+
+                    if ((isQuotedImage)) {
+                        if (args.length == 0) return reply(`*Agrega el package y author que deseas agregar al sticker.*\n\n*Por ejemplo:     ${prefix + command} Sticker|Nexus*`)
                         a = args.join(' ')
                         txt1 = a.substring(0, a.indexOf('|') - 0)
                         txt2 = a.substring(a.lastIndexOf('|') + 1)
-                        if (!txt1) return reply(`*Falta el primer texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
-                        if (!txt2) return reply(`*Falta el segundo texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
+                        if (!txt1) return reply(`*Falta el package.*\n\n*Ejemplo:     ${prefix + command} Sticker|Nexus*`)
+                        if (!txt2) return reply(`*Falta el author.*\n\n*Ejemplo:     ${prefix + command} Sticker|Nexus*`)
+                        const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
+                        var image_buffer = await nexus.downloadMediaMessage(encmedia);
+                        try {
+                            var formdata = new FormData()
+                            formdata.append('package', txt1)
+                            formdata.append('author', txt2)
+                            formdata.append('img', image_buffer, { filename: 'tahu.jpg' })
+                            axios.post(`https://api.lolhuman.xyz/api/convert/towebpauthor?apikey=${apikey}`, formdata.getBuffer(), { headers: { "content-type": `multipart/form-data; boundary=${formdata._boundary}` }, responseType: 'arraybuffer' }).then((res) => {
+                                nexus.sendMessage(from, res.data, sticker)
+                            })
+                        } catch {
+                            reply(mess.error)
+                        }
+                    } else {
+                        reply(`*Por favor etiqueta una imagen con el comando.*`)
+                    }
+
+                break
+
+                case 'renombrar':
+                    
+                    if ((isQuotedSticker)) {
+                        if (args.length == 0) return reply(`*Agrega el package y author que deseas agregar al sticker.*\n\n*Por ejemplo:     ${prefix + command} Sticker|Nexus*`)
+                        a = args.join(' ')
+                        txt1 = a.substring(0, a.indexOf('|') - 0)
+                        txt2 = a.substring(a.lastIndexOf('|') + 1)
+                        if (!txt1) return reply(`*Falta el package.*\n\n*Ejemplo:     ${prefix + command} Sticker|Nexus*`)
+                        if (!txt2) return reply(`*Falta el author.*\n\n*Ejemplo:     ${prefix + command} Sticker|Nexus*`)
 
                         const encmedia = isQuotedSticker ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
                         var image_buffer = await nexus.downloadMediaMessage(encmedia);
@@ -1325,7 +1353,7 @@ async function starts() {
                             reply(mess.error)
                         }
                     } else {
-                        reply(`*Por favor etiqueta una imagen con el comando.*`)
+                        reply(`*Por favor etiqueta un sticker con el comando.*`)
                     }
 
                 break
