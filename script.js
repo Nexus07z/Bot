@@ -1139,7 +1139,7 @@ async function starts() {
 
                 case 'ytmp3':
 				
-                    if (args.length == 0) return reply(`*Agrega el link de youtube. (youtu.be)*\n\n*Por ejemplo:*\n\n*${prefix + command} https://youtu.be/z5YonNBmNXI*`)
+                    if (args.length == 0) return reply(`*Agrega el link de youtube. (youtu.be)*\n\n*Por ejemplo:*\n\n*${prefix + command} https://youtu.be/QQPgk_MkK4k*`)
                     if (!isUrl(args[0]) && !args[0].includes('youtu.be')) return reply('*El link tiene que ser de youtube.*')
                     reply(mess.wait);
                     query = args.join(' ')
@@ -1160,7 +1160,7 @@ async function starts() {
                 break
 
                 case 'ytmp4':
-                    if (args.length == 0) return reply(`*Agrega el link de youtube. (youtu.be)*\n\n*Por ejemplo:*\n\n*${prefix + command} https://youtu.be/z5YonNBmNXI*`)
+                    if (args.length == 0) return reply(`*Agrega el link de youtube. (youtu.be)*\n\n*Por ejemplo:*\n\n*${prefix + command} https://youtu.be/QQPgk_MkK4k*`)
                     if (!isUrl(args[0]) && !args[0].includes('youtu.be')) return reply('*El link tiene que ser de youtube.*')
                     reply(mess.wait);
 				    query = args.join(' ')
