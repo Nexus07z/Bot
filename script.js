@@ -1954,11 +1954,12 @@ async function starts() {
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
                
-                        get_photooxy = await getBuffer2(`https://api.lolhuman.xyz/api/photooxy1/${command}?apikey=${apikey}&text=${ini_txt}`)
-                        await nexus.sendMessage(from, get_photooxy, image, { quoted: nex })
+                        get_photooxy = await getBuffer(`https://api.lolhuman.xyz/api/photooxy1/${command}?apikey=${apikey}&text=${ini_txt}`)
+                        await nexus.sendMessage(from, get_photooxy, image, { quoted: nex }).catch(() => reply('error'))
                    
  
                 break
+                
 
                 case 'tiktok':
                 case 'arcade8bit':
@@ -2050,7 +2051,7 @@ async function starts() {
             if (!e.includes("this.isZero")) {
                 const time_error = moment.tz('America/Lima').format('HH:mm:ss')
                 console.log(color(time_error, "white"), color("[  ERROR  ]", "aqua"), color(e, 'red'))
-                reply(mess.error)
+                
             }
         }
     })
