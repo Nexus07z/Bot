@@ -2050,6 +2050,7 @@ async function starts() {
             if (!e.includes("this.isZero")) {
                 const time_error = moment.tz('America/Lima').format('HH:mm:ss')
                 console.log(color(time_error, "white"), color("[  ERROR  ]", "aqua"), color(e, 'red'))
+                reply(mess.error)
             }
         }
     })
