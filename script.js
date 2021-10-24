@@ -1955,7 +1955,7 @@ async function starts() {
                         get_photooxy = await getBuffer2(`https://api.lolhuman.xyz/api/photooxy1/${command}?apikey=${apikey}&text=${ini_txt}`)
                         await nexus.sendMessage(from, get_photooxy, image, { quoted: nex })
                         
-                    } catch (e) {
+                    } catch {
                         reply(mess.error)
                     }
  
