@@ -1948,6 +1948,8 @@ async function starts() {
                 case 'flamming': 
                 case 'harrypotter':
                 case 'carvedwood':
+                case 'demo':
+
                     
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
