@@ -1310,7 +1310,7 @@ async function starts() {
                         try {
                             ffmpeg(`./${filepath}`)
                                 .input(filepath)
-                                .on('error', () => {
+                                .on('errorxd', () => {
                                     fs.unlinkSync(filepath)
                                     reply(mess.error)
                                 })
@@ -1887,14 +1887,10 @@ async function starts() {
 
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
-                    try {
-                        get_textprome = await getBuffer2(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`)
-                        await nexus.sendMessage(from, get_textprome, image, { quoted: nex })
-                        
-                    } catch (e) {
-                        reply(mess.error)
-                    }
-
+         
+                    get_textprome = await getBuffer(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`)
+                    await nexus.sendMessage(from, get_textprome, image, { quoted: nex })
+           
                 break
 
                 case 'pornhub':
@@ -1915,14 +1911,10 @@ async function starts() {
                     txt2 = a.substring(a.lastIndexOf('|') + 1)
                     if (!txt1) return reply(`*Falta el primer texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
                     if (!txt2) return reply(`*Falta el segundo texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
-                    try {
-                        get_textprome2 = await getBuffer2(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
-                        nexus.sendMessage(from, get_textprome2, image, { quoted: nex })
-                   
-                    } catch (e) {
-                        reply(mess.error)
-                    }
-
+           
+                    get_textprome2 = await getBuffer(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
+                    nexus.sendMessage(from, get_textprome2, image, { quoted: nex })
+                
                 break
 
                 // Photo Oxy //
@@ -1948,16 +1940,13 @@ async function starts() {
                 case 'flamming': 
                 case 'harrypotter':
                 case 'carvedwood':
-                case 'demo':
-
-                    
+              
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
            
-                        get_photooxy = await getBuffer(`https://api.lolhuman.xyz/api/photooxy1/${command}?apikey=${apikey}&text=${ini_txt}`)
-                        await nexus.sendMessage(from, get_photooxy, image, { quoted: nex })
-                  
- 
+                    get_photooxy = await getBuffer(`https://api.lolhuman.xyz/api/photooxy1/${command}?apikey=${apikey}&text=${ini_txt}`)
+                    await nexus.sendMessage(from, get_photooxy, image, { quoted: nex })
+            
                 break
 
                 case 'tiktok':
@@ -1971,14 +1960,10 @@ async function starts() {
                     txt2 = a.substring(a.lastIndexOf('|') + 1)
                     if (!txt1) return reply(`*Falta el primer texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
                     if (!txt2) return reply(`*Falta el segundo texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
-                    try {
-                        get_photooxy2 = await getBuffer2(`https://api.lolhuman.xyz/api/photooxy2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
-                        nexus.sendMessage(from, get_photooxy2, image, { quoted: nex })
+                    
+                    get_photooxy2 = await getBuffer(`https://api.lolhuman.xyz/api/photooxy2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
+                    nexus.sendMessage(from, get_photooxy2, image, { quoted: nex })
                    
-                    } catch (e) {
-                        reply(mess.error)
-                    }
-
                 break
 
                 // Ephoto 360 //
@@ -2025,25 +2010,17 @@ async function starts() {
 
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
-                    try {
-                        get_ephoto360 = await getBuffer2(`https://api.lolhuman.xyz/api/ephoto1/${command}?apikey=${apikey}&text=${ini_txt}`)
-                        await nexus.sendMessage(from, get_ephoto360, image, { quoted: nex })
+
+                    get_ephoto360 = await getBuffer(`https://api.lolhuman.xyz/api/ephoto1/${command}?apikey=${apikey}&text=${ini_txt}`)
+                    await nexus.sendMessage(from, get_ephoto360, image, { quoted: nex })
                         
-                    } catch (e) {
-                        reply(mess.error)
-                    }
-                    
                 break
 
                 default:
                     if (isCmd) {
                         reply(`Lo siento, el comando *${prefix}${command}* no se encuentra en la programación.\n\nUtiliza el comando *${prefix}menu* para ver la lista de comandos.`)
                     }
-                    if (!isGroup && !isCmd && !kuis) {
-                        await nexus.updatePresence(from, Presence.composing)
-                        simi = await fetchJson(`https://api.lolhuman.xyz/api/simi?apikey=${apikey}&text=${budy}`)
-                        reply(simi.result)
-                    }
+                    
             }
         } catch (e) {
             e = String(e)
