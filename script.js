@@ -1310,7 +1310,7 @@ async function starts() {
                         try {
                             ffmpeg(`./${filepath}`)
                                 .input(filepath)
-                                .on('errorxd', () => {
+                                .on('error', () => {
                                     fs.unlinkSync(filepath)
                                     reply(mess.error)
                                 })
