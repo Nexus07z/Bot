@@ -1951,13 +1951,10 @@ async function starts() {
                     
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
-                    try {
+               
                         get_photooxy = await getBuffer2(`https://api.lolhuman.xyz/api/photooxy1/${command}?apikey=${apikey}&text=${ini_txt}`)
                         await nexus.sendMessage(from, get_photooxy, image, { quoted: nex })
-                        
-                    } catch {
-                        reply(mess.error)
-                    }
+                   
  
                 break
 
