@@ -1394,7 +1394,7 @@ async function starts() {
                     if ((isMedia && !nex.message.videoMessage || isQuotedImage) && args.length == 0) {
                         const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(nex).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : nex
                         const media = await nexus.downloadAndSaveMediaMessage(encmedia)
-                        //reply(mess.wait)
+                        reply(mess.wait)
                         nobg = await imgbb(apiimgbb, media);
                         link = `${nobg.display_url}`;
                         try {
