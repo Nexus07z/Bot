@@ -1290,7 +1290,7 @@ async function starts() {
                             formdata.append('author', 'Nexus')
                             formdata.append('img', image_buffer, { filename: 'tahu.jpg' })
                             axios.post(`https://api.lolhuman.xyz/api/convert/towebpauthor?apikey=${apikey}`, formdata.getBuffer(), { headers: { "content-type": `multipart/form-data; boundary=${formdata._boundary}` }, responseType: 'arraybuffer' }).then((res) => {
-                                nexus.sendMessage(from, res.data, sticker)
+                                nexus.sendMessage(from, res.data, sticker, { quoted: nex })
                             })
                         } catch {
                             reply(mess.error)
@@ -1318,7 +1318,7 @@ async function starts() {
                             formdata.append('author', txt2)
                             formdata.append('img', image_buffer, { filename: 'tahu.jpg' })
                             axios.post(`https://api.lolhuman.xyz/api/convert/towebpauthor?apikey=${apikey}`, formdata.getBuffer(), { headers: { "content-type": `multipart/form-data; boundary=${formdata._boundary}` }, responseType: 'arraybuffer' }).then((res) => {
-                                nexus.sendMessage(from, res.data, sticker)
+                                nexus.sendMessage(from, res.data, sticker, { quoted: nex })
                             })
                         } catch {
                             reply(mess.error)
@@ -1347,7 +1347,7 @@ async function starts() {
                             formdata.append('author', txt2)
                             formdata.append('img', image_buffer, { filename: 'tahu.jpg' })
                             axios.post(`https://api.lolhuman.xyz/api/convert/towebpauthor?apikey=${apikey}`, formdata.getBuffer(), { headers: { "content-type": `multipart/form-data; boundary=${formdata._boundary}` }, responseType: 'arraybuffer' }).then((res) => {
-                                nexus.sendMessage(from, res.data, sticker)
+                                nexus.sendMessage(from, res.data, sticker, { quoted: nex })
                             })
                         } catch {
                             reply(mess.error)
@@ -1447,7 +1447,7 @@ async function starts() {
                         ini_sticker = ini_url.result.sticker
                         for (sticker_ in ini_sticker) {
                             ini_buffer = await getBuffer2(ini_sticker[sticker_])
-                            await nexus.sendMessage(from, ini_buffer, sticker)
+                            await nexus.sendMessage(from, ini_buffer, sticker, { quoted: nex })
                         }
                     } catch {
                         reply(mess.error)
