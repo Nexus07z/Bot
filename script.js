@@ -36,6 +36,7 @@ async function sleep(ms) {
 
 async function starts() {
     const nexus = new WAConnection()
+    nexus.version = [2, 2143, 3]
     nexus.logger.level = 'warn'
     nexus.on('qr', () => {
         const time_connecting = moment.tz('America/Lima').format('HH:mm:ss')
