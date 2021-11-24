@@ -1946,7 +1946,7 @@ async function starts() {
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
          
-                    get_textprome = await getBuffer(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`)
+                    get_textprome = await getBuffer2(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${ini_txt}`)
                     await nexus.sendMessage(from, get_textprome, image, { quoted: nex })
            
                 break
@@ -1970,7 +1970,7 @@ async function starts() {
                     if (!txt1) return reply(`*Falta el primer texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
                     if (!txt2) return reply(`*Falta el segundo texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
            
-                    get_textprome2 = await getBuffer(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
+                    get_textprome2 = await getBuffer2(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
                     nexus.sendMessage(from, get_textprome2, image, { quoted: nex })
                 
                 break
@@ -2002,7 +2002,7 @@ async function starts() {
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
            
-                    get_photooxy = await getBuffer(`https://api.lolhuman.xyz/api/photooxy1/${command}?apikey=${apikey}&text=${ini_txt}`)
+                    get_photooxy = await getBuffer2(`https://api.lolhuman.xyz/api/photooxy1/${command}?apikey=${apikey}&text=${ini_txt}`)
                     await nexus.sendMessage(from, get_photooxy, image, { quoted: nex })
             
                 break
@@ -2019,7 +2019,7 @@ async function starts() {
                     if (!txt1) return reply(`*Falta el primer texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
                     if (!txt2) return reply(`*Falta el segundo texto.*\n\n*Ejemplo:     ${prefix + command} Nexus|Bot*`)
                     
-                    get_photooxy2 = await getBuffer(`https://api.lolhuman.xyz/api/photooxy2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
+                    get_photooxy2 = await getBuffer2(`https://api.lolhuman.xyz/api/photooxy2/${command}?apikey=${apikey}&text1=${txt1}&text2=${txt2}`)
                     nexus.sendMessage(from, get_photooxy2, image, { quoted: nex })
                    
                 break
@@ -2069,7 +2069,7 @@ async function starts() {
                     if (args.length == 0) return reply(`*Agrega el texto que deseas agregar a la imagen.*\n\n*Por ejemplo:     ${prefix + command} Nexus*`)
                     ini_txt = args.join(" ")
 
-                    get_ephoto360 = await getBuffer(`https://api.lolhuman.xyz/api/ephoto1/${command}?apikey=${apikey}&text=${ini_txt}`)
+                    get_ephoto360 = await getBuffer2(`https://api.lolhuman.xyz/api/ephoto1/${command}?apikey=${apikey}&text=${ini_txt}`)
                     await nexus.sendMessage(from, get_ephoto360, image, { quoted: nex })
                         
                 break
